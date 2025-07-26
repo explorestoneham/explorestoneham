@@ -41,7 +41,7 @@ export const HeroSection: React.FC = () => {
               duration: 0.8,
               delay: 0.2
             }} className="text-4xl lg:text-6xl font-bold leading-tight">
-                Discover the Heart of{' '}
+                Discover What's Happening in{' '}
                 <span className="text-[#F4A300]">Stoneham</span>
               </motion.h1>
               
@@ -55,7 +55,7 @@ export const HeroSection: React.FC = () => {
               duration: 0.8,
               delay: 0.4
             }} className="text-xl lg:text-2xl text-[#D2E5F1] leading-relaxed">
-                Your gateway to local events, attractions, services, and community connections in beautiful Stoneham, Massachusetts.
+                Your hub for events, dining, and community life
               </motion.p>
             </div>
 

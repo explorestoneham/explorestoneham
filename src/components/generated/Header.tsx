@@ -19,6 +19,9 @@ export const Header: React.FC = () => {
   }, {
     label: 'About',
     href: '#about'
+  }, {
+    label: 'Style Guide',
+    href: '/style-guide'
   }] as any[];
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,23 +32,25 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-[#2A6F4D] rounded-full flex items-center justify-center">
-              <MapPin className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl lg:text-2xl font-bold text-[#2A6F4D]">
-                Explore Stoneham
+          <div className="flex items-center">
+            <a href="/" onClick={(e) => {
+                e.preventDefault();
+                (window as any).handleNavigation?.('/');
+              }} className="hover:opacity-80 transition-opacity">
+              <h1 className="text-xl lg:text-2xl font-bold">
+                <span className="text-[#2A6F4D]">EXPLORE</span> <span className="text-[#007B9E]">STONEHAM</span>
               </h1>
-              <p className="text-xs lg:text-sm text-[#404040] hidden sm:block">
-                Your Community Connection
-              </p>
-            </div>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            {navigationItems.map(item => <a key={item.label} href={item.href} className="text-[#404040] hover:text-[#2A6F4D] font-medium transition-colors duration-200 relative group">
+            {navigationItems.map(item => <a key={item.label} href={item.href} onClick={(e) => {
+                if (item.href.startsWith('/')) {
+                  e.preventDefault();
+                  (window as any).handleNavigation?.(item.href);
+                }
+              }} className="text-[#404040] hover:text-[#2A6F4D] font-medium transition-colors duration-200 relative group">
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#2A6F4D] transition-all duration-200 group-hover:w-full"></span>
               </a>)}
@@ -89,7 +94,13 @@ export const Header: React.FC = () => {
         duration: 0.2
       }} className="lg:hidden bg-white border-t border-[#D2E5F1]">
             <nav className="px-4 py-4 space-y-2">
-              {navigationItems.map(item => <a key={item.label} href={item.href} onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 text-[#404040] hover:text-[#2A6F4D] hover:bg-[#D2E5F1] rounded-lg font-medium transition-colors duration-200">
+              {navigationItems.map(item => <a key={item.label} href={item.href} onClick={(e) => {
+                  if (item.href.startsWith('/')) {
+                    e.preventDefault();
+                    (window as any).handleNavigation?.(item.href);
+                  }
+                  setIsMenuOpen(false);
+                }} className="block px-4 py-3 text-[#404040] hover:text-[#2A6F4D] hover:bg-[#D2E5F1] rounded-lg font-medium transition-colors duration-200">
                   {item.label}
                 </a>)}
             </nav>

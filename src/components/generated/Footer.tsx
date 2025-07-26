@@ -19,20 +19,10 @@ export const Footer: React.FC = () => {
     href: '#about'
   }] as any[];
   const contactInfo = [{
-    icon: MapPin,
-    label: 'Address',
-    value: '35 Central Street, Stoneham, MA 02180',
-    link: 'https://maps.google.com/?q=35+Central+Street+Stoneham+MA'
-  }, {
-    icon: Phone,
-    label: 'Phone',
-    value: '(781) 279-2600',
-    link: 'tel:+17812792600'
-  }, {
     icon: Mail,
     label: 'Email',
-    value: 'info@stoneham-ma.gov',
-    link: 'mailto:info@stoneham-ma.gov'
+    value: 'explorestoneham@stonehamcan.org',
+    link: 'mailto:explorestoneham@stonehamcan.org'
   }] as any[];
   const socialLinks = [{
     icon: Facebook,
@@ -66,9 +56,11 @@ export const Footer: React.FC = () => {
           {/* Brand & Description */}
           <div className="lg:col-span-1 space-y-6">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-[#F4A300] rounded-full flex items-center justify-center">
-                <MapPin className="w-7 h-7 text-white" />
-              </div>
+              <img 
+                src="/StonehamCAN.png" 
+                alt="Stoneham CAN Logo" 
+                className="w-12 h-12 object-contain"
+              />
               <div>
                 <h3 className="text-2xl font-bold text-white">Explore Stoneham</h3>
                 <p className="text-[#93C47D] text-sm">Your Community Connection</p>
@@ -76,8 +68,8 @@ export const Footer: React.FC = () => {
             </div>
             
             <p className="text-[#D2E5F1] leading-relaxed">
-              Connecting our community through shared experiences, local discoveries, and neighborly spirit. 
-              Discover what makes Stoneham special.
+              A community initiative by <a href="https://www.stonehamcan.org/" target="_blank" rel="noopener noreferrer" className="text-[#F4A300] hover:text-[#D95D39] transition-colors duration-200">Stoneham CAN</a>. 
+              Connecting our community through shared experiences, local discoveries, and neighborly spirit.
             </p>
 
             {/* Social Links */}
@@ -187,7 +179,7 @@ export const Footer: React.FC = () => {
         <div className="border-t border-white/20 mt-12 pt-8">
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
             <div className="flex items-center space-x-2 text-sm text-[#D2E5F1]">
-              <span>© 2024 Town of Stoneham. All rights reserved.</span>
+              <span>© 2024 Stoneham CAN. All rights reserved.</span>
             </div>
             
             <div className="flex items-center space-x-6 text-sm">
