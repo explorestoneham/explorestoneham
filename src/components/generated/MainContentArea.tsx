@@ -346,14 +346,29 @@ export const MainContentArea: React.FC = () => {
                   to building a stronger community together.
                 </p>
               </div>
+              
+              <div className="mt-8">
+                <button onClick={() => {
+                  (window as any).handleNavigation?.('/historic-walking-tour');
+                }} className="group bg-[#2A6F4D] hover:bg-[#007B9E] text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center">
+                  <span>Take the Historic Walking Tour</span>
+                  <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </button>
+              </div>
             </div>
             <div className="relative">
-              <div className="aspect-[4/3] bg-gradient-to-br from-[#2A6F4D] to-[#007B9E] rounded-2xl flex items-center justify-center">
-                <div className="text-center text-white">
-                  <Building className="w-16 h-16 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Historic Stoneham</h3>
-                  <p className="text-white/80">Established 1725</p>
+              <div className="aspect-[4/3] bg-gradient-to-br from-[#2A6F4D] to-[#007B9E] rounded-2xl flex items-center justify-center relative overflow-hidden">
+                <div className="text-center text-white z-10">
+                  <MapPin className="w-16 h-16 mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold mb-2">Historic Walking Tour</h3>
+                  <p className="text-white/80">Explore Stoneham's Rich History</p>
+                  <button onClick={() => {
+                    (window as any).handleNavigation?.('/historic-walking-tour');
+                  }} className="mt-4 bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-full transition-colors duration-300 text-sm font-semibold">
+                    Start Tour
+                  </button>
                 </div>
+                <div className="absolute inset-0 bg-black/20"></div>
               </div>
             </div>
           </div>

@@ -19,14 +19,14 @@ export const HeroSection: React.FC = () => {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-5xl mx-auto text-center">
           {/* Content */}
           <motion.div initial={{
           opacity: 0,
-          x: -50
+          y: 30
         }} animate={{
           opacity: 1,
-          x: 0
+          y: 0
         }} transition={{
           duration: 0.8
         }} className="space-y-8">
@@ -40,7 +40,7 @@ export const HeroSection: React.FC = () => {
             }} transition={{
               duration: 0.8,
               delay: 0.2
-            }} className="text-4xl lg:text-6xl font-bold leading-tight">
+            }} className="text-4xl lg:text-6xl font-bold leading-tight text-center">
                 Discover What's Happening in{' '}
                 <span className="text-[#F4A300]">Stoneham</span>
               </motion.h1>
@@ -54,7 +54,7 @@ export const HeroSection: React.FC = () => {
             }} transition={{
               duration: 0.8,
               delay: 0.4
-            }} className="text-xl lg:text-2xl text-[#D2E5F1] leading-relaxed">
+            }} className="text-xl lg:text-2xl text-[#D2E5F1] leading-relaxed text-center">
                 From community events to local dining, discover everything that makes Stoneham a vibrant place to live, work, and explore.
               </motion.p>
             </div>
@@ -121,7 +121,7 @@ export const HeroSection: React.FC = () => {
           }} transition={{
             duration: 0.8,
             delay: 0.8
-          }} className="flex flex-col sm:flex-row gap-4">
+          }} className="flex flex-col sm:flex-row gap-4 justify-center">
               <button onClick={handleExploreEvents} className="group bg-[#F4A300] hover:bg-[#D95D39] text-[#404040] font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2">
                 <span>Explore Events</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -132,76 +132,6 @@ export const HeroSection: React.FC = () => {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </motion.div>
-          </motion.div>
-
-          {/* Hero Image/Visual */}
-          <motion.div initial={{
-          opacity: 0,
-          x: 50
-        }} animate={{
-          opacity: 1,
-          x: 0
-        }} transition={{
-          duration: 0.8,
-          delay: 0.4
-        }} className="relative">
-            <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
-              {/* Placeholder for Stoneham landmark image */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-[#93C47D] to-[#D2E5F1] rounded-2xl flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="w-20 h-20 bg-white/30 rounded-full flex items-center justify-center mx-auto">
-                    <MapPin className="w-10 h-10 text-white" />
-                  </div>
-                  <div className="text-white/90">
-                    <h3 className="text-xl font-semibold">Stoneham Town Common</h3>
-                    <p className="text-sm">Historic heart of our community</p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Floating Cards */}
-              <motion.div initial={{
-              opacity: 0,
-              y: 20
-            }} animate={{
-              opacity: 1,
-              y: 0
-            }} transition={{
-              duration: 0.8,
-              delay: 1.2
-            }} className="absolute -bottom-4 -left-4 bg-white rounded-xl p-4 shadow-xl">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-[#007B9E] rounded-full flex items-center justify-center">
-                    <Calendar className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-[#404040]">Next Event</div>
-                    <div className="text-xs text-[#404040]/70">Summer Concert Series</div>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div initial={{
-              opacity: 0,
-              y: 20
-            }} animate={{
-              opacity: 1,
-              y: 0
-            }} transition={{
-              duration: 0.8,
-              delay: 1.4
-            }} className="absolute -top-4 -right-4 bg-[#F4A300] rounded-xl p-4 shadow-xl">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                    <Users className="w-5 h-5 text-[#F4A300]" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-white">Join Us</div>
-                    <div className="text-xs text-white/80">Community Groups</div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
           </motion.div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Container, Theme } from './settings/types';
 import { ExploreStonehamApp } from './components/generated/ExploreStonehamApp';
 import { StyleGuide } from './components/generated/StyleGuide';
+import { HistoricalWalkingTourApp } from './components/generated/HistoricalWalkingTourApp';
 
 let theme: Theme = 'light';
 let container: Container = 'none';
@@ -23,6 +24,8 @@ function App() {
   const handleNavigation = (href: string) => {
     if (href === '/style-guide') {
       setCurrentPage('style-guide');
+    } else if (href === '/historic-walking-tour') {
+      setCurrentPage('historic-walking-tour');
     } else if (href === '/') {
       setCurrentPage('home');
     }
@@ -37,6 +40,8 @@ function App() {
     // THIS IS WHERE THE TOP LEVEL GENRATED COMPONENT WILL BE RETURNED!
     if (currentPage === 'style-guide') {
       return <StyleGuide />;
+    } else if (currentPage === 'historic-walking-tour') {
+      return <HistoricalWalkingTourApp />;
     }
     return <ExploreStonehamApp />; // %EXPORT_STATEMENT%
   }, [currentPage]);
