@@ -8,20 +8,17 @@ export const Header: React.FC = () => {
     label: 'Events',
     href: '#events'
   }, {
-    label: 'Attractions',
-    href: '#attractions'
+    label: 'Things to Do',
+    href: '#things-to-do'
   }, {
-    label: 'Services',
-    href: '#services'
+    label: 'Dining & Shopping',
+    href: '#dining-shopping'
   }, {
-    label: 'Community Groups',
-    href: '#groups'
+    label: 'Community',
+    href: '#community'
   }, {
-    label: 'About',
+    label: 'About Stoneham',
     href: '#about'
-  }, {
-    label: 'Style Guide',
-    href: '/style-guide'
   }] as any[];
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,11 +29,16 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3">
             <a href="/" onClick={(e) => {
                 e.preventDefault();
                 (window as any).handleNavigation?.('/');
-              }} className="hover:opacity-80 transition-opacity">
+              }} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+              <img 
+                src="/StonehamCAN.png" 
+                alt="Stoneham CAN Logo" 
+                className="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+              />
               <h1 className="text-xl lg:text-2xl font-bold">
                 <span className="text-[#2A6F4D]">EXPLORE</span> <span className="text-[#007B9E]">STONEHAM</span>
               </h1>

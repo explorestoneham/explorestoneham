@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Calendar, MapPin, Users } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin, Users, Utensils, Building } from 'lucide-react';
 export const HeroSection: React.FC = () => {
   const handleSubmitItem = () => {
     // Navigate to submit form - would be implemented with routing
@@ -55,11 +55,11 @@ export const HeroSection: React.FC = () => {
               duration: 0.8,
               delay: 0.4
             }} className="text-xl lg:text-2xl text-[#D2E5F1] leading-relaxed">
-                Your hub for events, dining, and community life
+                From community events to local dining, discover everything that makes Stoneham a vibrant place to live, work, and explore.
               </motion.p>
             </div>
 
-            {/* Quick Stats */}
+            {/* Quick Access Categories */}
             <motion.div initial={{
             opacity: 0,
             y: 20
@@ -69,28 +69,46 @@ export const HeroSection: React.FC = () => {
           }} transition={{
             duration: 0.8,
             delay: 0.6
-          }} className="grid grid-cols-3 gap-6 py-6">
-              <div className="text-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-2 mx-auto">
-                  <Calendar className="w-6 h-6" />
+          }} className="grid grid-cols-2 lg:grid-cols-5 gap-4 py-6">
+              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-[#F4A300] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
+                  <Calendar className="w-6 h-6 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-[#F4A300]">50+</div>
-                <div className="text-sm text-[#D2E5F1]">Monthly Events</div>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-2 mx-auto">
-                  <MapPin className="w-6 h-6" />
+                <div className="text-sm font-semibold text-white mb-1">Events</div>
+                <div className="text-xs text-[#D2E5F1]">Gatherings & Activities</div>
+              </button>
+              
+              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-[#007B9E] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
+                  <MapPin className="w-6 h-6 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-[#F4A300]">25+</div>
-                <div className="text-sm text-[#D2E5F1]">Local Attractions</div>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-2 mx-auto">
-                  <Users className="w-6 h-6" />
+                <div className="text-sm font-semibold text-white mb-1">Things to Do</div>
+                <div className="text-xs text-[#D2E5F1]">Attractions & Parks</div>
+              </button>
+              
+              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-[#D95D39] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
+                  <Utensils className="w-6 h-6 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-[#F4A300]">100+</div>
-                <div className="text-sm text-[#D2E5F1]">Community Groups</div>
-              </div>
+                <div className="text-sm font-semibold text-white mb-1">Dining & Shopping</div>
+                <div className="text-xs text-[#D2E5F1]">Food & Retail</div>
+              </button>
+              
+              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-[#93C47D] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-sm font-semibold text-white mb-1">Community</div>
+                <div className="text-xs text-[#D2E5F1]">Groups & Resources</div>
+              </button>
+              
+              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center col-span-2 lg:col-span-1">
+                <div className="flex items-center justify-center w-12 h-12 bg-[#2A6F4D] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
+                  <Building className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-sm font-semibold text-white mb-1">About</div>
+                <div className="text-xs text-[#D2E5F1]">History & Info</div>
+              </button>
             </motion.div>
 
             {/* Call to Action Buttons */}
