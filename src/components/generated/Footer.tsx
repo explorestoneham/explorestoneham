@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, ExternalLink, Heart, Clock, Calendar } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, ExternalLink, Heart, Calendar } from 'lucide-react';
 export const Footer: React.FC = () => {
   const quickLinks = [{
     label: 'Events Calendar',
@@ -39,16 +39,6 @@ export const Footer: React.FC = () => {
     label: 'Instagram',
     href: '#',
     color: 'hover:text-[#E4405F]'
-  }] as any[];
-  const officeHours = [{
-    day: 'Monday - Thursday',
-    hours: '8:00 AM - 4:30 PM'
-  }, {
-    day: 'Friday',
-    hours: '8:00 AM - 12:30 PM'
-  }, {
-    day: 'Saturday - Sunday',
-    hours: 'Closed'
   }] as any[];
   return <footer className="bg-[#2A6F4D] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -138,19 +128,8 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Office Hours & Additional Info */}
+          {/* Additional Info */}
           <div className="space-y-6">
-            <h4 className="text-xl font-bold text-white">Office Hours</h4>
-            <div className="space-y-3">
-              {officeHours.map(schedule => <div key={schedule.day} className="flex items-center space-x-3">
-                  <Clock className="w-4 h-4 text-[#93C47D] flex-shrink-0" />
-                  <div>
-                    <div className="text-sm font-medium text-white">{schedule.day}</div>
-                    <div className="text-xs text-[#D2E5F1]">{schedule.hours}</div>
-                  </div>
-                </div>)}
-            </div>
-
             {/* Upcoming Events Preview */}
             <div className="bg-white/5 rounded-lg p-4 border border-white/10">
               <div className="flex items-center space-x-2 mb-3">
