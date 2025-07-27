@@ -6,7 +6,7 @@ export const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigationItems = [{
     label: 'Events',
-    href: '#events'
+    href: '/events'
   }, {
     label: 'Things to Do',
     href: '#things-to-do'
@@ -22,8 +22,12 @@ export const Header: React.FC = () => {
   }] as any[];
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Search functionality would be implemented here
-    console.log('Searching for:', searchQuery);
+    if (searchQuery.trim()) {
+      // Navigate to events page with search query
+      const url = `/events?search=${encodeURIComponent(searchQuery.trim())}`;
+      (window as any).handleNavigation?.(url);
+      setSearchQuery(''); // Clear the search after navigating
+    }
   };
   return <header className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

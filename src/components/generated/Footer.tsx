@@ -4,7 +4,7 @@ import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, ExternalLink, Heart,
 export const Footer: React.FC = () => {
   const quickLinks = [{
     label: 'Events Calendar',
-    href: '#events'
+    href: '/events'
   }, {
     label: 'Local Attractions',
     href: '#attractions'
@@ -78,7 +78,12 @@ export const Footer: React.FC = () => {
           <div className="space-y-6">
             <h4 className="text-xl font-bold text-white">Quick Links</h4>
             <nav className="space-y-3">
-              {quickLinks.map(link => <a key={link.label} href={link.href} className="block text-[#D2E5F1] hover:text-[#F4A300] transition-colors duration-200 flex items-center group">
+              {quickLinks.map(link => <a key={link.label} href={link.href} onClick={(e) => {
+                  if (link.href.startsWith('/')) {
+                    e.preventDefault();
+                    (window as any).handleNavigation?.(link.href);
+                  }
+                }} className="block text-[#D2E5F1] hover:text-[#F4A300] transition-colors duration-200 flex items-center group">
                   <span>{link.label}</span>
                   <ExternalLink className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 </a>)}

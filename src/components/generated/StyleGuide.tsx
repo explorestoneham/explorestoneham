@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowLeft, Palette, Type, Layout, MousePointer, Eye, Smartphone, Accessibility } from 'lucide-react';
 
 export const StyleGuide: React.FC = () => {
   return (
@@ -12,8 +11,7 @@ export const StyleGuide: React.FC = () => {
                 e.preventDefault();
                 (window as any).handleNavigation?.('/');
               }} className="flex items-center space-x-2 text-[#2A6F4D] hover:text-[#007B9E] transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-medium">Back to Site</span>
+              <span className="font-medium">← Back to Site</span>
             </a>
           </div>
           <h1 className="text-4xl lg:text-5xl font-bold text-[#2A6F4D] mb-4">
@@ -29,7 +27,7 @@ export const StyleGuide: React.FC = () => {
         {/* Brand Overview */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <Palette className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">🎨</span>
             Brand Overview
           </h2>
           <div className="bg-white rounded-lg shadow-md p-8">
@@ -65,7 +63,7 @@ export const StyleGuide: React.FC = () => {
         {/* Color Palette */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <Palette className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">🎨</span>
             Color Palette
           </h2>
           
@@ -150,7 +148,7 @@ export const StyleGuide: React.FC = () => {
         {/* Typography */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <Type className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">📝</span>
             Typography
           </h2>
           <div className="bg-white rounded-lg shadow-md p-8">
@@ -189,7 +187,7 @@ export const StyleGuide: React.FC = () => {
         {/* Components */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <Layout className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">🧩</span>
             Components
           </h2>
           
@@ -244,7 +242,7 @@ export const StyleGuide: React.FC = () => {
         {/* Interactive States */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <MousePointer className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">🖱️</span>
             Interactive States
           </h2>
           <div className="bg-white rounded-lg shadow-md p-8">
@@ -280,7 +278,7 @@ export const StyleGuide: React.FC = () => {
         {/* Responsive Design */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <Smartphone className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">📱</span>
             Responsive Design
           </h2>
           <div className="bg-white rounded-lg shadow-md p-8">
@@ -309,7 +307,7 @@ export const StyleGuide: React.FC = () => {
         {/* Accessibility */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <Accessibility className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">♿</span>
             Accessibility
           </h2>
           <div className="bg-white rounded-lg shadow-md p-8">
@@ -337,7 +335,7 @@ export const StyleGuide: React.FC = () => {
         {/* Usage Guidelines */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#2A6F4D] mb-6 flex items-center">
-            <Eye className="w-8 h-8 mr-3" />
+            <span className="w-8 h-8 mr-3">👁️</span>
             Usage Guidelines
           </h2>
           <div className="bg-white rounded-lg shadow-md p-8">

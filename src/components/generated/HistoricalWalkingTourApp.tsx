@@ -103,6 +103,7 @@ export function HistoricalWalkingTourApp() {
   });
 
   const handleStartTour = () => {
+    window.scrollTo(0, 0);
     setViewState({
       type: 'stop',
       stopIndex: 0
@@ -111,6 +112,7 @@ export function HistoricalWalkingTourApp() {
 
   const handleNextStop = () => {
     if (viewState.type === 'stop' && viewState.stopIndex < tourStops.length - 1) {
+      window.scrollTo(0, 0);
       setViewState({
         type: 'stop',
         stopIndex: viewState.stopIndex + 1
@@ -120,6 +122,7 @@ export function HistoricalWalkingTourApp() {
 
   const handlePreviousStop = () => {
     if (viewState.type === 'stop' && viewState.stopIndex > 0) {
+      window.scrollTo(0, 0);
       setViewState({
         type: 'stop',
         stopIndex: viewState.stopIndex - 1
@@ -129,6 +132,7 @@ export function HistoricalWalkingTourApp() {
 
   const handleViewSubPage = (subPageId: string) => {
     if (viewState.type === 'stop') {
+      window.scrollTo(0, 0);
       setViewState({
         type: 'subpage',
         stopIndex: viewState.stopIndex,
@@ -139,6 +143,7 @@ export function HistoricalWalkingTourApp() {
 
   const handleBackToStop = () => {
     if (viewState.type === 'subpage') {
+      window.scrollTo(0, 0);
       setViewState({
         type: 'stop',
         stopIndex: viewState.stopIndex
@@ -147,6 +152,7 @@ export function HistoricalWalkingTourApp() {
   };
 
   const handleRestartTour = () => {
+    window.scrollTo(0, 0);
     setViewState({
       type: 'intro'
     });

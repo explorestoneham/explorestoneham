@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Users, Building, Search, Filter, Clock, Star, Phone, Mail, ExternalLink, ChevronRight } from 'lucide-react';
+import { CalendarEvent } from '../../services/types/calendar';
+import { CalendarService } from '../../services/calendar/CalendarService';
+import { DEFAULT_CALENDAR_CONFIG } from '../../services/calendar/config';
+import { useEventSearch } from '../../hooks/useEventSearch';
 interface Event {
   id: string;
   title: string;
@@ -30,10 +34,50 @@ interface Service {
 }
 export const MainContentArea: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [realEvents, setRealEvents] = useState<CalendarEvent[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(true);
+  const [calendarService] = useState(() => new CalendarService(DEFAULT_CALENDAR_CONFIG, ''));
+  
+  // Search functionality
+  const {
+    searchResults,
+    searchQuery,
+    setSearchQuery,
+    isSearchActive
+  } = useEventSearch(realEvents);
+  
+  // Check for search query in URL parameters on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    if (searchParam) {
+      setSearchQuery(searchParam);
+      // Scroll to events section
+      setTimeout(() => {
+        document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [setSearchQuery]);
+  
+  // Load real events
+  useEffect(() => {
+    loadRealEvents();
+  }, []);
+  
+  const loadRealEvents = async () => {
+    try {
+      setEventsLoading(true);
+      const consolidatedEvents = await calendarService.consolidateEvents();
+      setRealEvents(consolidatedEvents);
+    } catch (err) {
+      console.error('Error loading events:', err);
+    } finally {
+      setEventsLoading(false);
+    }
+  };
 
-  // Mock data
-  const events: Event[] = [{
+  // Mock data (fallback)
+  const mockEvents: Event[] = [{
     id: '1',
     title: 'Summer Concert Series',
     date: '2024-07-15',
@@ -61,6 +105,43 @@ export const MainContentArea: React.FC = () => {
     image: 'art',
     description: 'Local artists showcase their work'
   }];
+  
+  // Convert real events to display format and combine with mock data
+  const convertEventToDisplayFormat = (event: CalendarEvent): Event => ({
+    id: event.id,
+    title: event.title,
+    date: event.startDate.toISOString().split('T')[0],
+    time: event.startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+    location: event.location || 'TBD',
+    category: event.tags[0] || 'Community',
+    image: 'event',
+    description: event.description || 'Join us for this community event'
+  });
+  
+  // Get events to display - use search results if searching, otherwise show recent events
+  const getEventsToDisplay = (): Event[] => {
+    if (eventsLoading) return mockEvents.slice(0, 3);
+    
+    if (isSearchActive && searchQuery.trim()) {
+      // Show search results, limited to first 6 for main page
+      return searchResults.slice(0, 6).map(result => convertEventToDisplayFormat(result.event));
+    }
+    
+    // Show upcoming events, limited to 6 for main page
+    const upcomingEvents = realEvents
+      .filter(event => event.startDate >= new Date())
+      .slice(0, 6)
+      .map(convertEventToDisplayFormat);
+    
+    // If we have fewer than 3 real events, supplement with mock data
+    if (upcomingEvents.length < 3) {
+      return [...upcomingEvents, ...mockEvents.slice(0, 3 - upcomingEvents.length)];
+    }
+    
+    return upcomingEvents;
+  };
+  
+  const eventsToDisplay = getEventsToDisplay();
   const attractions: Attraction[] = [{
     id: '1',
     name: 'Stoneham Zoo',
@@ -226,7 +307,13 @@ export const MainContentArea: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#404040]/50" />
-              <input type="text" placeholder="Search events..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-3 border border-[#D2E5F1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007B9E] focus:border-transparent" />
+              <input 
+                type="text" 
+                placeholder="Search events..." 
+                value={searchQuery} 
+                onChange={e => setSearchQuery(e.target.value)} 
+                className="w-full pl-10 pr-4 py-3 border border-[#D2E5F1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007B9E] focus:border-transparent" 
+              />
             </div>
             <div className="flex gap-2">
               {['all', 'Music', 'Community', 'Arts'].map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-4 py-3 rounded-lg font-medium transition-colors ${activeFilter === filter ? 'bg-[#007B9E] text-white' : 'bg-white text-[#404040] border border-[#D2E5F1] hover:bg-[#D2E5F1]'}`}>
@@ -236,12 +323,40 @@ export const MainContentArea: React.FC = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-            {events.map(event => <EventCard key={event.id} event={event} />)}
+            {eventsToDisplay.map(event => <EventCard key={event.id} event={event} />)}
           </div>
+          
+          {/* Search results info */}
+          {isSearchActive && searchQuery.trim() && (
+            <div className="text-center mb-4">
+              <p className="text-[#404040]/70">
+                {searchResults.length > 0 ? (
+                  <>Showing {Math.min(searchResults.length, 6)} of {searchResults.length} results for "{searchQuery}"</>
+                ) : (
+                  <>No events found for "{searchQuery}"</>
+                )}
+              </p>
+              {searchResults.length > 6 && (
+                <p className="text-sm text-[#007B9E] mt-1">
+                  View all results on the Events page
+                </p>
+              )}
+            </div>
+          )}
 
           <div className="text-center">
-            <button className="group bg-[#2A6F4D] hover:bg-[#007B9E] text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center mx-auto">
-              <span>View All Events</span>
+            <button 
+              onClick={() => {
+                if (typeof window !== 'undefined' && (window as any).handleNavigation) {
+                  const url = isSearchActive && searchQuery.trim() 
+                    ? `/events?search=${encodeURIComponent(searchQuery)}` 
+                    : '/events';
+                  (window as any).handleNavigation(url);
+                }
+              }}
+              className="group bg-[#2A6F4D] hover:bg-[#007B9E] text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center mx-auto"
+            >
+              <span>{isSearchActive && searchQuery.trim() ? 'View All Search Results' : 'View All Events'}</span>
               <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </button>
           </div>
