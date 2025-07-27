@@ -5,16 +5,7 @@ import { CalendarEvent } from '../../services/types/calendar';
 import { CalendarService } from '../../services/calendar/CalendarService';
 import { DEFAULT_CALENDAR_CONFIG } from '../../services/calendar/config';
 import { useEventSearch } from '../../hooks/useEventSearch';
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  category: string;
-  image: string;
-  description: string;
-}
+import { EventCard } from '../events/EventCard';
 interface Attraction {
   id: string;
   name: string;
@@ -76,69 +67,19 @@ export const MainContentArea: React.FC = () => {
     }
   };
 
-  // Mock data (fallback)
-  const mockEvents: Event[] = [{
-    id: '1',
-    title: 'Summer Concert Series',
-    date: '2024-07-15',
-    time: '7:00 PM',
-    location: 'Town Common',
-    category: 'Music',
-    image: 'concert',
-    description: 'Join us for an evening of live music under the stars'
-  }, {
-    id: '2',
-    title: 'Farmers Market',
-    date: '2024-07-20',
-    time: '9:00 AM',
-    location: 'Main Street',
-    category: 'Community',
-    image: 'market',
-    description: 'Fresh local produce and artisan goods'
-  }, {
-    id: '3',
-    title: 'Art in the Park',
-    date: '2024-07-25',
-    time: '10:00 AM',
-    location: 'Memorial Park',
-    category: 'Arts',
-    image: 'art',
-    description: 'Local artists showcase their work'
-  }];
-  
-  // Convert real events to display format and combine with mock data
-  const convertEventToDisplayFormat = (event: CalendarEvent): Event => ({
-    id: event.id,
-    title: event.title,
-    date: event.startDate.toISOString().split('T')[0],
-    time: event.startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
-    location: event.location || 'TBD',
-    category: event.tags[0] || 'Community',
-    image: 'event',
-    description: event.description || 'Join us for this community event'
-  });
-  
   // Get events to display - use search results if searching, otherwise show recent events
-  const getEventsToDisplay = (): Event[] => {
-    if (eventsLoading) return mockEvents.slice(0, 3);
+  const getEventsToDisplay = (): CalendarEvent[] => {
+    if (eventsLoading) return [];
     
     if (isSearchActive && searchQuery.trim()) {
       // Show search results, limited to first 6 for main page
-      return searchResults.slice(0, 6).map(result => convertEventToDisplayFormat(result.event));
+      return searchResults.slice(0, 6).map(result => result.event);
     }
     
     // Show upcoming events, limited to 6 for main page
-    const upcomingEvents = realEvents
+    return realEvents
       .filter(event => event.startDate >= new Date())
-      .slice(0, 6)
-      .map(convertEventToDisplayFormat);
-    
-    // If we have fewer than 3 real events, supplement with mock data
-    if (upcomingEvents.length < 3) {
-      return [...upcomingEvents, ...mockEvents.slice(0, 3 - upcomingEvents.length)];
-    }
-    
-    return upcomingEvents;
+      .slice(0, 6);
   };
   
   const eventsToDisplay = getEventsToDisplay();
@@ -189,39 +130,6 @@ export const MainContentArea: React.FC = () => {
     email: 'seniors@stoneham-ma.gov',
     description: 'Programs and services for Stoneham seniors'
   }];
-  const EventCard: React.FC<{
-    event: Event;
-  }> = ({
-    event
-  }) => <motion.div whileHover={{
-    y: -5
-  }} className="bg-white rounded-xl shadow-lg overflow-hidden border border-[#D2E5F1] hover:shadow-xl transition-all duration-300">
-      <div className="h-48 bg-gradient-to-br from-[#93C47D] to-[#D2E5F1] flex items-center justify-center">
-        <Calendar className="w-12 h-12 text-white" />
-      </div>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-2">
-          <span className="px-3 py-1 bg-[#F4A300] text-white text-xs font-semibold rounded-full">
-            {event.category}
-          </span>
-          <div className="text-sm text-[#404040]/70 flex items-center">
-            <Clock className="w-4 h-4 mr-1" />
-            {event.time}
-          </div>
-        </div>
-        <h3 className="text-xl font-bold text-[#404040] mb-2">{event.title}</h3>
-        <p className="text-[#404040]/70 mb-4 line-clamp-2">{event.description}</p>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center text-sm text-[#404040]/70">
-            <MapPin className="w-4 h-4 mr-1" />
-            {event.location}
-          </div>
-          <div className="text-sm font-semibold text-[#007B9E]">
-            {new Date(event.date).toLocaleDateString()}
-          </div>
-        </div>
-      </div>
-    </motion.div>;
   const AttractionCard: React.FC<{
     attraction: Attraction;
   }> = ({
@@ -323,7 +231,17 @@ export const MainContentArea: React.FC = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-            {eventsToDisplay.map(event => <EventCard key={event.id} event={event} />)}
+            {eventsLoading ? (
+              <div className="col-span-full flex items-center justify-center py-12">
+                <div className="text-[#404040]/70">Loading events...</div>
+              </div>
+            ) : eventsToDisplay.length > 0 ? (
+              eventsToDisplay.map(event => <EventCard key={event.id} event={event} />)
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <div className="text-[#404040]/70">No upcoming events at this time.</div>
+              </div>
+            )}
           </div>
           
           {/* Search results info */}

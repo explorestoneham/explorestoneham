@@ -203,11 +203,16 @@ export class ICalendarService {
         const eventDates = item.querySelector('calendarEvent\\:EventDates, EventDates')?.textContent || '';
         const eventTimes = item.querySelector('calendarEvent\\:EventTimes, EventTimes')?.textContent || '';
         const rawEventLocation = item.querySelector('calendarEvent\\:Location, Location')?.textContent || '';
-        const eventLocation = this.stripHtmlTags(rawEventLocation);
+        const rawEventAddress = item.querySelector('calendarEvent\\:Address, Address')?.textContent || '';
+        
+        // Prefer Location field over Address field
+        const eventLocation = this.stripHtmlTags(rawEventLocation || rawEventAddress);
         
         console.log(`  EventDates: ${eventDates}`);
         console.log(`  EventTimes: ${eventTimes}`);
-        console.log(`  EventLocation: ${eventLocation}`);
+        console.log(`  Raw EventLocation: ${rawEventLocation}`);
+        console.log(`  Raw EventAddress: ${rawEventAddress}`);
+        console.log(`  Final EventLocation: ${eventLocation}`);
         
         const enclosureEl = item.querySelector('enclosure');
         const enclosure = enclosureEl ? {

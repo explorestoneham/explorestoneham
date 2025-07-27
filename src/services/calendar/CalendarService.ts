@@ -1,10 +1,12 @@
 import { CalendarEvent, CalendarSource, CalendarConfig, CalendarServiceInterface } from '../types/calendar';
 import { GoogleCalendarService } from './GoogleCalendarService';
 import { ICalendarService } from './ICalendarService';
+import { ManualEventsService } from './ManualEventsService';
 
 export class CalendarService implements CalendarServiceInterface {
   private googleService: GoogleCalendarService;
   private icalService: ICalendarService;
+  private manualService: ManualEventsService;
   private config: CalendarConfig;
   private cache: Map<string, { events: CalendarEvent[], timestamp: number }> = new Map();
 
@@ -12,6 +14,7 @@ export class CalendarService implements CalendarServiceInterface {
     this.config = config;
     this.googleService = new GoogleCalendarService(googleApiKey);
     this.icalService = new ICalendarService();
+    this.manualService = new ManualEventsService();
   }
 
   async fetchEvents(source: CalendarSource): Promise<CalendarEvent[]> {
@@ -42,6 +45,10 @@ export class CalendarService implements CalendarServiceInterface {
         case 'rss':
           console.log(`Using iCalendar/RSS service for ${source.name}`);
           events = await this.icalService.fetchEvents(source);
+          break;
+        case 'manual':
+          console.log(`Using Manual Events service for ${source.name}`);
+          events = await this.manualService.fetchEvents(source);
           break;
         default:
           throw new Error(`Unsupported calendar type: ${source.type}`);

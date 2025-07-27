@@ -4,6 +4,16 @@ import { CalendarConfig, CalendarSource } from '../types/calendar';
 // Individual department feeds appear to be mostly empty, with events consolidated in the All feed
 export const STONEHAM_CALENDAR_SOURCES: CalendarSource[] = [
   {
+    id: 'manual-events',
+    name: 'Featured Events',
+    type: 'manual',
+    url: '', // Not used for manual events
+    tag: 'community',
+    defaultImageUrl: '/images/community.jpg',
+    color: '#2A6F4D', // Green
+    enabled: true
+  },
+  {
     id: 'stoneham-all-events',
     name: 'All Town Events',
     type: 'rss',

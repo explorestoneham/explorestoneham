@@ -14,7 +14,7 @@ export interface CalendarEvent {
 export interface CalendarSource {
   id: string;
   name: string;
-  type: 'google' | 'icalendar' | 'rss';
+  type: 'google' | 'icalendar' | 'rss' | 'manual';
   url: string;
   tag: string;
   defaultImageUrl?: string;
