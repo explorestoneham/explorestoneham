@@ -108,12 +108,6 @@ export const EVENT_CATEGORIES = {
     description: 'Town meetings, board meetings, and municipal events',
     icon: '🏛️',
     priority: 11
-  },
-  'farmers-market': {
-    label: 'Farmers Market',
-    description: 'Weekly farmers market and special market events',
-    icon: '🥕',
-    priority: 4
   }
 };
 

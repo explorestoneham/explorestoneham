@@ -13,7 +13,11 @@ export class ManualEventsService {
       source: {
         id: 'manual-events',
         name: 'Stoneham CAN',
-        color: '#2A6F4D'
+        type: 'manual',
+        url: '',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
       },
       tags: ['community', 'arts', 'family']
     }
@@ -44,7 +48,11 @@ export class ManualEventsService {
       source: {
         id: 'manual-events',
         name: 'Stoneham CAN',
+        type: 'manual',
+        url: '',
+        tag: 'community',
         color: '#2A6F4D',
+        enabled: true,
         ...event.source
       }
     };
