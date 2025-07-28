@@ -14,6 +14,16 @@ export const STONEHAM_CALENDAR_SOURCES: CalendarSource[] = [
     enabled: true
   },
   {
+    id: 'stoneham-google-calendar',
+    name: 'Stoneham Community Calendar',
+    type: 'icalendar',
+    url: 'https://calendar.google.com/calendar/ical/calendar.stoneham%40gmail.com/public/basic.ics',
+    tag: 'community',
+    defaultImageUrl: '/images/community.jpg',
+    color: '#9333EA', // Purple
+    enabled: true // Re-enabled - may work better in production without CORS proxy
+  },
+  {
     id: 'stoneham-all-events',
     name: 'All Town Events',
     type: 'rss',

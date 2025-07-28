@@ -13,16 +13,40 @@ export class ICalendarService {
 
   private async fetchICalendarEvents(source: CalendarSource): Promise<CalendarEvent[]> {
     try {
+      console.log(`Fetching iCalendar events for ${source.name} from: ${source.url}`);
+      
       // Use a CORS proxy for external iCalendar feeds
       const proxyUrl = this.getCorsProxyUrl(source.url);
+      console.log(`Using proxy URL: ${proxyUrl}`);
+      
       const response = await fetch(proxyUrl);
       
       if (!response.ok) {
+        console.error(`iCalendar fetch error: ${response.status} ${response.statusText}`);
         throw new Error(`iCalendar fetch error: ${response.status} ${response.statusText}`);
       }
 
-      const icalData = await response.text();
+      // Handle both direct and proxied responses
+      let icalData: string;
+      if (proxyUrl === source.url) {
+        // Direct fetch - response is plain text
+        icalData = await response.text();
+        console.log(`Direct iCalendar fetch successful for ${source.name}`);
+      } else {
+        // Proxied fetch - response is JSON with contents field
+        const jsonResponse = await response.json();
+        console.log(`Proxy response status: ${jsonResponse.status}`);
+        icalData = jsonResponse.contents || '';
+      }
+      
+      if (!icalData) {
+        console.warn(`Empty iCalendar data received for ${source.name}`);
+        return [];
+      }
+      console.log(`iCalendar data length: ${icalData.length} characters`);
+      
       const events = this.parseICalendar(icalData);
+      console.log(`Parsed ${events.length} iCalendar events`);
       
       return this.transformICalendarEvents(events, source);
     } catch (error) {
@@ -40,25 +64,30 @@ export class ICalendarService {
       const response = await fetch(proxyUrl);
       
       if (!response.ok) {
+        console.error(`RSS fetch error: ${response.status} ${response.statusText}`);
         throw new Error(`RSS fetch error: ${response.status} ${response.statusText}`);
       }
 
-      // allorigins.win returns JSON with a 'contents' field
-      const responseData = await response.json();
-      console.log(`Response status for ${source.name}:`, responseData.status);
-      
-      if (responseData.status?.http_code && responseData.status.http_code !== 200) {
-        throw new Error(`HTTP error ${responseData.status.http_code}: ${responseData.status.response_time}`);
+      // Handle both direct and proxied responses
+      let rssData: string;
+      if (proxyUrl === source.url) {
+        // Direct fetch - response is plain text
+        rssData = await response.text();
+        console.log(`Direct RSS fetch successful for ${source.name}`);
+      } else {
+        // Proxied fetch - response is JSON with contents field
+        const jsonResponse = await response.json();
+        console.log(`Proxy response status for ${source.name}: ${jsonResponse.status}`);
+        rssData = jsonResponse.contents || '';
       }
       
-      const rssData = responseData.contents;
-      
-      if (!rssData || typeof rssData !== 'string') {
-        console.error(`Invalid response structure:`, responseData);
-        throw new Error(`Invalid RSS data format for ${source.name}`);
+      if (!rssData) {
+        console.warn(`Empty RSS data received for ${source.name}`);
+        return [];
       }
-
+      
       console.log(`RSS data length for ${source.name}:`, rssData.length);
+      console.log(`RSS data preview for ${source.name}:`, rssData.substring(0, 200));
       
       const events = this.parseRSS(rssData);
       console.log(`Parsed ${events.length} events from ${source.name}`);
@@ -74,7 +103,11 @@ export class ICalendarService {
   }
 
   private getCorsProxyUrl(url: string): string {
-    // Using allorigins.win as it doesn't require activation
+    // Try direct fetch first - CORS may work better in production
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+      return url; // Try direct fetch in production
+    }
+    // Fallback to proxy for localhost development
     return `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
   }
 
@@ -246,9 +279,22 @@ export class ICalendarService {
   }
 
   private transformICalendarEvents(icalEvents: ICalendarEvent[], source: CalendarSource): CalendarEvent[] {
-    return icalEvents.map(event => {
+    const now = new Date();
+    console.log(`Current date for filtering: ${now.toISOString()}`);
+    
+    const transformed = icalEvents.map((event, index) => {
       const startDate = this.parseICalDate(event.dtstart);
       const endDate = this.parseICalDate(event.dtend || event.dtstart);
+      
+      // Log first few events to debug date parsing
+      if (index < 5) {
+        console.log(`Event ${index + 1}:`, {
+          title: event.summary,
+          rawStart: event.dtstart,
+          parsedStart: startDate.toISOString(),
+          isFuture: startDate >= now
+        });
+      }
       
       // Extract image URL from attach property or description
       const imageUrl = this.extractImageFromICal(event) || source.defaultImageUrl;
@@ -266,6 +312,11 @@ export class ICalendarService {
         tags: [source.tag]
       };
     });
+    
+    const futureEvents = transformed.filter(event => event.startDate >= now);
+    console.log(`Total iCal events: ${transformed.length}, Future events: ${futureEvents.length}`);
+    
+    return transformed;
   }
 
   private transformRSSEvents(rssEvents: RSSEvent[], source: CalendarSource): CalendarEvent[] {
