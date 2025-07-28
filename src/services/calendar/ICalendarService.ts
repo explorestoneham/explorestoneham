@@ -23,24 +23,23 @@ export class ICalendarService {
       
       if (!response.ok) {
         console.error(`iCalendar fetch error: ${response.status} ${response.statusText}`);
+        // If rate limited (429), don't throw - just return empty for now
+        if (response.status === 429) {
+          console.warn(`Rate limited for ${source.name}, skipping this fetch`);
+          return [];
+        }
         throw new Error(`iCalendar fetch error: ${response.status} ${response.statusText}`);
       }
 
-      // Handle both direct and proxied responses
-      let icalData: string;
-      if (proxyUrl === source.url) {
-        // Direct fetch - response is plain text
-        icalData = await response.text();
-        console.log(`Direct iCalendar fetch successful for ${source.name}`);
-      } else {
-        // Proxied fetch - response is JSON with contents field
-        const jsonResponse = await response.json();
-        console.log(`Proxy response status: ${jsonResponse.status}`);
-        icalData = jsonResponse.contents || '';
-      }
+      // allorigins.win returns JSON with contents field
+      const jsonResponse = await response.json();
+      console.log(`Proxy response status: ${jsonResponse.status}`);
+      
+      const icalData = jsonResponse.contents || '';
       
       if (!icalData) {
-        console.warn(`Empty iCalendar data received for ${source.name}`);
+        console.warn(`Empty iCalendar data received from proxy for ${source.name}`);
+        console.log(`Full proxy response:`, jsonResponse);
         return [];
       }
       console.log(`iCalendar data length: ${icalData.length} characters`);
@@ -65,24 +64,23 @@ export class ICalendarService {
       
       if (!response.ok) {
         console.error(`RSS fetch error: ${response.status} ${response.statusText}`);
+        // If rate limited (429), don't throw - just return empty for now
+        if (response.status === 429) {
+          console.warn(`Rate limited for ${source.name}, skipping this fetch`);
+          return [];
+        }
         throw new Error(`RSS fetch error: ${response.status} ${response.statusText}`);
       }
 
-      // Handle both direct and proxied responses
-      let rssData: string;
-      if (proxyUrl === source.url) {
-        // Direct fetch - response is plain text
-        rssData = await response.text();
-        console.log(`Direct RSS fetch successful for ${source.name}`);
-      } else {
-        // Proxied fetch - response is JSON with contents field
-        const jsonResponse = await response.json();
-        console.log(`Proxy response status for ${source.name}: ${jsonResponse.status}`);
-        rssData = jsonResponse.contents || '';
-      }
+      // allorigins.win returns JSON with contents field
+      const jsonResponse = await response.json();
+      console.log(`Proxy response status for ${source.name}: ${jsonResponse.status}`);
+      
+      const rssData = jsonResponse.contents || '';
       
       if (!rssData) {
-        console.warn(`Empty RSS data received for ${source.name}`);
+        console.warn(`Empty RSS data received from proxy for ${source.name}`);
+        console.log(`Full proxy response for ${source.name}:`, jsonResponse);
         return [];
       }
       
@@ -103,11 +101,7 @@ export class ICalendarService {
   }
 
   private getCorsProxyUrl(url: string): string {
-    // Try direct fetch first - CORS may work better in production
-    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-      return url; // Try direct fetch in production
-    }
-    // Fallback to proxy for localhost development
+    // Use allorigins.win proxy service for all environments
     return `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
   }
 
