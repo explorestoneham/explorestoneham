@@ -60,6 +60,7 @@ export interface ICalendarEvent {
   location?: string;
   url?: string;
   attach?: string;
+  rrule?: string;
 }
 
 export interface RSSEvent {

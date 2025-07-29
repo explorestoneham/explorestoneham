@@ -1,4 +1,5 @@
 import { CalendarEvent, CalendarSource, ICalendarEvent, RSSEvent } from '../types/calendar';
+import ICAL from 'ical.js';
 
 export class ICalendarService {
   async fetchEvents(source: CalendarSource): Promise<CalendarEvent[]> {
@@ -44,10 +45,7 @@ export class ICalendarService {
       }
       console.log(`iCalendar data length: ${icalData.length} characters`);
       
-      const events = this.parseICalendar(icalData);
-      console.log(`Parsed ${events.length} iCalendar events`);
-      
-      return this.transformICalendarEvents(events, source);
+      return this.parseICalendarWithICALJS(icalData, source);
     } catch (error) {
       console.error(`Error fetching iCalendar events for ${source.name}:`, error);
       return [];
@@ -105,88 +103,108 @@ export class ICalendarService {
     return `https://explorestoneham-sfzk.vercel.app/api/proxy?url=${encodeURIComponent(url)}`;
   }
 
-  private parseICalendar(icalData: string): ICalendarEvent[] {
-    const events: ICalendarEvent[] = [];
-    const lines = icalData.split('\n').map(line => line.replace(/\r$/, ''));
-    
-    let currentEvent: Partial<ICalendarEvent> = {};
-    let inEvent = false;
-    let currentProperty = '';
-    
-    for (let line of lines) {
-      // Handle line folding (lines starting with space or tab)
-      if (line.startsWith(' ') || line.startsWith('\t')) {
-        currentProperty += line.substring(1);
-        continue;
-      }
+  private parseICalendarWithICALJS(icalData: string, source: CalendarSource): CalendarEvent[] {
+    try {
+      // Parse the iCalendar data using ical.js
+      const jcalData = ICAL.parse(icalData);
+      const comp = new ICAL.Component(jcalData);
       
-      // Process the previous property if we have one
-      if (currentProperty && inEvent) {
-        this.parseICalendarProperty(currentProperty, currentEvent);
-      }
+      const vevents = comp.getAllSubcomponents('vevent');
+      console.log(`Found ${vevents.length} VEVENT components`);
       
-      currentProperty = line;
+      const allEvents: CalendarEvent[] = [];
+      const now = new Date();
+      const endOfPeriod = new Date();
+      endOfPeriod.setMonth(endOfPeriod.getMonth() + 6); // 6 months ahead
       
-      if (line === 'BEGIN:VEVENT') {
-        inEvent = true;
-        currentEvent = {};
-      } else if (line === 'END:VEVENT' && inEvent) {
-        if (currentEvent.uid && currentEvent.summary && currentEvent.dtstart) {
-          events.push(currentEvent as ICalendarEvent);
+      vevents.forEach((vevent: any, index: number) => {
+        try {
+          const event = new ICAL.Event(vevent);
+          
+          // Log first few events for debugging
+          if (index < 3) {
+            console.log(`Event ${index + 1}: "${event.summary}", isRecurring: ${event.isRecurring()}, startDate: ${event.startDate}`);
+          }
+          
+          if (event.isRecurring()) {
+            // Handle recurring events
+            const expand = new ICAL.RecurExpansion({
+              component: vevent,
+              dtstart: event.startDate
+            });
+            
+            let occurrenceCount = 0;
+            const maxOccurrences = 50;
+            
+            // Generate occurrences up to our end period
+            for (let next = expand.next(); next && occurrenceCount < maxOccurrences; next = expand.next()) {
+              const occurrenceDate = next.toJSDate();
+              
+              // Stop if we've gone past our end period
+              if (occurrenceDate > endOfPeriod) {
+                break;
+              }
+              
+              // Only include future events
+              if (occurrenceDate >= now) {
+                const duration = event.duration.toSeconds() * 1000; // Convert to milliseconds
+                const endDate = new Date(occurrenceDate.getTime() + duration);
+                
+                allEvents.push({
+                  id: `${source.id}-${event.uid}-${occurrenceDate.getTime()}`,
+                  title: event.summary || 'Untitled Event',
+                  description: event.description ? this.stripHtmlTags(event.description) : undefined,
+                  startDate: occurrenceDate,
+                  endDate: endDate,
+                  location: event.location || undefined,
+                  url: event.component.getFirstPropertyValue('url') || undefined,
+                  imageUrl: source.defaultImageUrl,
+                  source,
+                  tags: [source.tag]
+                });
+                
+                occurrenceCount++;
+              }
+            }
+            
+            if (occurrenceCount > 0) {
+              console.log(`Expanded recurring event "${event.summary}" into ${occurrenceCount} future occurrences`);
+            }
+          } else {
+            // Handle single (non-recurring) events
+            const startDate = event.startDate.toJSDate();
+            const endDate = event.endDate.toJSDate();
+            
+            // Only include future events
+            if (startDate >= now) {
+              allEvents.push({
+                id: `${source.id}-${event.uid}`,
+                title: event.summary || 'Untitled Event',
+                description: event.description ? this.stripHtmlTags(event.description) : undefined,
+                startDate: startDate,
+                endDate: endDate,
+                location: event.location || undefined,
+                url: event.component.getFirstPropertyValue('url') || undefined,
+                imageUrl: source.defaultImageUrl,
+                source,
+                tags: [source.tag]
+              });
+            }
+          }
+        } catch (eventError) {
+          console.warn(`Error processing individual event:`, eventError);
         }
-        inEvent = false;
-        currentEvent = {};
-      }
-    }
-    
-    return events;
-  }
-
-  private parseICalendarProperty(property: string, event: Partial<ICalendarEvent>): void {
-    const colonIndex = property.indexOf(':');
-    if (colonIndex === -1) return;
-    
-    const key = property.substring(0, colonIndex).toUpperCase();
-    const value = property.substring(colonIndex + 1);
-    
-    // Remove TZID and other parameters for simplicity
-    const cleanKey = key.split(';')[0];
-    
-    switch (cleanKey) {
-      case 'UID':
-        event.uid = value;
-        break;
-      case 'SUMMARY':
-        event.summary = this.unescapeICalText(value);
-        break;
-      case 'DESCRIPTION':
-        event.description = this.unescapeICalText(value);
-        break;
-      case 'DTSTART':
-        event.dtstart = value;
-        break;
-      case 'DTEND':
-        event.dtend = value;
-        break;
-      case 'LOCATION':
-        event.location = this.unescapeICalText(value);
-        break;
-      case 'URL':
-        event.url = value;
-        break;
-      case 'ATTACH':
-        event.attach = value;
-        break;
+      });
+      
+      console.log(`Total future events generated: ${allEvents.length}`);
+      return allEvents;
+      
+    } catch (error) {
+      console.error('Error parsing iCalendar with ical.js:', error);
+      return [];
     }
   }
 
-  private unescapeICalText(text: string): string {
-    return text
-      .replace(/\\n/g, '\n')
-      .replace(/\\,/g, ',')
-      .replace(/\\;/g, ';')
-      .replace(/\\\\/g, '\\');
-  }
 
   private parseRSS(rssData: string): RSSEvent[] {
     try {
@@ -272,46 +290,6 @@ export class ICalendarService {
     }
   }
 
-  private transformICalendarEvents(icalEvents: ICalendarEvent[], source: CalendarSource): CalendarEvent[] {
-    const now = new Date();
-    console.log(`Current date for filtering: ${now.toISOString()}`);
-    
-    const transformed = icalEvents.map((event, index) => {
-      const startDate = this.parseICalDate(event.dtstart);
-      const endDate = this.parseICalDate(event.dtend || event.dtstart);
-      
-      // Log first few events to debug date parsing
-      if (index < 5) {
-        console.log(`Event ${index + 1}:`, {
-          title: event.summary,
-          rawStart: event.dtstart,
-          parsedStart: startDate.toISOString(),
-          isFuture: startDate >= now
-        });
-      }
-      
-      // Extract image URL from attach property or description
-      const imageUrl = this.extractImageFromICal(event) || source.defaultImageUrl;
-
-      return {
-        id: `${source.id}-${event.uid}`,
-        title: event.summary,
-        description: event.description,
-        startDate,
-        endDate,
-        location: event.location,
-        url: event.url,
-        imageUrl,
-        source,
-        tags: [source.tag]
-      };
-    });
-    
-    const futureEvents = transformed.filter(event => event.startDate >= now);
-    console.log(`Total iCal events: ${transformed.length}, Future events: ${futureEvents.length}`);
-    
-    return transformed;
-  }
 
   private transformRSSEvents(rssEvents: RSSEvent[], source: CalendarSource): CalendarEvent[] {
     return rssEvents.map(event => {
@@ -542,45 +520,6 @@ export class ICalendarService {
     return result;
   }
 
-  private parseICalDate(dateString: string): Date {
-    // Handle different iCal date formats
-    if (dateString.includes('T')) {
-      // DateTime format: 20240101T120000Z or 20240101T120000
-      const cleanDate = dateString.replace(/[TZ]/g, '');
-      const year = parseInt(cleanDate.substring(0, 4));
-      const month = parseInt(cleanDate.substring(4, 6)) - 1; // Month is 0-indexed
-      const day = parseInt(cleanDate.substring(6, 8));
-      const hour = parseInt(cleanDate.substring(8, 10)) || 0;
-      const minute = parseInt(cleanDate.substring(10, 12)) || 0;
-      const second = parseInt(cleanDate.substring(12, 14)) || 0;
-      
-      return new Date(year, month, day, hour, minute, second);
-    } else {
-      // Date only format: 20240101
-      const year = parseInt(dateString.substring(0, 4));
-      const month = parseInt(dateString.substring(4, 6)) - 1;
-      const day = parseInt(dateString.substring(6, 8));
-      
-      return new Date(year, month, day);
-    }
-  }
-
-  private extractImageFromICal(event: ICalendarEvent): string | undefined {
-    // Check attach property
-    if (event.attach && this.isImageUrl(event.attach)) {
-      return event.attach;
-    }
-    
-    // Check description for image URLs
-    if (event.description) {
-      const urlMatch = event.description.match(/(https?:\/\/[^\s]+\.(jpg|jpeg|png|gif|webp))/i);
-      if (urlMatch) {
-        return urlMatch[1];
-      }
-    }
-    
-    return undefined;
-  }
 
   private extractImageFromRSS(event: RSSEvent): string | undefined {
     // Check enclosure for images
@@ -607,4 +546,5 @@ export class ICalendarService {
   private isImageUrl(url: string): boolean {
     return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
   }
+
 }

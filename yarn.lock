@@ -2140,6 +2140,11 @@ https-proxy-agent@^5.0.0:
     agent-base "6"
     debug "4"
 
+ical.js@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/ical.js/-/ical.js-2.2.0.tgz"
+  integrity sha512-P8gjWkTEd5M/SEEvBVPPO/KC+V+HRNRZh3xfCDTVWmUTEfVbL8JaK5GTWS2MJ55aLMhfXhbh7kYzd0nrBARjsA==
+
 ieee754@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz"
