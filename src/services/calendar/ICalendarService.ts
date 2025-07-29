@@ -157,7 +157,7 @@ export class ICalendarService {
                   startDate: occurrenceDate,
                   endDate: endDate,
                   location: event.location ? String(event.location) : undefined,
-                  url: event.component.getFirstPropertyValue('url') || undefined,
+                  url: event.component.getFirstPropertyValue('url') ? String(event.component.getFirstPropertyValue('url')) : undefined,
                   imageUrl: source.defaultImageUrl,
                   source,
                   tags: [source.tag]
@@ -184,7 +184,7 @@ export class ICalendarService {
                 startDate: startDate,
                 endDate: endDate,
                 location: event.location ? String(event.location) : undefined,
-                url: event.component.getFirstPropertyValue('url') || undefined,
+                url: event.component.getFirstPropertyValue('url') ? String(event.component.getFirstPropertyValue('url')) : undefined,
                 imageUrl: source.defaultImageUrl,
                 source,
                 tags: [source.tag]
