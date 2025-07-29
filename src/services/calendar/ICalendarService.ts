@@ -101,20 +101,8 @@ export class ICalendarService {
   }
 
   private getCorsProxyUrl(url: string): string {
-    // Check if we're in development or production
-    const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
-    
-    if (isDev) {
-      // For local development, fall back to allorigins.win for now
-      // TODO: Set up local dev proxy server
-      return `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-    } else {
-      // For production, use our custom Vercel proxy
-      const baseUrl = typeof window !== 'undefined' 
-        ? window.location.origin 
-        : 'https://explorestoneham-sfzk.vercel.app';
-      return `${baseUrl}/api/proxy?url=${encodeURIComponent(url)}`;
-    }
+    // Always use our custom Vercel proxy for consistency
+    return `https://explorestoneham-sfzk.vercel.app/api/proxy?url=${encodeURIComponent(url)}`;
   }
 
   private parseICalendar(icalData: string): ICalendarEvent[] {

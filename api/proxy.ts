@@ -1,4 +1,7 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import https from 'https';
+import http from 'http';
+import { URL } from 'url';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS for all origins
@@ -46,41 +49,63 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
 
-    // Make the request to the target URL
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'User-Agent': 'ExploreStoneham-CalendarProxy/1.0',
-        'Accept': 'application/rss+xml, text/calendar, text/xml, */*'
-      }
-    });
+    // Make the request using Node.js built-in modules
+    const content = await new Promise((resolve, reject) => {
+      const client = urlObj.protocol === 'https:' ? https : http;
+      
+      const options = {
+        hostname: urlObj.hostname,
+        port: urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80),
+        path: urlObj.pathname + urlObj.search,
+        method: 'GET',
+        headers: {
+          'User-Agent': 'ExploreStoneham-CalendarProxy/1.0',
+          'Accept': 'application/rss+xml, text/calendar, text/xml, */*'
+        }
+      };
 
-    if (!response.ok) {
-      console.error(`Upstream error: ${response.status} ${response.statusText}`);
-      res.status(response.status).json({ 
-        error: `Upstream error: ${response.status} ${response.statusText}` 
+      const request = client.request(options, (response) => {
+        let data = '';
+        
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+        
+        response.on('end', () => {
+          if (response.statusCode >= 200 && response.statusCode < 300) {
+            resolve(data);
+          } else {
+            reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+          }
+        });
       });
-      return;
-    }
 
-    // Get the content
-    const content = await response.text();
+      request.on('error', (error) => {
+        reject(error);
+      });
+
+      request.setTimeout(10000, () => {
+        request.destroy();
+        reject(new Error('Request timeout'));
+      });
+
+      request.end();
+    });
     
     console.log(`Successfully proxied ${content.length} characters from ${url}`);
 
     // Return the content with proper CORS headers
     res.status(200).json({
-      status: response.status,
-      statusText: response.statusText,
-      contents: content,
-      headers: Object.fromEntries(response.headers.entries())
+      status: 200,
+      statusText: 'OK',
+      contents: content
     });
 
   } catch (error) {
     console.error('Proxy error:', error);
     res.status(500).json({ 
       error: 'Failed to fetch URL',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error.message || 'Unknown error'
     });
   }
 }
