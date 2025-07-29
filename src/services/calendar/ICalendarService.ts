@@ -31,7 +31,7 @@ export class ICalendarService {
         throw new Error(`iCalendar fetch error: ${response.status} ${response.statusText}`);
       }
 
-      // allorigins.win returns JSON with contents field
+      // Handle different proxy response formats
       const jsonResponse = await response.json();
       console.log(`Proxy response status: ${jsonResponse.status}`);
       
@@ -72,7 +72,7 @@ export class ICalendarService {
         throw new Error(`RSS fetch error: ${response.status} ${response.statusText}`);
       }
 
-      // allorigins.win returns JSON with contents field
+      // Handle different proxy response formats
       const jsonResponse = await response.json();
       console.log(`Proxy response status for ${source.name}: ${jsonResponse.status}`);
       
@@ -101,8 +101,20 @@ export class ICalendarService {
   }
 
   private getCorsProxyUrl(url: string): string {
-    // Use allorigins.win proxy service for all environments
-    return `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    // Check if we're in development or production
+    const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+    
+    if (isDev) {
+      // For local development, fall back to allorigins.win for now
+      // TODO: Set up local dev proxy server
+      return `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    } else {
+      // For production, use our custom Vercel proxy
+      const baseUrl = typeof window !== 'undefined' 
+        ? window.location.origin 
+        : 'https://explorestoneham-sfzk.vercel.app';
+      return `${baseUrl}/api/proxy?url=${encodeURIComponent(url)}`;
+    }
   }
 
   private parseICalendar(icalData: string): ICalendarEvent[] {
