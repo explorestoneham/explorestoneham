@@ -1,17 +1,26 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Calendar, MapPin, Users, Utensils, Building } from 'lucide-react';
+
 export const HeroSection: React.FC = () => {
   const handleSubmitItem = () => {
     // Navigate to submit form - would be implemented with routing
     console.log('Navigate to submit form');
   };
+
   const handleExploreEvents = () => {
     // Scroll to events section
     document.getElementById('events')?.scrollIntoView({
       behavior: 'smooth'
     });
   };
+
+  const handleScrollToSection = (sectionId: string) => {
+    document.getElementById(sectionId)?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  };
+
   return <section className="relative bg-gradient-to-br from-[#2A6F4D] via-[#007B9E] to-[#2A6F4D] text-white overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -70,7 +79,10 @@ export const HeroSection: React.FC = () => {
             duration: 0.8,
             delay: 0.6
           }} className="grid grid-cols-2 lg:grid-cols-5 gap-4 py-6">
-              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+              <button 
+                onClick={() => handleScrollToSection('events')}
+                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center"
+              >
                 <div className="flex items-center justify-center w-12 h-12 bg-[#F4A300] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
                   <Calendar className="w-6 h-6 text-white" />
                 </div>
@@ -78,7 +90,10 @@ export const HeroSection: React.FC = () => {
                 <div className="text-xs text-[#D2E5F1]">Gatherings & Activities</div>
               </button>
               
-              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+              <button 
+                onClick={() => handleScrollToSection('attractions')}
+                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center"
+              >
                 <div className="flex items-center justify-center w-12 h-12 bg-[#007B9E] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
                   <MapPin className="w-6 h-6 text-white" />
                 </div>
@@ -94,7 +109,10 @@ export const HeroSection: React.FC = () => {
                 <div className="text-xs text-[#D2E5F1]">Food & Retail</div>
               </button>
               
-              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+              <button 
+                onClick={() => handleScrollToSection('services')}
+                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center"
+              >
                 <div className="flex items-center justify-center w-12 h-12 bg-[#93C47D] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
                   <Users className="w-6 h-6 text-white" />
                 </div>
@@ -102,7 +120,10 @@ export const HeroSection: React.FC = () => {
                 <div className="text-xs text-[#D2E5F1]">Groups & Resources</div>
               </button>
               
-              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center col-span-2 lg:col-span-1">
+              <button 
+                onClick={() => handleScrollToSection('about')}
+                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center col-span-2 lg:col-span-1"
+              >
                 <div className="flex items-center justify-center w-12 h-12 bg-[#2A6F4D] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
                   <Building className="w-6 h-6 text-white" />
                 </div>

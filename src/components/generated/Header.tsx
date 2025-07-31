@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
 import { Search, Menu, X, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
   const navigationItems = [{
     label: 'Events',
-    href: '/events'
+    href: '#events',
+    isExternal: false
   }, {
     label: 'Things to Do',
-    href: '#things-to-do'
+    href: '#attractions',
+    isExternal: false
   }, {
     label: 'Dining & Shopping',
-    href: '#dining-shopping'
+    href: '#dining-shopping',
+    isExternal: false
   }, {
     label: 'Community',
-    href: '#community'
+    href: '#services',
+    isExternal: false
   }, {
     label: 'About Stoneham',
-    href: '#about'
+    href: '#about',
+    isExternal: false
   }] as any[];
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -29,6 +37,22 @@ export const Header: React.FC = () => {
       setSearchQuery(''); // Clear the search after navigating
     }
   };
+
+  const handleNavigationClick = (item: any, e: React.MouseEvent) => {
+    if (item.isExternal) {
+      // External navigation (to different pages)
+      e.preventDefault();
+      (window as any).handleNavigation?.(item.href);
+    } else {
+      // Internal scroll navigation
+      e.preventDefault();
+      const sectionId = item.href.replace('#', '');
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return <header className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
@@ -51,12 +75,7 @@ export const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            {navigationItems.map(item => <a key={item.label} href={item.href} onClick={(e) => {
-                if (item.href.startsWith('/')) {
-                  e.preventDefault();
-                  (window as any).handleNavigation?.(item.href);
-                }
-              }} className="text-[#404040] hover:text-[#2A6F4D] font-medium transition-colors duration-200 relative group">
+            {navigationItems.map(item => <a key={item.label} href={item.href} onClick={(e) => handleNavigationClick(item, e)} className="text-[#404040] hover:text-[#2A6F4D] font-medium transition-colors duration-200 relative group">
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#2A6F4D] transition-all duration-200 group-hover:w-full"></span>
               </a>)}
@@ -101,10 +120,7 @@ export const Header: React.FC = () => {
       }} className="lg:hidden bg-white border-t border-[#D2E5F1]">
             <nav className="px-4 py-4 space-y-2">
               {navigationItems.map(item => <a key={item.label} href={item.href} onClick={(e) => {
-                  if (item.href.startsWith('/')) {
-                    e.preventDefault();
-                    (window as any).handleNavigation?.(item.href);
-                  }
+                  handleNavigationClick(item, e);
                   setIsMenuOpen(false);
                 }} className="block px-4 py-3 text-[#404040] hover:text-[#2A6F4D] hover:bg-[#D2E5F1] rounded-lg font-medium transition-colors duration-200">
                   {item.label}
