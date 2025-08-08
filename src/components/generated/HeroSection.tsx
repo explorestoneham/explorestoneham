@@ -4,8 +4,7 @@ import { ArrowRight, Calendar, MapPin, Users, Utensils, Building } from 'lucide-
 
 export const HeroSection: React.FC = () => {
   const handleSubmitItem = () => {
-    // Navigate to submit form - would be implemented with routing
-    console.log('Navigate to submit form');
+    window.open('https://docs.google.com/forms/d/e/1FAIpQLSemZls9PUt9Q1R0S9hWB6-PU2SU7nIzqGp71xUCUR64zfr_zQ/viewform?usp=preview', '_blank');
   };
 
   const handleExploreEvents = () => {
