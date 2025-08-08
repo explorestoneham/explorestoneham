@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Arial&family=Helvetica&family=Times+New+Roman&family=Georgia&family=Roboto&display=swap');
 @import 'tailwindcss';
+@import './styles/design-tokens.css';
 
 @plugin "tailwindcss-animate";
 

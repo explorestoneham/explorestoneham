@@ -4,6 +4,8 @@ import { ExploreStonehamApp } from './components/generated/ExploreStonehamApp';
 import { StyleGuide } from './components/generated/StyleGuide';
 import { HistoricalWalkingTourApp } from './components/generated/HistoricalWalkingTourApp';
 import { EventsPage } from './components/events/EventsPage';
+import DiningShoppingPage from './components/dining/DiningShoppingPage';
+import { RecyclingCenterPage } from './components/services/RecyclingCenterPage';
 
 let theme: Theme = 'light';
 let container: Container = 'none';
@@ -25,6 +27,12 @@ function App() {
     } else if (path.startsWith('/events')) {
       console.log('Setting page to events');
       setCurrentPage('events');
+    } else if (path.startsWith('/dining')) {
+      console.log('Setting page to dining');
+      setCurrentPage('dining');
+    } else if (path.startsWith('/recycling-center')) {
+      console.log('Setting page to recycling-center');
+      setCurrentPage('recycling-center');
     } else if (path === '/' || path.startsWith('/?')) {
       console.log('Setting page to home');
       setCurrentPage('home');
@@ -50,6 +58,10 @@ function App() {
         setCurrentPage('historic-walking-tour');
       } else if (path.startsWith('/events')) {
         setCurrentPage('events');
+      } else if (path.startsWith('/dining')) {
+        setCurrentPage('dining');
+      } else if (path.startsWith('/recycling-center')) {
+        setCurrentPage('recycling-center');
       } else if (path === '/' || path.startsWith('/?')) {
         setCurrentPage('home');
       }
@@ -83,6 +95,12 @@ function App() {
     } else if (href.startsWith('/events')) {
       setCurrentPage('events');
       window.history.pushState({}, '', href);
+    } else if (href.startsWith('/dining')) {
+      setCurrentPage('dining');
+      window.history.pushState({}, '', href);
+    } else if (href.startsWith('/recycling-center')) {
+      setCurrentPage('recycling-center');
+      window.history.pushState({}, '', href);
     } else if (href === '/' || href.startsWith('/?')) {
       setCurrentPage('home');
       window.history.pushState({}, '', href);
@@ -105,7 +123,13 @@ function App() {
       return <HistoricalWalkingTourApp />;
     } else if (currentPage === 'events') {
       console.log('Rendering EventsPage');
-      return <EventsPage googleApiKey="" />;
+      return <EventsPage googleApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""} />;
+    } else if (currentPage === 'dining') {
+      console.log('Rendering DiningShoppingPage');
+      return <DiningShoppingPage googleApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""} />;
+    } else if (currentPage === 'recycling-center') {
+      console.log('Rendering RecyclingCenterPage');
+      return <RecyclingCenterPage />;
     }
     console.log('Rendering ExploreStonehamApp');
     return <ExploreStonehamApp />; // %EXPORT_STATEMENT%

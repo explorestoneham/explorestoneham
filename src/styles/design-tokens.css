@@ -48,6 +48,14 @@
   --radius-xl: 16px;
   
   /* ===== TYPOGRAPHY ===== */
+  
+  /* ===== CUSTOM COMPONENTS ===== */
+  .hero-gradient {
+    background: linear-gradient(to bottom right, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
+    background-image: linear-gradient(to bottom right, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
+  }
+  
+  /* ===== TYPOGRAPHY ===== */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-size-xs: 0.75rem;    /* 12px */
   --font-size-sm: 0.875rem;   /* 14px */
@@ -269,6 +277,13 @@
   .heading-3 {
     font-size: var(--font-size-xl);
   }
+}
+
+/* ===== CUSTOM UTILITIES (outside :root) ===== */
+/* Hero gradient used across pages (matches HeroSection) */
+.bg-hero-gradient {
+  background: linear-gradient(to bottom right, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
+  background-image: linear-gradient(to bottom right, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {

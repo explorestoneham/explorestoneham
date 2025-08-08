@@ -22,6 +22,8 @@ interface Service {
   contact: string;
   email: string;
   description: string;
+  href?: string;
+  clickable?: boolean;
 }
 export const MainContentArea: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -129,6 +131,15 @@ export const MainContentArea: React.FC = () => {
     contact: '(781) 438-1324',
     email: 'seniors@stoneham-ma.gov',
     description: 'Programs and services for Stoneham seniors'
+  }, {
+    id: '4',
+    name: 'Stevens Street Recycling Center',
+    category: 'Municipal Services',
+    contact: '(781) 438-0760',
+    email: 'dpw@stoneham-ma.gov',
+    description: 'Yard waste disposal and recycling services for Stoneham residents',
+    href: '/recycling-center',
+    clickable: true
   }];
   const AttractionCard: React.FC<{
     attraction: Attraction;
@@ -162,35 +173,70 @@ export const MainContentArea: React.FC = () => {
     service: Service;
   }> = ({
     service
-  }) => <motion.div whileHover={{
-    y: -2
-  }} className="bg-white rounded-xl shadow-md p-6 border border-[#D2E5F1] hover:shadow-lg transition-all duration-300">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <div className="flex items-center mb-2">
-            <span className="px-3 py-1 bg-[#D95D39] text-white text-xs font-semibold rounded-full mr-3">
-              {service.category}
-            </span>
+  }) => {
+    const handleClick = () => {
+      if (service.clickable && service.href) {
+        (window as any).handleNavigation?.(service.href);
+      }
+    };
+
+    return (
+      <motion.div 
+        whileHover={{
+          y: -2
+        }} 
+        className={`bg-white rounded-xl shadow-md p-6 border border-[#D2E5F1] hover:shadow-lg transition-all duration-300 ${
+          service.clickable ? 'cursor-pointer hover:border-[#007B9E]/30' : ''
+        }`}
+        onClick={handleClick}
+      >
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <div className="flex items-center mb-2">
+              <span className="px-3 py-1 bg-[#D95D39] text-white text-xs font-semibold rounded-full mr-3">
+                {service.category}
+              </span>
+              {service.clickable && (
+                <ChevronRight className="w-4 h-4 text-[#007B9E]" />
+              )}
+            </div>
+            <h3 className="text-lg font-bold text-[#404040] mb-2">{service.name}</h3>
+            <p className="text-[#404040]/70 mb-4">{service.description}</p>
           </div>
-          <h3 className="text-lg font-bold text-[#404040] mb-2">{service.name}</h3>
-          <p className="text-[#404040]/70 mb-4">{service.description}</p>
         </div>
-      </div>
-      <div className="space-y-2">
-        <div className="flex items-center text-sm text-[#404040]/70">
-          <Phone className="w-4 h-4 mr-2" />
-          <a href={`tel:${service.contact}`} className="hover:text-[#007B9E] transition-colors">
-            {service.contact}
-          </a>
+        <div className="space-y-2">
+          <div className="flex items-center text-sm text-[#404040]/70">
+            <Phone className="w-4 h-4 mr-2" />
+            <a 
+              href={`tel:${service.contact}`} 
+              className="hover:text-[#007B9E] transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {service.contact}
+            </a>
+          </div>
+          <div className="flex items-center text-sm text-[#404040]/70">
+            <Mail className="w-4 h-4 mr-2" />
+            <a 
+              href={`mailto:${service.email}`} 
+              className="hover:text-[#007B9E] transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {service.email}
+            </a>
+          </div>
+          {service.clickable && (
+            <div className="pt-2 border-t border-[#D2E5F1]">
+              <div className="flex items-center text-sm text-[#007B9E] font-medium">
+                <span>Learn more</span>
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </div>
+            </div>
+          )}
         </div>
-        <div className="flex items-center text-sm text-[#404040]/70">
-          <Mail className="w-4 h-4 mr-2" />
-          <a href={`mailto:${service.email}`} className="hover:text-[#007B9E] transition-colors">
-            {service.email}
-          </a>
-        </div>
-      </div>
-    </motion.div>;
+      </motion.div>
+    );
+  };
   return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
       {/* Events Section */}
       <section id="events" className="scroll-mt-20">
