@@ -282,8 +282,13 @@
 /* ===== CUSTOM UTILITIES (outside :root) ===== */
 /* Hero gradient used across pages (matches HeroSection) */
 .bg-hero-gradient {
-  background: linear-gradient(to bottom right, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
-  background-image: linear-gradient(to bottom right, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
+  background: linear-gradient(135deg, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
+  background-image: linear-gradient(135deg, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
+}
+
+/* Recycling center specific gradient */
+.recycling-center-hero {
+  background: linear-gradient(135deg, #2A6F4D 0%, #007B9E 50%, #2A6F4D 100%) !important;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
