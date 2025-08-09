@@ -6,6 +6,7 @@ import { HistoricalWalkingTourApp } from './components/generated/HistoricalWalki
 import { EventsPage } from './components/events/EventsPage';
 import DiningShoppingPage from './components/dining/DiningShoppingPage';
 import { RecyclingCenterPage } from './components/services/RecyclingCenterPage';
+import { AttractionsPage } from './components/attractions/AttractionsPage';
 
 let theme: Theme = 'light';
 let container: Container = 'none';
@@ -27,6 +28,9 @@ function App() {
     } else if (path.startsWith('/events')) {
       console.log('Setting page to events');
       setCurrentPage('events');
+    } else if (path.startsWith('/attractions')) {
+      console.log('Setting page to attractions');
+      setCurrentPage('attractions');
     } else if (path.startsWith('/dining')) {
       console.log('Setting page to dining');
       setCurrentPage('dining');
@@ -58,6 +62,8 @@ function App() {
         setCurrentPage('historic-walking-tour');
       } else if (path.startsWith('/events')) {
         setCurrentPage('events');
+      } else if (path.startsWith('/attractions')) {
+        setCurrentPage('attractions');
       } else if (path.startsWith('/dining')) {
         setCurrentPage('dining');
       } else if (path.startsWith('/recycling-center')) {
@@ -95,6 +101,9 @@ function App() {
     } else if (href.startsWith('/events')) {
       setCurrentPage('events');
       window.history.pushState({}, '', href);
+    } else if (href.startsWith('/attractions')) {
+      setCurrentPage('attractions');
+      window.history.pushState({}, '', href);
     } else if (href.startsWith('/dining')) {
       setCurrentPage('dining');
       window.history.pushState({}, '', href);
@@ -124,6 +133,9 @@ function App() {
     } else if (currentPage === 'events') {
       console.log('Rendering EventsPage');
       return <EventsPage googleApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""} />;
+    } else if (currentPage === 'attractions') {
+      console.log('Rendering AttractionsPage');
+      return <AttractionsPage />;
     } else if (currentPage === 'dining') {
       console.log('Rendering DiningShoppingPage');
       return <DiningShoppingPage googleApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""} />;

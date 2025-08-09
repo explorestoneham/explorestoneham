@@ -14,6 +14,7 @@ interface Attraction {
   image: string;
   description: string;
   address: string;
+  url?: string;
 }
 interface Service {
   id: string;
@@ -87,12 +88,13 @@ export const MainContentArea: React.FC = () => {
   const eventsToDisplay = getEventsToDisplay();
   const attractions: Attraction[] = [{
     id: '1',
-    name: 'Stoneham Zoo',
+    name: 'Stone Zoo',
     category: 'Family',
     rating: 4.5,
     image: 'zoo',
     description: 'Home to over 100 species of animals',
-    address: '149 Pond St, Stoneham, MA'
+    address: '149 Pond St, Stoneham, MA',
+    url: 'https://www.zoonewengland.org/stone-zoo/'
   }, {
     id: '2',
     name: 'Spot Pond',
@@ -109,6 +111,59 @@ export const MainContentArea: React.FC = () => {
     image: 'common',
     description: 'Historic town center with beautiful landscaping',
     address: 'Main St, Stoneham, MA'
+  }, {
+    id: '4',
+    name: 'Middlesex Fells Reservation',
+    category: 'Nature',
+    rating: 4.7,
+    image: 'fells',
+    description: 'Hike, bike, fish, or let your dog run free. Rent a canoe or kayak to explore Spot Pond',
+    address: 'Stoneham, MA'
+  }, {
+    id: '5',
+    name: 'Stoneham Unicorn Golf Course',
+    category: 'Recreation',
+    rating: 4.2,
+    image: 'golf',
+    description: 'Public golf course offering a challenging and enjoyable experience',
+    address: 'Stoneham, MA',
+    url: 'https://www.unicorngc.com'
+  }, {
+    id: '6',
+    name: 'Stoneham Oaks Golf Course',
+    category: 'Recreation',
+    rating: 4.4,
+    image: 'golf',
+    description: 'Premier golf course with excellent facilities and beautiful scenery',
+    address: 'Stoneham, MA',
+    url: 'https://www.stonehamoaks.com'
+  }, {
+    id: '7',
+    name: 'Spot Pond Boathouse',
+    category: 'Recreation',
+    rating: 4.5,
+    image: 'boating',
+    description: 'Sailing, kayaking, and canoeing on scenic Spot Pond',
+    address: 'Stoneham, MA',
+    url: 'https://boatinginboston.com/boathouses/spot-pond/'
+  }, {
+    id: '8',
+    name: 'Hall Memorial Pool',
+    category: 'Recreation',
+    rating: 4.3,
+    image: 'pool',
+    description: 'Cool off in the summer months at this community pool',
+    address: 'Stoneham, MA',
+    url: 'https://bgcstoneham.org/hall-memorial-pool/'
+  }, {
+    id: '9',
+    name: 'Greater Boston Stage Company',
+    category: 'Arts',
+    rating: 4.6,
+    image: 'theater',
+    description: 'Professional theater company presenting quality productions',
+    address: 'Stoneham, MA',
+    url: 'https://www.greaterbostonstage.org/'
   }];
   const services: Service[] = [{
     id: '1',
@@ -145,30 +200,42 @@ export const MainContentArea: React.FC = () => {
     attraction: Attraction;
   }> = ({
     attraction
-  }) => <motion.div whileHover={{
-    y: -5
-  }} className="bg-white rounded-xl shadow-lg overflow-hidden border border-[#D2E5F1] hover:shadow-xl transition-all duration-300">
-      <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center">
-        <MapPin className="w-12 h-12 text-white" />
-      </div>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-2">
-          <span className="px-3 py-1 bg-[#2A6F4D] text-white text-xs font-semibold rounded-full">
-            {attraction.category}
-          </span>
-          <div className="flex items-center">
-            <Star className="w-4 h-4 text-[#F4A300] fill-current" />
-            <span className="ml-1 text-sm font-semibold text-[#404040]">{attraction.rating}</span>
+  }) => {
+    const handleClick = () => {
+      if (attraction.url) {
+        window.open(attraction.url, '_blank');
+      }
+    };
+    
+    return (
+      <motion.div 
+        whileHover={{ y: -5 }} 
+        className={`bg-white rounded-xl shadow-lg overflow-hidden border border-[#D2E5F1] hover:shadow-xl transition-all duration-300 ${attraction.url ? 'cursor-pointer' : ''}`}
+        onClick={handleClick}
+      >
+        <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center">
+          <MapPin className="w-12 h-12 text-white" />
+        </div>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="px-3 py-1 bg-[#2A6F4D] text-white text-xs font-semibold rounded-full">
+              {attraction.category}
+            </span>
+            <div className="flex items-center">
+              <Star className="w-4 h-4 text-[#F4A300] fill-current" />
+              <span className="ml-1 text-sm font-semibold text-[#404040]">{attraction.rating}</span>
+            </div>
+          </div>
+          <h3 className="text-xl font-bold text-[#404040] mb-2">{attraction.name}</h3>
+          <p className="text-[#404040]/70 mb-4 line-clamp-2">{attraction.description}</p>
+          <div className="flex items-center text-sm text-[#404040]/70">
+            <MapPin className="w-4 h-4 mr-1" />
+            <span className="line-clamp-1">{attraction.address}</span>
           </div>
         </div>
-        <h3 className="text-xl font-bold text-[#404040] mb-2">{attraction.name}</h3>
-        <p className="text-[#404040]/70 mb-4 line-clamp-2">{attraction.description}</p>
-        <div className="flex items-center text-sm text-[#404040]/70">
-          <MapPin className="w-4 h-4 mr-1" />
-          <span className="line-clamp-1">{attraction.address}</span>
-        </div>
-      </div>
-    </motion.div>;
+      </motion.div>
+    );
+  };
   const ServiceCard: React.FC<{
     service: Service;
   }> = ({
@@ -352,7 +419,10 @@ export const MainContentArea: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <button className="group bg-[#007B9E] hover:bg-[#2A6F4D] text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center mx-auto">
+            <button 
+              onClick={() => (window as any).handleNavigation('/attractions')}
+              className="group bg-[#007B9E] hover:bg-[#2A6F4D] text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center mx-auto"
+            >
               <span>Explore All Attractions</span>
               <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </button>
