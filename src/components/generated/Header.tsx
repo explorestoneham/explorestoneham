@@ -47,9 +47,25 @@ export const Header: React.FC = () => {
       // Internal scroll navigation
       e.preventDefault();
       const sectionId = item.href.replace('#', '');
-      document.getElementById(sectionId)?.scrollIntoView({
-        behavior: 'smooth'
-      });
+      
+      // Check if we're currently on the home page
+      const isHomePage = window.location.pathname === '/' || window.location.pathname.startsWith('/?');
+      
+      if (isHomePage) {
+        // We're on home page, scroll to section directly
+        document.getElementById(sectionId)?.scrollIntoView({
+          behavior: 'smooth'
+        });
+      } else {
+        // We're on a different page, navigate to home first then scroll to section
+        (window as any).handleNavigation?.('/');
+        // Small delay to allow page to load before scrolling
+        setTimeout(() => {
+          document.getElementById(sectionId)?.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
     }
   };
 
