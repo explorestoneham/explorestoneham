@@ -81,7 +81,7 @@ export const Header: React.FC = () => {
               <img 
                 src="/StonehamCAN.png" 
                 alt="Stoneham CAN Logo" 
-                className="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+                className="w-12 h-12 lg:w-16 lg:h-16 object-contain"
               />
               <h1 className="text-xl lg:text-2xl font-bold">
                 <span className="text-[#2A6F4D]">EXPLORE</span> <span className="text-[#007B9E]">STONEHAM</span>
