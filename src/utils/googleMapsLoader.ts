@@ -13,12 +13,10 @@ export const loadGoogleMapsAPI = (apiKey: string): Promise<void> => {
     return Promise.resolve();
   }
 
-  console.log('Starting Google Maps API load...');
 
   loadPromise = new Promise<void>((resolve, reject) => {
     // Check if already loaded
     if (window.google?.maps?.places) {
-      console.log('Google Maps API already loaded');
       isLoaded = true;
       resolve();
       return;
@@ -29,7 +27,6 @@ export const loadGoogleMapsAPI = (apiKey: string): Promise<void> => {
 
     // Create global callback
     (window as any)[callbackName] = () => {
-      console.log('Google Maps API callback executed');
       isLoaded = true;
       delete (window as any)[callbackName];
       
@@ -55,7 +52,6 @@ export const loadGoogleMapsAPI = (apiKey: string): Promise<void> => {
       reject(new Error('Failed to load Google Maps API'));
     };
 
-    console.log('Loading Google Maps API script:', script.src);
     document.head.appendChild(script);
   });
 

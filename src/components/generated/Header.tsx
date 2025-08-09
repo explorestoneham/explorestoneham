@@ -16,8 +16,8 @@ export const Header: React.FC = () => {
     isExternal: false
   }, {
     label: 'Dining & Shopping',
-    href: '#dining-shopping',
-    isExternal: false
+    href: '/dining',
+    isExternal: true
   }, {
     label: 'Community',
     href: '#services',

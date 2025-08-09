@@ -74,7 +74,6 @@ export const GoogleMap: React.FC<GoogleMapProps> = ({
     script.defer = true;
 
     window.initGoogleMaps = () => {
-      console.log('Google Maps API loaded successfully');
       setIsLoaded(true);
     };
 
@@ -83,7 +82,6 @@ export const GoogleMap: React.FC<GoogleMapProps> = ({
       setError('Failed to load Google Maps API');
     };
 
-    console.log('Loading Google Maps API with URL:', script.src);
     document.head.appendChild(script);
 
     return () => {

@@ -17,37 +17,23 @@ function App() {
   // Initialize page based on current URL
   useEffect(() => {
     const path = window.location.pathname;
-    console.log('Initial path:', path);
-    console.log('Current page state:', currentPage);
     if (path === '/style-guide') {
-      console.log('Setting page to style-guide');
       setCurrentPage('style-guide');
     } else if (path === '/historic-walking-tour') {
-      console.log('Setting page to historic-walking-tour');
       setCurrentPage('historic-walking-tour');
     } else if (path.startsWith('/events')) {
-      console.log('Setting page to events');
       setCurrentPage('events');
     } else if (path.startsWith('/attractions')) {
-      console.log('Setting page to attractions');
       setCurrentPage('attractions');
     } else if (path.startsWith('/dining')) {
-      console.log('Setting page to dining');
       setCurrentPage('dining');
     } else if (path.startsWith('/recycling-center')) {
-      console.log('Setting page to recycling-center');
       setCurrentPage('recycling-center');
     } else if (path === '/' || path.startsWith('/?')) {
-      console.log('Setting page to home');
       setCurrentPage('home');
     }
   }, []);
 
-  // Debug effect to see what's happening
-  useEffect(() => {
-    console.log('App rendered with currentPage:', currentPage);
-    console.log('Current URL path:', window.location.pathname);
-  });
 
   // Handle browser back/forward navigation
   useEffect(() => {
@@ -122,28 +108,20 @@ function App() {
   }
 
   const generatedComponent = useMemo(() => {
-    console.log('Current page:', currentPage);
     // THIS IS WHERE THE TOP LEVEL GENRATED COMPONENT WILL BE RETURNED!
     if (currentPage === 'style-guide') {
-      console.log('Rendering StyleGuide');
       return <StyleGuide />;
     } else if (currentPage === 'historic-walking-tour') {
-      console.log('Rendering HistoricalWalkingTourApp');
       return <HistoricalWalkingTourApp />;
     } else if (currentPage === 'events') {
-      console.log('Rendering EventsPage');
       return <EventsPage googleApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""} />;
     } else if (currentPage === 'attractions') {
-      console.log('Rendering AttractionsPage');
       return <AttractionsPage />;
     } else if (currentPage === 'dining') {
-      console.log('Rendering DiningShoppingPage');
       return <DiningShoppingPage googleApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""} />;
     } else if (currentPage === 'recycling-center') {
-      console.log('Rendering RecyclingCenterPage');
       return <RecyclingCenterPage />;
     }
-    console.log('Rendering ExploreStonehamApp');
     return <ExploreStonehamApp />; // %EXPORT_STATEMENT%
   }, [currentPage]);
 

@@ -18,51 +18,37 @@ export class CalendarService implements CalendarServiceInterface {
   }
 
   async fetchEvents(source: CalendarSource): Promise<CalendarEvent[]> {
-    console.log(`CalendarService: fetchEvents called for ${source.name} (${source.type})`);
-    
     if (!source.enabled) {
-      console.log(`Source ${source.name} is disabled, returning empty array`);
       return [];
     }
 
     // Check cache first
     const cached = this.cache.get(source.id);
     if (cached && (Date.now() - cached.timestamp < this.config.refreshIntervalMs)) {
-      console.log(`Using cached events for ${source.name}, ${cached.events.length} events`);
       return cached.events;
     }
 
     try {
-      console.log(`Fetching fresh events for ${source.name}`);
       let events: CalendarEvent[];
 
       switch (source.type) {
         case 'google':
-          console.log(`Using Google Calendar service for ${source.name}`);
           events = await this.googleService.fetchEvents(source);
           break;
         case 'icalendar':
         case 'rss':
-          console.log(`Using iCalendar/RSS service for ${source.name}`);
           events = await this.icalService.fetchEvents(source);
           break;
         case 'manual':
-          console.log(`Using Manual Events service for ${source.name}`);
           events = await this.manualService.fetchEvents(source);
           break;
         default:
           throw new Error(`Unsupported calendar type: ${source.type}`);
       }
 
-      console.log(`Fetched ${events.length} events from ${source.name}`);
-
       // Apply max events limit
       if (this.config.maxEventsPerSource > 0) {
-        const originalLength = events.length;
         events = events.slice(0, this.config.maxEventsPerSource);
-        if (originalLength > events.length) {
-          console.log(`Limited events from ${originalLength} to ${events.length} for ${source.name}`);
-        }
       }
 
       // Cache the results
@@ -71,7 +57,6 @@ export class CalendarService implements CalendarServiceInterface {
         timestamp: Date.now()
       });
 
-      console.log(`Successfully cached ${events.length} events for ${source.name}`);
       return events;
     } catch (error) {
       console.error(`Error fetching events from ${source.name}:`, error);
@@ -79,46 +64,33 @@ export class CalendarService implements CalendarServiceInterface {
       // Return cached events if available, even if stale
       const cached = this.cache.get(source.id);
       if (cached) {
-        console.log(`Returning stale cached events for ${source.name}, ${cached.events.length} events`);
         return cached.events;
       }
       
-      console.log(`No cached events available for ${source.name}, returning empty array`);
       return [];
     }
   }
 
   async consolidateEvents(sources?: CalendarSource[]): Promise<CalendarEvent[]> {
-    console.log('CalendarService: consolidateEvents called');
-    
     const sourcesToUse = sources || this.config.sources;
     const enabledSources = sourcesToUse.filter(source => source.enabled);
-    
-    console.log(`Found ${enabledSources.length} enabled sources:`, enabledSources.map(s => s.name));
 
     // Fetch events from all sources in parallel
     const eventPromises = enabledSources.map(source => this.fetchEvents(source));
     const eventArrays = await Promise.all(eventPromises);
 
-    console.log('Event arrays from sources:', eventArrays.map((events, i) => 
-      `${enabledSources[i].name}: ${events.length} events`
-    ));
-
     // Flatten and consolidate all events
     const allEvents = eventArrays.flat();
-    console.log(`Total events before processing: ${allEvents.length}`);
 
     // Sort by start date
     allEvents.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
 
     // Remove duplicates based on title, date, and location
     const uniqueEvents = this.removeDuplicateEvents(allEvents);
-    console.log(`Events after deduplication: ${uniqueEvents.length}`);
 
     // Filter future events only
     const now = new Date();
     const futureEvents = uniqueEvents.filter(event => event.startDate >= now);
-    console.log(`Future events only: ${futureEvents.length}`);
 
     return futureEvents;
   }

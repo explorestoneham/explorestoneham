@@ -14,19 +14,15 @@ export class ICalendarService {
 
   private async fetchICalendarEvents(source: CalendarSource): Promise<CalendarEvent[]> {
     try {
-      console.log(`Fetching iCalendar events for ${source.name} from: ${source.url}`);
       
       // Use a CORS proxy for external iCalendar feeds
       const proxyUrl = this.getCorsProxyUrl(source.url);
-      console.log(`Using proxy URL: ${proxyUrl}`);
       
       const response = await fetch(proxyUrl);
       
       if (!response.ok) {
-        console.error(`iCalendar fetch error: ${response.status} ${response.statusText}`);
         // If rate limited (429), don't throw - just return empty for now
         if (response.status === 429) {
-          console.warn(`Rate limited for ${source.name}, skipping this fetch`);
           return [];
         }
         throw new Error(`iCalendar fetch error: ${response.status} ${response.statusText}`);
@@ -34,16 +30,12 @@ export class ICalendarService {
 
       // Handle different proxy response formats
       const jsonResponse = await response.json();
-      console.log(`Proxy response status: ${jsonResponse.status}`);
       
       const icalData = jsonResponse.contents || '';
       
       if (!icalData) {
-        console.warn(`Empty iCalendar data received from proxy for ${source.name}`);
-        console.log(`Full proxy response:`, jsonResponse);
         return [];
       }
-      console.log(`iCalendar data length: ${icalData.length} characters`);
       
       return this.parseICalendarWithICALJS(icalData, source);
     } catch (error) {
@@ -54,7 +46,6 @@ export class ICalendarService {
 
   private async fetchRSSEvents(source: CalendarSource): Promise<CalendarEvent[]> {
     try {
-      console.log(`Fetching RSS events from: ${source.name} (${source.url})`);
       
       // Use a CORS proxy for external RSS feeds
       const proxyUrl = this.getCorsProxyUrl(source.url);
@@ -64,7 +55,6 @@ export class ICalendarService {
         console.error(`RSS fetch error: ${response.status} ${response.statusText}`);
         // If rate limited (429), don't throw - just return empty for now
         if (response.status === 429) {
-          console.warn(`Rate limited for ${source.name}, skipping this fetch`);
           return [];
         }
         throw new Error(`RSS fetch error: ${response.status} ${response.statusText}`);
@@ -72,24 +62,18 @@ export class ICalendarService {
 
       // Handle different proxy response formats
       const jsonResponse = await response.json();
-      console.log(`Proxy response status for ${source.name}: ${jsonResponse.status}`);
       
       const rssData = jsonResponse.contents || '';
       
       if (!rssData) {
         console.warn(`Empty RSS data received from proxy for ${source.name}`);
-        console.log(`Full proxy response for ${source.name}:`, jsonResponse);
         return [];
       }
       
-      console.log(`RSS data length for ${source.name}:`, rssData.length);
-      console.log(`RSS data preview for ${source.name}:`, rssData.substring(0, 200));
       
       const events = this.parseRSS(rssData);
-      console.log(`Parsed ${events.length} events from ${source.name}`);
       
       const transformed = this.transformRSSEvents(events, source);
-      console.log(`Transformed events for ${source.name}:`, transformed);
       
       return transformed;
     } catch (error) {
@@ -110,7 +94,6 @@ export class ICalendarService {
       const comp = new ICAL.Component(jcalData);
       
       const vevents = comp.getAllSubcomponents('vevent');
-      console.log(`Found ${vevents.length} VEVENT components`);
       
       const allEvents: CalendarEvent[] = [];
       const now = new Date();
@@ -123,7 +106,6 @@ export class ICalendarService {
           
           // Log first few events for debugging
           if (index < 3) {
-            console.log(`Event ${index + 1}: "${event.summary}", isRecurring: ${event.isRecurring()}, startDate: ${event.startDate}`);
           }
           
           if (event.isRecurring()) {
@@ -168,7 +150,6 @@ export class ICalendarService {
             }
             
             if (occurrenceCount > 0) {
-              console.log(`Expanded recurring event "${event.summary}" into ${occurrenceCount} future occurrences`);
             }
           } else {
             // Handle single (non-recurring) events
@@ -196,7 +177,6 @@ export class ICalendarService {
         }
       });
       
-      console.log(`Total future events generated: ${allEvents.length}`);
       return allEvents;
       
     } catch (error) {
@@ -208,8 +188,6 @@ export class ICalendarService {
 
   private parseRSS(rssData: string): RSSEvent[] {
     try {
-      console.log('Parsing RSS data, length:', rssData.length);
-      console.log('RSS data preview:', rssData.substring(0, 500));
       
       const parser = new DOMParser();
       const doc = parser.parseFromString(rssData, 'text/xml');
@@ -222,12 +200,10 @@ export class ICalendarService {
       }
       
       const items = doc.querySelectorAll('item');
-      console.log(`Found ${items.length} items in RSS feed`);
       
       const events: RSSEvent[] = [];
       
       items.forEach((item, index) => {
-        console.log(`Processing item ${index + 1}:`);
         
         const guid = item.querySelector('guid')?.textContent || 
                      item.querySelector('link')?.textContent || 
@@ -238,11 +214,6 @@ export class ICalendarService {
         const pubDate = item.querySelector('pubDate')?.textContent || '';
         const link = item.querySelector('link')?.textContent || '';
         
-        console.log(`  Title: ${title}`);
-        console.log(`  Raw Description: ${rawDescription}`);
-        console.log(`  Cleaned Description: ${description}`);
-        console.log(`  PubDate: ${pubDate}`);
-        console.log(`  Link: ${link}`);
         
         // Handle Stoneham-specific calendar fields with namespace
         const eventDates = item.querySelector('calendarEvent\\:EventDates, EventDates')?.textContent || '';
@@ -253,11 +224,6 @@ export class ICalendarService {
         // Prefer Location field over Address field
         const eventLocation = this.stripHtmlTags(rawEventLocation || rawEventAddress);
         
-        console.log(`  EventDates: ${eventDates}`);
-        console.log(`  EventTimes: ${eventTimes}`);
-        console.log(`  Raw EventLocation: ${rawEventLocation}`);
-        console.log(`  Raw EventAddress: ${rawEventAddress}`);
-        console.log(`  Final EventLocation: ${eventLocation}`);
         
         const enclosureEl = item.querySelector('enclosure');
         const enclosure = enclosureEl ? {
@@ -278,11 +244,9 @@ export class ICalendarService {
             eventLocation
           });
         } else {
-          console.log(`  Skipping item ${index + 1} - no title`);
         }
       });
       
-      console.log(`Parsed ${events.length} events from RSS`);
       return events;
     } catch (error) {
       console.error('Error parsing RSS:', error);

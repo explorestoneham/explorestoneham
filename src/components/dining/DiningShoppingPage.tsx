@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { GoogleMap } from '../maps/GoogleMap';
 import { useGooglePlaces } from '../../hooks/useGooglePlaces';
+import { Header } from '../generated/Header';
+import { Footer } from '../generated/Footer';
 
 interface Business {
   id: string;
@@ -59,10 +61,6 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
     openNow: false
   });
 
-  // Debug logging - only log once on mount
-  useEffect(() => {
-    console.log('DiningShoppingPage - API Key:', googleApiKey ? `${googleApiKey.substring(0, 10)}...` : 'None');
-  }, []); // Empty dependency array to run only once
 
   const { businesses, loading, error, searchPlaces } = useGooglePlaces({
     apiKey: googleApiKey,
@@ -304,43 +302,53 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-birch-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-lakeside-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-granite-gray">Loading businesses...</p>
+      <div className="min-h-screen bg-birch-white">
+        <Header />
+        <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
+          <div className="text-center">
+            <div className="w-12 h-12 border-4 border-lakeside-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-granite-gray">Loading businesses...</p>
+          </div>
         </div>
+        <Footer />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-birch-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-autumn-brick/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <X className="w-8 h-8 text-autumn-brick" />
+      <div className="min-h-screen bg-birch-white">
+        <Header />
+        <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 200px)' }}>
+          <div className="text-center">
+            <div className="w-16 h-16 bg-autumn-brick/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <X className="w-8 h-8 text-autumn-brick" />
+            </div>
+            <h3 className="text-xl font-semibold text-granite-gray mb-2">Unable to load businesses</h3>
+            <p className="text-granite-gray/70">{error}</p>
           </div>
-          <h3 className="text-xl font-semibold text-granite-gray mb-2">Unable to load businesses</h3>
-          <p className="text-granite-gray/70">{error}</p>
         </div>
+        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-birch-white">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-sky-tint">
-        <div className="container py-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            <div>
-              <h1 className="heading-1 mb-2">Dining & Shopping</h1>
-              <p className="text-lg text-granite-gray/70">
-                Discover the best restaurants and shops in Stoneham
-              </p>
-            </div>
-            
-            <div className="flex items-center space-x-3">
+      <Header />
+      <main>
+        {/* Page Header */}
+        <div className="bg-white shadow-sm border-b border-sky-tint">
+          <div className="container py-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+              <div>
+                <h1 className="heading-1 mb-2">Dining & Shopping</h1>
+                <p className="text-lg text-granite-gray/70">
+                  Discover the best restaurants and shops in Stoneham
+                </p>
+              </div>
+              
+              <div className="flex items-center space-x-3">
               <div className="flex bg-sky-tint rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('list')}
@@ -590,6 +598,7 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
           </div>
         )}
       </div>
+      </main>
 
       {/* Business Detail Modal */}
       <AnimatePresence>
@@ -597,6 +606,8 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
           <BusinessModal business={selectedBusiness} onClose={() => setSelectedBusiness(null)} />
         )}
       </AnimatePresence>
+
+      <Footer />
     </div>
   );
 }
