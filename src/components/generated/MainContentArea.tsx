@@ -25,6 +25,7 @@ interface Service {
   description: string;
   href?: string;
   clickable?: boolean;
+  website?: string;
 }
 export const MainContentArea: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -178,7 +179,8 @@ export const MainContentArea: React.FC = () => {
     category: 'Recreation',
     contact: '(781) 279-2600',
     email: 'recreation@stoneham-ma.gov',
-    description: 'Youth and adult programs, sports leagues, and activities'
+    description: 'Youth and adult programs, sports leagues, and activities',
+    website: 'http://www.stonehamrec.com'
   }, {
     id: '3',
     name: 'Senior Center',
@@ -242,7 +244,9 @@ export const MainContentArea: React.FC = () => {
     service
   }) => {
     const handleClick = () => {
-      if (service.clickable && service.href) {
+      if (service.website) {
+        window.open(service.website, '_blank');
+      } else if (service.clickable && service.href) {
         (window as any).handleNavigation?.(service.href);
       }
     };
@@ -253,7 +257,7 @@ export const MainContentArea: React.FC = () => {
           y: -2
         }} 
         className={`bg-white rounded-xl shadow-md p-6 border border-[#D2E5F1] hover:shadow-lg transition-all duration-300 ${
-          service.clickable ? 'cursor-pointer hover:border-[#007B9E]/30' : ''
+          service.clickable || service.website ? 'cursor-pointer hover:border-[#007B9E]/30' : ''
         }`}
         onClick={handleClick}
       >
@@ -263,7 +267,7 @@ export const MainContentArea: React.FC = () => {
               <span className="px-3 py-1 bg-[#D95D39] text-white text-xs font-semibold rounded-full mr-3">
                 {service.category}
               </span>
-              {service.clickable && (
+              {(service.clickable || service.website) && (
                 <ChevronRight className="w-4 h-4 text-[#007B9E]" />
               )}
             </div>
@@ -292,10 +296,10 @@ export const MainContentArea: React.FC = () => {
               {service.email}
             </a>
           </div>
-          {service.clickable && (
+          {(service.clickable || service.website) && (
             <div className="pt-2 border-t border-[#D2E5F1]">
               <div className="flex items-center text-sm text-[#007B9E] font-medium">
-                <span>Learn more</span>
+                <span>{service.website ? 'Visit website' : 'Learn more'}</span>
                 <ChevronRight className="w-4 h-4 ml-1" />
               </div>
             </div>
