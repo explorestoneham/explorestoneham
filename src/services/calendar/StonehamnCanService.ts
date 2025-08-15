@@ -5,16 +5,23 @@ export class StonehamnCanService {
   async fetchEvents(source: CalendarSource): Promise<CalendarEvent[]> {
     console.log(`StonehamnCanService: fetchEvents called for ${source.name}`);
     
-    // In development mode, the CORS proxy doesn't work since API routes
-    // are only executed in production (Vercel). Return empty array with a note.
-    const isDevelopment = import.meta.env.DEV;
+    // Check if we're in development mode by looking for localhost or the DEV flag
+    const isDevelopment = 
+      import.meta.env?.DEV || 
+      (typeof window !== 'undefined' && (
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.port === '5173'
+      ));
     
     if (isDevelopment) {
-      console.log(`StonehamnCanService: Development mode - Stoneham CAN calendar sync disabled`);
+      console.log(`StonehamnCanService: Development mode detected - Stoneham CAN calendar sync disabled`);
       console.log(`StonehamnCanService: This feature works in production where API routes are available`);
       console.log(`StonehamnCanService: Deploy to test the full functionality`);
       return [];
     }
+    
+    console.log(`StonehamnCanService: Production mode - attempting to fetch events via proxy`);
     
     try {
       // Production - use the proxy
@@ -30,38 +37,55 @@ export class StonehamnCanService {
       
     } catch (error) {
       console.error('StonehamnCanService: Error fetching events:', error);
-      throw error;
+      console.error('StonehamnCanService: Error details:', {
+        message: error.message,
+        stack: error.stack,
+        url: source.url
+      });
+      
+      // Return empty array instead of throwing to prevent breaking other calendar sources
+      return [];
     }
   }
   
   private async fetchViaProxy(url: string): Promise<string> {
     const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
     console.log(`StonehamnCanService: Fetching from proxy: ${proxyUrl}`);
+    console.log(`StonehamnCanService: Target URL: ${url}`);
     
     const response = await fetch(proxyUrl);
     console.log(`StonehamnCanService: Proxy response status: ${response.status}`);
+    console.log(`StonehamnCanService: Proxy response headers:`, Object.fromEntries(response.headers));
     
     if (!response.ok) {
       throw new Error(`Proxy HTTP ${response.status}: ${response.statusText}`);
     }
     
     const responseText = await response.text();
+    console.log(`StonehamnCanService: Raw response length: ${responseText.length}`);
+    console.log(`StonehamnCanService: Response preview: ${responseText.substring(0, 200)}...`);
     
     let data;
     try {
       data = JSON.parse(responseText);
+      console.log(`StonehamnCanService: Successfully parsed JSON response`);
     } catch (parseError) {
+      console.error(`StonehamnCanService: JSON parse error:`, parseError);
+      console.log(`StonehamnCanService: First 500 chars of response:`, responseText.substring(0, 500));
+      
       // In development mode, the proxy might not be working and returning the actual source code
       if (responseText.includes('import') && responseText.includes('export default')) {
-        throw new Error('Proxy endpoint not available in development mode - API routes only work in production');
+        throw new Error('Proxy endpoint not available - API routes only work in production');
       }
       throw new Error(`Failed to parse proxy response as JSON: ${parseError.message}`);
     }
     
     if (!data || !data.contents) {
+      console.error(`StonehamnCanService: Invalid data structure:`, data);
       throw new Error('Invalid proxy response: missing contents');
     }
     
+    console.log(`StonehamnCanService: Successfully extracted ${data.contents.length} characters from proxy response`);
     return data.contents;
   }
   

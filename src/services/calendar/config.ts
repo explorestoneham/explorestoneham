@@ -51,7 +51,7 @@ export const STONEHAM_CALENDAR_SOURCES: CalendarSource[] = [
     tag: 'community',
     defaultImageUrl: '/images/community.jpg',
     color: '#10B981', // Green
-    enabled: typeof window !== 'undefined' ? !import.meta.env?.DEV : true // Disabled in development
+    enabled: true // Always enabled - the service handles dev/prod logic internally
   }
 ];
 
