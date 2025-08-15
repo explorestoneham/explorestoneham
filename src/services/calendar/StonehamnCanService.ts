@@ -38,8 +38,8 @@ export class StonehamnCanService {
     } catch (error) {
       console.error('StonehamnCanService: Error fetching events:', error);
       console.error('StonehamnCanService: Error details:', {
-        message: error.message,
-        stack: error.stack,
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
         url: source.url
       });
       
@@ -77,7 +77,7 @@ export class StonehamnCanService {
       if (responseText.includes('import') && responseText.includes('export default')) {
         throw new Error('Proxy endpoint not available - API routes only work in production');
       }
-      throw new Error(`Failed to parse proxy response as JSON: ${parseError.message}`);
+      throw new Error(`Failed to parse proxy response as JSON: ${parseError instanceof Error ? parseError.message : 'Unknown parse error'}`);
     }
     
     if (!data || !data.contents) {
