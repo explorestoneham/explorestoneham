@@ -103,8 +103,8 @@ export class StonehamnCanService {
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
       
-      // Find all event items using the CSS selector we identified
-      const eventElements = doc.querySelectorAll('.eventlist-item');
+      // Find all event items using the correct CSS selector for Squarespace events
+      const eventElements = doc.querySelectorAll('.eventlist-event');
       
       console.log(`StonehamnCanService: Found ${eventElements.length} event elements`);
       
@@ -114,8 +114,9 @@ export class StonehamnCanService {
         
         // Try alternative selectors that might be used
         const alternativeSelectors = [
+          '.eventlist-event', // Correct Squarespace selector
           '.eventlist-item',
-          '.event-item',
+          '.event-item', 
           '.event',
           '[data-event]',
           '.sqs-block-events',
@@ -328,38 +329,78 @@ export class StonehamnCanService {
   
   private parseEventElement(element: Element, source: CalendarSource, index: number): CalendarEvent | null {
     try {
-      // Extract event URL from the link
+      // Extract event URL from the link (Squarespace structure)
       const linkElement = element.querySelector('a');
       const eventUrl = linkElement ? this.normalizeUrl(linkElement.getAttribute('href')) : undefined;
       
-      // Extract image URL
-      const imgElement = element.querySelector('.eventlist-thumbnail img');
-      const imageUrl = imgElement ? this.normalizeImageUrl(imgElement.getAttribute('src')) : undefined;
+      // Extract image URL (look for both src and data-src)
+      const imgElement = element.querySelector('img');
+      let imageUrl: string | undefined;
+      if (imgElement) {
+        const srcAttr = imgElement.getAttribute('src') || imgElement.getAttribute('data-src');
+        imageUrl = srcAttr ? this.normalizeImageUrl(srcAttr) : undefined;
+      }
       
-      // Extract date components
-      const monthElement = element.querySelector('.eventlist-month');
-      const dayElement = element.querySelector('.eventlist-day');
-      const month = monthElement?.textContent?.trim() || '';
-      const day = dayElement?.textContent?.trim() || '';
+      // For Squarespace events, we need to extract structured data differently
+      // Let's look for the event title, date, and details in the Squarespace structure
       
-      // Extract title
-      const titleElement = element.querySelector('.eventlist-title');
-      const title = titleElement?.textContent?.trim() || 'Untitled Event';
+      // Extract title - look for common title selectors in Squarespace events
+      const titleSelectors = ['.eventlist-title', '.event-title', 'h1', 'h2', 'h3', '.summary-title'];
+      let title = 'Untitled Event';
+      for (const selector of titleSelectors) {
+        const titleElement = element.querySelector(selector);
+        if (titleElement?.textContent?.trim()) {
+          title = titleElement.textContent.trim();
+          break;
+        }
+      }
       
-      // Extract category
-      const categoryElement = element.querySelector('.eventlist-cats a');
-      const categoryText = categoryElement?.textContent?.trim() || '';
-      const category = this.parseCategoryTag(categoryText);
+      // Extract date information - Squarespace often has date in different formats
+      const dateSelectors = ['.eventlist-date', '.event-date', '.summary-date'];
+      let dateText = '';
+      for (const selector of dateSelectors) {
+        const dateElement = element.querySelector(selector);
+        if (dateElement?.textContent?.trim()) {
+          dateText = dateElement.textContent.trim();
+          break;
+        }
+      }
       
-      // Extract details (time, location, etc.)
-      const detailsElement = element.querySelector('.eventlist-excerpt');
-      const detailsText = detailsElement?.textContent || '';
-      const eventDetails = this.parseEventDetails(detailsText);
+      // Extract time and details - look for meta information
+      const metaSelectors = ['.eventlist-meta', '.event-meta', '.summary-meta', '.eventlist-excerpt'];
+      let detailsText = '';
+      for (const selector of metaSelectors) {
+        const metaElement = element.querySelector(selector);
+        if (metaElement?.textContent?.trim()) {
+          detailsText = metaElement.textContent.trim();
+          break;
+        }
+      }
       
-      // Build the date
-      const eventDate = this.parseEventDate(month, day, eventDetails.dateString);
+      // If we don't have specific date text, try to extract from the element's text content
+      if (!dateText && !detailsText) {
+        detailsText = element.textContent || '';
+      }
+      
+      console.log(`StonehamnCanService: Parsing event ${index}: title="${title}", dateText="${dateText}", detailsText="${detailsText.substring(0, 100)}"`);
+      
+      const eventDetails = this.parseEventDetails(detailsText + ' ' + dateText);
+      
+      // Try to parse the date from multiple sources
+      let eventDate = this.parseEventDate('', '', eventDetails.dateString || dateText);
+      
+      // If still no date, try a more flexible approach
       if (!eventDate) {
-        console.warn(`StonehamnCanService: Could not parse date for event: ${title}`);
+        const allText = (element.textContent || '').toLowerCase();
+        const dateMatch = allText.match(/(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2},?\s+\d{4}/i);
+        if (dateMatch) {
+          eventDate = new Date(dateMatch[0]);
+        }
+      }
+      
+      // Skip events without valid dates
+      if (!eventDate || isNaN(eventDate.getTime())) {
+        console.warn(`StonehamnCanService: Could not parse date for event: ${title}, dateText: "${dateText}", detailsText: "${detailsText.substring(0, 100)}"`);
         return null;
       }
       
@@ -381,7 +422,7 @@ export class StonehamnCanService {
         url: eventUrl,
         imageUrl: imageUrl || source.defaultImageUrl,
         source,
-        tags: [source.tag, category].filter(Boolean)
+        tags: [source.tag, 'community'].filter(Boolean)
       };
       
       console.log(`StonehamnCanService: Parsed event "${title}" on ${eventDate.toISOString()}`);
