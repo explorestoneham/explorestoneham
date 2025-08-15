@@ -30,7 +30,13 @@ export class StonehamnCanService {
       console.log(`StonehamnCanService: Received ${htmlContent.length} characters of HTML`);
       
       // Parse the HTML content
-      const events = this.parseEventsFromHtml(htmlContent, source);
+      let events = this.parseEventsFromHtml(htmlContent, source);
+      
+      // If no events found in HTML, try to find JSON data embedded in the page
+      if (events.length === 0) {
+        console.log(`StonehamnCanService: No events found in HTML, trying to extract JSON data`);
+        events = this.parseEventsFromJsonData(htmlContent, source);
+      }
       
       console.log(`StonehamnCanService: Parsed ${events.length} events`);
       return events;
@@ -120,7 +126,31 @@ export class StonehamnCanService {
         for (const selector of alternativeSelectors) {
           const elements = doc.querySelectorAll(selector);
           console.log(`StonehamnCanService: Found ${elements.length} elements with selector "${selector}"`);
+          
+          // If we found eventlist containers, look inside them
+          if (selector === '.eventlist' && elements.length > 0) {
+            elements.forEach((eventlist, index) => {
+              console.log(`StonehamnCanService: Eventlist ${index} innerHTML (first 500 chars):`, eventlist.innerHTML.substring(0, 500));
+              const childrenCount = eventlist.children.length;
+              console.log(`StonehamnCanService: Eventlist ${index} has ${childrenCount} children`);
+              
+              // Look for any div, li, or article elements that might contain events
+              const potentialEvents = eventlist.querySelectorAll('div, li, article, section');
+              console.log(`StonehamnCanService: Eventlist ${index} has ${potentialEvents.length} potential event containers`);
+            });
+          }
         }
+        
+        // Also check if the page has any script tags that might indicate dynamic loading
+        const scripts = doc.querySelectorAll('script');
+        let hasEventScript = false;
+        scripts.forEach(script => {
+          const scriptContent = script.textContent || '';
+          if (scriptContent.includes('event') || scriptContent.includes('calendar')) {
+            hasEventScript = true;
+          }
+        });
+        console.log(`StonehamnCanService: Found ${scripts.length} script tags, ${hasEventScript ? 'some' : 'none'} appear to handle events`);
       }
       
       eventElements.forEach((eventElement, index) => {
@@ -140,6 +170,160 @@ export class StonehamnCanService {
     }
     
     return events;
+  }
+  
+  private parseEventsFromJsonData(html: string, source: CalendarSource): CalendarEvent[] {
+    console.log(`StonehamnCanService: Searching for JSON data in page`);
+    
+    try {
+      // Look for common Squarespace JSON patterns
+      const jsonPatterns = [
+        /"items":\s*\[([^\]]+)\]/g,
+        /window\.Static\.SQUARESPACE_CONTEXT\s*=\s*({.*?});/g,
+        /Static\.SQUARESPACE_CONTEXT\s*=\s*({.*?});/g,
+        /"events":\s*(\[.*?\])/g,
+        /Y\.Squarespace\.Rollups\.get\(\s*['"]([^'"]+)['"]\s*,\s*({.*?})\)/g
+      ];
+      
+      for (const pattern of jsonPatterns) {
+        let match;
+        while ((match = pattern.exec(html)) !== null) {
+          console.log(`StonehamnCanService: Found potential JSON match:`, match[0].substring(0, 200));
+          try {
+            const jsonData = JSON.parse(match[1] || match[2]);
+            console.log(`StonehamnCanService: Successfully parsed JSON data:`, jsonData);
+            
+            // Try to extract events from the JSON structure
+            const extractedEvents = this.extractEventsFromJson(jsonData, source);
+            if (extractedEvents.length > 0) {
+              console.log(`StonehamnCanService: Extracted ${extractedEvents.length} events from JSON`);
+              return extractedEvents;
+            }
+          } catch (parseError) {
+            console.log(`StonehamnCanService: Failed to parse JSON match:`, parseError);
+            continue;
+          }
+        }
+      }
+      
+      // Also look for script tags with JSON-LD structured data
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
+      
+      console.log(`StonehamnCanService: Found ${jsonLdScripts.length} JSON-LD scripts`);
+      
+      for (const script of jsonLdScripts) {
+        try {
+          const jsonData = JSON.parse(script.textContent || '');
+          console.log(`StonehamnCanService: JSON-LD data:`, jsonData);
+          
+          if (jsonData['@type'] === 'Event' || (Array.isArray(jsonData) && jsonData.some(item => item['@type'] === 'Event'))) {
+            console.log(`StonehamnCanService: Found structured event data`);
+            // Process structured data events here if needed
+          }
+        } catch (error) {
+          continue;
+        }
+      }
+      
+    } catch (error) {
+      console.error(`StonehamnCanService: Error searching for JSON data:`, error);
+    }
+    
+    return [];
+  }
+  
+  private extractEventsFromJson(jsonData: any, source: CalendarSource): CalendarEvent[] {
+    const events: CalendarEvent[] = [];
+    
+    try {
+      // Handle different JSON structures that might contain events
+      let eventItems: any[] = [];
+      
+      if (Array.isArray(jsonData)) {
+        eventItems = jsonData;
+      } else if (jsonData.items && Array.isArray(jsonData.items)) {
+        eventItems = jsonData.items;
+      } else if (jsonData.events && Array.isArray(jsonData.events)) {
+        eventItems = jsonData.events;
+      } else if (jsonData.collection && jsonData.collection.items) {
+        eventItems = jsonData.collection.items;
+      }
+      
+      console.log(`StonehamnCanService: Processing ${eventItems.length} potential event items`);
+      
+      for (const item of eventItems) {
+        try {
+          // Look for event-like properties
+          if (item.title || item.name || item.summary) {
+            const event = this.convertJsonToEvent(item, source);
+            if (event) {
+              events.push(event);
+            }
+          }
+        } catch (error) {
+          console.warn(`StonehamnCanService: Error processing event item:`, error);
+          continue;
+        }
+      }
+      
+    } catch (error) {
+      console.error(`StonehamnCanService: Error extracting events from JSON:`, error);
+    }
+    
+    return events;
+  }
+  
+  private convertJsonToEvent(item: any, source: CalendarSource): CalendarEvent | null {
+    try {
+      const title = item.title || item.name || item.summary || 'Untitled Event';
+      const description = item.description || item.excerpt || item.body;
+      
+      // Try to parse dates from various formats
+      let startDate: Date | null = null;
+      let endDate: Date | null = null;
+      
+      if (item.startDate || item.start || item.date) {
+        startDate = new Date(item.startDate || item.start || item.date);
+      }
+      
+      if (item.endDate || item.end) {
+        endDate = new Date(item.endDate || item.end);
+      }
+      
+      if (!startDate || isNaN(startDate.getTime())) {
+        return null;
+      }
+      
+      if (!endDate || isNaN(endDate.getTime())) {
+        endDate = new Date(startDate.getTime() + (2 * 60 * 60 * 1000)); // Default 2 hours
+      }
+      
+      const location = item.location || item.venue || item.address;
+      const url = item.url || item.link || item.fullUrl;
+      const imageUrl = item.image || item.thumbnail || item.assetUrl;
+      
+      const event: CalendarEvent = {
+        id: this.generateEventId(title, startDate),
+        title,
+        description,
+        startDate,
+        endDate,
+        location,
+        url: url ? this.normalizeUrl(url) : undefined,
+        imageUrl: imageUrl ? this.normalizeImageUrl(imageUrl) : source.defaultImageUrl,
+        source,
+        tags: [source.tag, 'community']
+      };
+      
+      console.log(`StonehamnCanService: Converted JSON item to event: "${title}"`);
+      return event;
+      
+    } catch (error) {
+      console.error(`StonehamnCanService: Error converting JSON item to event:`, error);
+      return null;
+    }
   }
   
   private parseEventElement(element: Element, source: CalendarSource, index: number): CalendarEvent | null {
