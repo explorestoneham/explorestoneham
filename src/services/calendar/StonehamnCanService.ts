@@ -102,6 +102,27 @@ export class StonehamnCanService {
       
       console.log(`StonehamnCanService: Found ${eventElements.length} event elements`);
       
+      // Debug: log a sample of the HTML structure to understand the layout
+      if (eventElements.length === 0) {
+        console.log(`StonehamnCanService: No events found. HTML preview (first 2000 chars):`, html.substring(0, 2000));
+        
+        // Try alternative selectors that might be used
+        const alternativeSelectors = [
+          '.eventlist-item',
+          '.event-item',
+          '.event',
+          '[data-event]',
+          '.sqs-block-events',
+          '.eventlist',
+          '.event-summary'
+        ];
+        
+        for (const selector of alternativeSelectors) {
+          const elements = doc.querySelectorAll(selector);
+          console.log(`StonehamnCanService: Found ${elements.length} elements with selector "${selector}"`);
+        }
+      }
+      
       eventElements.forEach((eventElement, index) => {
         try {
           const event = this.parseEventElement(eventElement, source, index);

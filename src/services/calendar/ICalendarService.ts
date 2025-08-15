@@ -83,8 +83,8 @@ export class ICalendarService {
   }
 
   private getCorsProxyUrl(url: string): string {
-    // Always use our custom Vercel proxy for consistency
-    return `https://explorestoneham-sfzk.vercel.app/api/proxy?url=${encodeURIComponent(url)}`;
+    // Use relative path to current deployment's proxy for consistency
+    return `/api/proxy?url=${encodeURIComponent(url)}`;
   }
 
   private parseICalendarWithICALJS(icalData: string, source: CalendarSource): CalendarEvent[] {

@@ -93,7 +93,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       request.end();
     });
     
-    console.log(`Successfully proxied ${content.length} characters from ${url}`);
+    console.log(`Successfully proxied ${typeof content === 'string' ? content.length : 'unknown'} characters from ${url}`);
 
     // Return the content with proper CORS headers
     res.status(200).json({
