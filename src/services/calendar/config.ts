@@ -42,6 +42,16 @@ export const STONEHAM_CALENDAR_SOURCES: CalendarSource[] = [
     defaultImageUrl: '/images/arena.jpg',
     color: '#EA580C', // Orange
     enabled: true
+  },
+  {
+    id: 'stoneham-can-calendar',
+    name: 'Stoneham CAN Events',
+    type: 'stonehamcan',
+    url: 'https://www.stonehamcan.org/whatsnext',
+    tag: 'community',
+    defaultImageUrl: '/images/community.jpg',
+    color: '#10B981', // Green
+    enabled: typeof window !== 'undefined' ? !import.meta.env?.DEV : true // Disabled in development
   }
 ];
 

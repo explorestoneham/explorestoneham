@@ -36,7 +36,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const allowedDomains = [
       'stoneham-ma.gov',
       'calendar.google.com',
-      'googleapis.com'
+      'googleapis.com',
+      'stonehamcan.org'
     ];
 
     const urlObj = new URL(url);
@@ -59,8 +60,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         path: urlObj.pathname + urlObj.search,
         method: 'GET',
         headers: {
-          'User-Agent': 'ExploreStoneham-CalendarProxy/1.0',
-          'Accept': 'application/rss+xml, text/calendar, text/xml, */*'
+          'User-Agent': 'Mozilla/5.0 (compatible; ExploreStoneham-CalendarProxy/1.0)',
+          'Accept': 'text/html, application/rss+xml, text/calendar, text/xml, */*'
         }
       };
 

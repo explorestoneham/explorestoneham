@@ -42,7 +42,7 @@ export const Footer: React.FC = () => {
   }] as any[];
   return <footer className="bg-[#2A6F4D] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-4 gap-12">
+        <div className="grid lg:grid-cols-3 gap-12">
           {/* Brand & Description */}
           <div className="lg:col-span-1 space-y-6">
             <div className="flex items-center space-x-3">
@@ -133,30 +133,6 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Additional Info */}
-          <div className="space-y-6">
-            {/* Upcoming Events Preview */}
-            <div className="bg-white/5 rounded-lg p-4 border border-white/10">
-              <div className="flex items-center space-x-2 mb-3">
-                <Calendar className="w-4 h-4 text-[#F4A300]" />
-                <span className="text-sm font-semibold text-white">Next Event</span>
-              </div>
-              <div>
-                <h5 className="text-sm font-medium text-white mb-1">Summer Concert Series</h5>
-                <p className="text-xs text-[#D2E5F1]">July 15, 2024 • 7:00 PM</p>
-                <p className="text-xs text-[#93C47D] mt-1">Town Common</p>
-              </div>
-            </div>
-
-            {/* Weather Widget Placeholder */}
-            <div className="bg-gradient-to-br from-[#007B9E]/20 to-[#93C47D]/20 rounded-lg p-4 border border-white/10">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white mb-1">72°F</div>
-                <div className="text-xs text-[#D2E5F1]">Partly Cloudy</div>
-                <div className="text-xs text-[#93C47D] mt-1">Stoneham, MA</div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Bottom Bar */}

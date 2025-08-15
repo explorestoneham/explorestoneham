@@ -2,6 +2,7 @@
 export { CalendarService } from './CalendarService';
 export { GoogleCalendarService } from './GoogleCalendarService';
 export { ICalendarService } from './ICalendarService';
+export { StonehamnCanService } from './StonehamnCanService';
 
 // Configuration exports
 export {
