@@ -339,6 +339,9 @@ export class StonehamnCanService {
       if (imgElement) {
         const srcAttr = imgElement.getAttribute('src') || imgElement.getAttribute('data-src');
         imageUrl = srcAttr ? this.normalizeImageUrl(srcAttr) : undefined;
+        console.log(`StonehamnCanService: Event ${index} image: src="${imgElement.getAttribute('src')}", data-src="${imgElement.getAttribute('data-src')}", final="${imageUrl}"`);
+      } else {
+        console.log(`StonehamnCanService: Event ${index} has no image element`);
       }
       
       // For Squarespace events, we need to extract structured data differently
@@ -425,7 +428,7 @@ export class StonehamnCanService {
         tags: [source.tag, 'community'].filter(Boolean)
       };
       
-      console.log(`StonehamnCanService: Parsed event "${title}" on ${eventDate.toISOString()}`);
+      console.log(`StonehamnCanService: Created event "${title}" with image="${imageUrl}" on ${eventDate.toISOString()}`);
       return event;
       
     } catch (error) {
@@ -445,10 +448,21 @@ export class StonehamnCanService {
     return href;
   }
   
-  private normalizeImageUrl(src: string | null): string | undefined {
+  private normalizeImageUrl(src: string): string | undefined {
     if (!src) return undefined;
     
-    // Squarespace CDN URLs are usually absolute
+    // Handle Squarespace CDN URLs
+    if (src.startsWith('//')) {
+      // Protocol-relative URLs
+      return `https:${src}`;
+    }
+    
+    if (src.startsWith('/')) {
+      // Relative URLs from Stoneham CAN domain
+      return `https://www.stonehamcan.org${src}`;
+    }
+    
+    // Already absolute URLs (including https://images.squarespace-cdn.com)
     return src;
   }
   

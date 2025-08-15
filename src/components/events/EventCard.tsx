@@ -33,13 +33,40 @@ export function EventCard({ event }: EventCardProps) {
       whileHover={{ y: -5 }} 
       className="bg-white rounded-xl shadow-lg overflow-hidden border border-[#D2E5F1] hover:shadow-xl transition-all duration-300"
     >
-      {/* Header with gradient and calendar icon */}
-      <div className="h-48 bg-gradient-to-br from-[#93C47D] to-[#D2E5F1] flex items-center justify-center relative">
-        <Calendar className="w-12 h-12 text-white" />
+      {/* Header with image or gradient fallback */}
+      <div className="h-48 relative overflow-hidden">
+        {event.imageUrl ? (
+          <>
+            <img 
+              src={event.imageUrl} 
+              alt={event.title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to gradient if image fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.classList.add('bg-gradient-to-br', 'from-[#93C47D]', 'to-[#D2E5F1]', 'flex', 'items-center', 'justify-center');
+                  const icon = document.createElement('div');
+                  icon.innerHTML = '<svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+                  parent.appendChild(icon);
+                }
+              }}
+            />
+            {/* Overlay for better text readability */}
+            <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+          </>
+        ) : (
+          <div className="h-full bg-gradient-to-br from-[#93C47D] to-[#D2E5F1] flex items-center justify-center">
+            <Calendar className="w-12 h-12 text-white" />
+          </div>
+        )}
+        
         {/* Source indicator */}
-        <div className="absolute top-2 right-2">
+        <div className="absolute top-2 right-2 z-10">
           <div
-            className="px-2 py-1 rounded-full text-xs font-medium text-white"
+            className="px-2 py-1 rounded-full text-xs font-medium text-white shadow-lg"
             style={{ backgroundColor: event.source.color }}
           >
             {event.source.name}
