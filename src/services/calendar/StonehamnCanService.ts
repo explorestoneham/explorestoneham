@@ -339,7 +339,8 @@ export class StonehamnCanService {
       if (imgElement) {
         const srcAttr = imgElement.getAttribute('src') || imgElement.getAttribute('data-src');
         imageUrl = srcAttr ? this.normalizeImageUrl(srcAttr) : undefined;
-        console.log(`StonehamnCanService: Event ${index} image: src="${imgElement.getAttribute('src')}", data-src="${imgElement.getAttribute('data-src')}", final="${imageUrl}"`);
+        const isProxied = imageUrl?.includes('/api/image-proxy') || false;
+        console.log(`StonehamnCanService: Event ${index} image: src="${imgElement.getAttribute('src')}", data-src="${imgElement.getAttribute('data-src')}", final="${imageUrl}", proxied=${isProxied}`);
       } else {
         console.log(`StonehamnCanService: Event ${index} has no image element`);
       }
@@ -451,19 +452,35 @@ export class StonehamnCanService {
   private normalizeImageUrl(src: string): string | undefined {
     if (!src) return undefined;
     
+    let fullUrl = src;
+    
     // Handle Squarespace CDN URLs
     if (src.startsWith('//')) {
       // Protocol-relative URLs
-      return `https:${src}`;
-    }
-    
-    if (src.startsWith('/')) {
+      fullUrl = `https:${src}`;
+    } else if (src.startsWith('/')) {
       // Relative URLs from Stoneham CAN domain
-      return `https://www.stonehamcan.org${src}`;
+      fullUrl = `https://www.stonehamcan.org${src}`;
     }
     
-    // Already absolute URLs (including https://images.squarespace-cdn.com)
-    return src;
+    // Check if it's a Squarespace CDN image that might need proxying
+    if (fullUrl.includes('images.squarespace-cdn.com') || fullUrl.includes('static1.squarespace.com')) {
+      // In production, use our image proxy to avoid CORS issues
+      const isDevelopment = 
+        import.meta.env?.DEV || 
+        (typeof window !== 'undefined' && (
+          window.location.hostname === 'localhost' ||
+          window.location.hostname === '127.0.0.1' ||
+          window.location.port === '5173'
+        ));
+      
+      if (!isDevelopment) {
+        // Use image proxy in production
+        return `/api/image-proxy?url=${encodeURIComponent(fullUrl)}`;
+      }
+    }
+    
+    return fullUrl;
   }
   
   private parseCategoryTag(categoryText: string): string {

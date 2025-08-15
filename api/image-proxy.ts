@@ -1,0 +1,125 @@
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import https from 'https';
+import http from 'http';
+import { URL } from 'url';
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Enable CORS for all origins
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // Only allow GET requests
+  if (req.method !== 'GET') {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  const { url } = req.query;
+
+  // Validate URL parameter
+  if (!url || typeof url !== 'string') {
+    res.status(400).json({ error: 'URL parameter is required' });
+    return;
+  }
+
+  try {
+    console.log(`Image proxy request to: ${url}`);
+
+    // Validate that it's an image URL we want to proxy
+    const allowedDomains = [
+      'images.squarespace-cdn.com',
+      'static1.squarespace.com',
+      'stonehamcan.org'
+    ];
+
+    const urlObj = new URL(url);
+    const isAllowed = allowedDomains.some(domain => 
+      urlObj.hostname.endsWith(domain)
+    );
+
+    if (!isAllowed) {
+      res.status(403).json({ error: 'Domain not allowed' });
+      return;
+    }
+
+    // Make the request using Node.js built-in modules
+    const imageData = await new Promise<Buffer>((resolve, reject) => {
+      const client = urlObj.protocol === 'https:' ? https : http;
+      
+      const options = {
+        hostname: urlObj.hostname,
+        port: urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80),
+        path: urlObj.pathname + urlObj.search,
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; ExploreStoneham-ImageProxy/1.0)',
+          'Accept': 'image/*,*/*;q=0.8',
+          'Referer': 'https://www.stonehamcan.org/'
+        }
+      };
+
+      const request = client.request(options, (response) => {
+        const chunks: Buffer[] = [];
+        
+        response.on('data', (chunk: Buffer) => {
+          chunks.push(chunk);
+        });
+        
+        response.on('end', () => {
+          if (response.statusCode && response.statusCode >= 200 && response.statusCode < 300) {
+            const buffer = Buffer.concat(chunks);
+            resolve(buffer);
+          } else {
+            reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+          }
+        });
+      });
+
+      request.on('error', (error) => {
+        reject(error);
+      });
+
+      request.setTimeout(15000, () => {
+        request.destroy();
+        reject(new Error('Request timeout'));
+      });
+
+      request.end();
+    });
+    
+    console.log(`Successfully proxied ${imageData.length} bytes from ${url}`);
+
+    // Set appropriate headers for image response
+    res.setHeader('Content-Type', 'image/jpeg'); // Default, will be overridden by specific type detection
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
+    
+    // Try to detect content type from URL
+    const urlLower = url.toLowerCase();
+    if (urlLower.includes('.png')) {
+      res.setHeader('Content-Type', 'image/png');
+    } else if (urlLower.includes('.gif')) {
+      res.setHeader('Content-Type', 'image/gif');
+    } else if (urlLower.includes('.webp')) {
+      res.setHeader('Content-Type', 'image/webp');
+    } else if (urlLower.includes('.svg')) {
+      res.setHeader('Content-Type', 'image/svg+xml');
+    }
+
+    // Return the image data directly
+    res.status(200).send(imageData);
+
+  } catch (error) {
+    console.error('Image proxy error:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch image',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+}

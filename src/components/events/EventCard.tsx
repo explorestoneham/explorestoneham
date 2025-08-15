@@ -41,7 +41,13 @@ export function EventCard({ event }: EventCardProps) {
               src={event.imageUrl} 
               alt={event.title}
               className="w-full h-full object-cover"
+              crossOrigin="anonymous"
+              referrerPolicy="no-referrer"
+              onLoad={(e) => {
+                console.log(`EventCard: Image loaded successfully for "${event.title}": ${event.imageUrl}`);
+              }}
               onError={(e) => {
+                console.error(`EventCard: Image failed to load for "${event.title}": ${event.imageUrl}`);
                 // Fallback to gradient if image fails to load
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
