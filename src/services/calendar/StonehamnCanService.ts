@@ -465,7 +465,7 @@ export class StonehamnCanService {
     
     // Check if it's a Squarespace CDN image that might need proxying
     if (fullUrl.includes('images.squarespace-cdn.com') || fullUrl.includes('static1.squarespace.com')) {
-      // In production, use our image proxy to avoid CORS issues
+      // In production, try to use our image proxy but fall back gracefully
       const isDevelopment = 
         import.meta.env?.DEV || 
         (typeof window !== 'undefined' && (
@@ -475,7 +475,8 @@ export class StonehamnCanService {
         ));
       
       if (!isDevelopment) {
-        // Use image proxy in production
+        // Use image proxy in production - if it fails, EventCard will handle the error
+        console.log(`StonehamnCanService: Using image proxy for CDN image: ${fullUrl}`);
         return `/api/image-proxy?url=${encodeURIComponent(fullUrl)}`;
       }
     }

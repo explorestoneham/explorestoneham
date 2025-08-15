@@ -48,8 +48,21 @@ export function EventCard({ event }: EventCardProps) {
               }}
               onError={(e) => {
                 console.error(`EventCard: Image failed to load for "${event.title}": ${event.imageUrl}`);
-                // Fallback to gradient if image fails to load
+                
                 const target = e.target as HTMLImageElement;
+                
+                // If this was a proxied image that failed, try the original URL as fallback
+                if (event.imageUrl?.includes('/api/image-proxy')) {
+                  const urlParams = new URLSearchParams(event.imageUrl.split('?')[1]);
+                  const originalUrl = urlParams.get('url');
+                  if (originalUrl && target.src !== originalUrl) {
+                    console.log(`EventCard: Trying original image URL for "${event.title}": ${originalUrl}`);
+                    target.src = originalUrl;
+                    return; // Don't hide the image yet, give the original URL a chance
+                  }
+                }
+                
+                // If all image attempts fail, fall back to gradient
                 target.style.display = 'none';
                 const parent = target.parentElement;
                 if (parent) {
