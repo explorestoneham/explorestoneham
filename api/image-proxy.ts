@@ -50,7 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Make the request using Node.js built-in modules
-    const imageData = await new Promise<Buffer>((resolve, reject) => {
+    const { imageData, responseHeaders } = await new Promise<{imageData: Buffer, responseHeaders: any}>((resolve, reject) => {
       const client = urlObj.protocol === 'https:' ? https : http;
       
       const options = {
@@ -75,7 +75,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         response.on('end', () => {
           if (response.statusCode && response.statusCode >= 200 && response.statusCode < 300) {
             const buffer = Buffer.concat(chunks);
-            resolve(buffer);
+            resolve({ imageData: buffer, responseHeaders: response.headers });
           } else {
             reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
           }
@@ -100,16 +100,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Content-Type', 'image/jpeg'); // Default, will be overridden by specific type detection
     res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
     
-    // Try to detect content type from URL
-    const urlLower = url.toLowerCase();
-    if (urlLower.includes('.png')) {
-      res.setHeader('Content-Type', 'image/png');
-    } else if (urlLower.includes('.gif')) {
-      res.setHeader('Content-Type', 'image/gif');
-    } else if (urlLower.includes('.webp')) {
-      res.setHeader('Content-Type', 'image/webp');
-    } else if (urlLower.includes('.svg')) {
-      res.setHeader('Content-Type', 'image/svg+xml');
+    // Try to detect content type from response headers first, then fall back to URL
+    const contentType = responseHeaders['content-type'];
+    if (contentType && contentType.startsWith('image/')) {
+      res.setHeader('Content-Type', contentType);
+    } else {
+      // Fall back to URL-based detection
+      const urlLower = url.toLowerCase();
+      if (urlLower.includes('.png')) {
+        res.setHeader('Content-Type', 'image/png');
+      } else if (urlLower.includes('.gif')) {
+        res.setHeader('Content-Type', 'image/gif');
+      } else if (urlLower.includes('.webp')) {
+        res.setHeader('Content-Type', 'image/webp');
+      } else if (urlLower.includes('.svg')) {
+        res.setHeader('Content-Type', 'image/svg+xml');
+      }
     }
 
     // Return the image data directly
