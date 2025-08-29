@@ -40,11 +40,17 @@ export function EventCard({ event }: EventCardProps) {
             <img 
               src={event.imageUrl} 
               alt={event.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover relative z-10"
               crossOrigin="anonymous"
               referrerPolicy="no-referrer"
+              style={{ 
+                minHeight: '100%',
+                backgroundColor: 'transparent'
+              }}
               onLoad={(e) => {
                 console.log(`EventCard: Image loaded successfully for "${event.title}": ${event.imageUrl}`);
+                const target = e.target as HTMLImageElement;
+                console.log(`EventCard: Image dimensions: ${target.naturalWidth}x${target.naturalHeight}`);
               }}
               onError={(e) => {
                 console.error(`EventCard: Image failed to load for "${event.title}": ${event.imageUrl}`);
