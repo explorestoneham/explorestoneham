@@ -182,7 +182,8 @@ export const MainContentArea: React.FC = () => {
     category: 'Education',
     contact: '(781) 438-1324',
     email: 'info@stonehamlibrary.org',
-    description: 'Community library with extensive resources and programs'
+    description: 'Community library with extensive resources and programs',
+    website: 'https://stonehamlibrary.org/'
   }, {
     id: '2',
     name: 'Recreation Department',
@@ -197,7 +198,8 @@ export const MainContentArea: React.FC = () => {
     category: 'Community',
     contact: '(781) 438-1324',
     email: 'seniors@stoneham-ma.gov',
-    description: 'Programs and services for Stoneham seniors'
+    description: 'Programs and services for Stoneham seniors',
+    website: 'https://www.stonehamseniorcenter.org/'
   }, {
     id: '4',
     name: 'Stevens Street Recycling Center',

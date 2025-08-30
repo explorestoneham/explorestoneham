@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
     href: '#services'
   }, {
     label: 'Submit an Item',
-    href: '#submit'
+    href: 'https://docs.google.com/forms/d/e/1FAIpQLSemZls9PUt9Q1R0S9hWB6-PU2SU7nIzqGp71xUCUR64zfr_zQ/viewform?usp=preview'
   }, {
     label: 'About Stoneham',
     href: '#about'
@@ -27,17 +27,12 @@ export const Footer: React.FC = () => {
   const socialLinks = [{
     icon: Facebook,
     label: 'Facebook',
-    href: '#',
+    href: 'https://www.facebook.com/StonehamCAN/',
     color: 'hover:text-[#1877F2]'
-  }, {
-    icon: Twitter,
-    label: 'Twitter',
-    href: '#',
-    color: 'hover:text-[#1DA1F2]'
   }, {
     icon: Instagram,
     label: 'Instagram',
-    href: '#',
+    href: 'https://www.instagram.com/stoneham_can/',
     color: 'hover:text-[#E4405F]'
   }] as any[];
   return <footer className="bg-[#2A6F4D] text-white">
@@ -64,7 +59,7 @@ export const Footer: React.FC = () => {
 
             {/* Social Links */}
             <div className="flex space-x-4">
-              {socialLinks.map(social => <motion.a key={social.label} href={social.href} whileHover={{
+              {socialLinks.map(social => <motion.a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" whileHover={{
               scale: 1.1
             }} whileTap={{
               scale: 0.95
@@ -82,6 +77,9 @@ export const Footer: React.FC = () => {
                   if (link.href.startsWith('/')) {
                     e.preventDefault();
                     (window as any).handleNavigation?.(link.href);
+                  } else if (link.href.startsWith('http')) {
+                    e.preventDefault();
+                    window.open(link.href, '_blank');
                   }
                 }} className="block text-[#D2E5F1] hover:text-[#F4A300] transition-colors duration-200 flex items-center group">
                   <span>{link.label}</span>
@@ -92,12 +90,37 @@ export const Footer: React.FC = () => {
             {/* Newsletter Signup */}
             <div className="pt-4 border-t border-white/20">
               <h5 className="text-lg font-semibold text-white mb-3">Stay Updated</h5>
-              <div className="flex">
-                <input type="email" placeholder="Enter your email" className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-l-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#F4A300] focus:border-transparent" />
-                <button className="px-6 py-2 bg-[#F4A300] hover:bg-[#D95D39] text-white font-semibold rounded-r-lg transition-colors duration-300">
-                  Subscribe
-                </button>
+              <p className="text-[#D2E5F1] text-sm mb-4">Subscribe to our community newsletters:</p>
+              
+              <div className="space-y-3 mb-4">
+                <label className="flex items-start space-x-3 text-[#D2E5F1] text-sm cursor-pointer">
+                  <input type="checkbox" className="mt-1 w-4 h-4 text-[#F4A300] bg-white/10 border-white/20 rounded focus:ring-[#F4A300] focus:ring-2" />
+                  <div>
+                    <span className="font-medium text-white">Stoneham CAN Newsletter</span>
+                    <p className="text-xs text-[#D2E5F1]/80">Community updates and events</p>
+                  </div>
+                </label>
+                
+                <label className="flex items-start space-x-3 text-[#D2E5F1] text-sm cursor-pointer">
+                  <input type="checkbox" className="mt-1 w-4 h-4 text-[#F4A300] bg-white/10 border-white/20 rounded focus:ring-[#F4A300] focus:ring-2" />
+                  <div>
+                    <span className="font-medium text-white">Stoneham Reads Newsletter</span>
+                    <p className="text-xs text-[#D2E5F1]/80">Library news and reading recommendations</p>
+                  </div>
+                </label>
               </div>
+              
+              <button 
+                onClick={() => window.open('https://www.stonehamcan.org/be-connected', '_blank')}
+                className="w-full px-4 py-3 bg-[#F4A300] hover:bg-[#D95D39] text-white font-semibold rounded-lg transition-colors duration-300 flex items-center justify-center space-x-2"
+              >
+                <span>Subscribe to Newsletters</span>
+                <ExternalLink className="w-4 h-4" />
+              </button>
+              
+              <p className="text-xs text-[#D2E5F1]/60 mt-2">
+                You'll be taken to Stoneham CAN's subscription page
+              </p>
             </div>
           </div>
 
@@ -139,18 +162,19 @@ export const Footer: React.FC = () => {
         <div className="border-t border-white/20 mt-12 pt-8">
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
             <div className="flex items-center space-x-2 text-sm text-[#D2E5F1]">
-              <span>© 2024 Stoneham CAN. All rights reserved.</span>
+              <span>© 2025 Stoneham CAN. All rights reserved.</span>
             </div>
             
             <div className="flex items-center space-x-6 text-sm">
-              <a href="#" className="text-[#D2E5F1] hover:text-[#F4A300] transition-colors duration-200">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-[#D2E5F1] hover:text-[#F4A300] transition-colors duration-200">
-                Terms of Service
-              </a>
-              <a href="#" className="text-[#D2E5F1] hover:text-[#F4A300] transition-colors duration-200">
-                Accessibility
+              <a 
+                href="/about-website" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  (window as any).handleNavigation?.('/about-website');
+                }}
+                className="text-[#D2E5F1] hover:text-[#F4A300] transition-colors duration-200"
+              >
+                About Our Website
               </a>
             </div>
 

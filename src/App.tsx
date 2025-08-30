@@ -7,6 +7,7 @@ import { EventsPage } from './components/events/EventsPage';
 import DiningShoppingPage from './components/dining/DiningShoppingPage';
 import { RecyclingCenterPage } from './components/services/RecyclingCenterPage';
 import { AttractionsPage } from './components/attractions/AttractionsPage';
+import { AboutWebsite } from './components/pages/AboutWebsite';
 
 let theme: Theme = 'light';
 let container: Container = 'none';
@@ -29,6 +30,8 @@ function App() {
       setCurrentPage('dining');
     } else if (path.startsWith('/recycling-center')) {
       setCurrentPage('recycling-center');
+    } else if (path === '/about-website') {
+      setCurrentPage('about-website');
     } else if (path === '/' || path.startsWith('/?')) {
       setCurrentPage('home');
     }
@@ -54,6 +57,8 @@ function App() {
         setCurrentPage('dining');
       } else if (path.startsWith('/recycling-center')) {
         setCurrentPage('recycling-center');
+      } else if (path === '/about-website') {
+        setCurrentPage('about-website');
       } else if (path === '/' || path.startsWith('/?')) {
         setCurrentPage('home');
       }
@@ -96,6 +101,9 @@ function App() {
     } else if (href.startsWith('/recycling-center')) {
       setCurrentPage('recycling-center');
       window.history.pushState({}, '', href);
+    } else if (href === '/about-website') {
+      setCurrentPage('about-website');
+      window.history.pushState({}, '', href);
     } else if (href === '/' || href.startsWith('/?')) {
       setCurrentPage('home');
       window.history.pushState({}, '', href);
@@ -121,6 +129,8 @@ function App() {
       return <DiningShoppingPage googleApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ""} />;
     } else if (currentPage === 'recycling-center') {
       return <RecyclingCenterPage />;
+    } else if (currentPage === 'about-website') {
+      return <AboutWebsite />;
     }
     return <ExploreStonehamApp />; // %EXPORT_STATEMENT%
   }, [currentPage]);
