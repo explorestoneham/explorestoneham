@@ -94,7 +94,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Family',
     rating: 4.5,
     image: 'zoo',
-    imageUrl: '/images/stone-zoo.gif',
+    imageUrl: '/images/stone-zoo.jpg',
     description: 'Home to over 100 species of animals',
     address: '149 Pond St, Stoneham, MA',
     url: 'https://www.zoonewengland.org/stone-zoo/'
