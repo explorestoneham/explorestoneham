@@ -119,7 +119,7 @@ const tourStops: TourStop[] = [{
   id: 'church-square',
   title: 'Church Square',
   content: `At one time, four churches were located at the intersection of Central and Common Streets. In the 1900's local residents congregated on Sunday afternoons in this area to socialize at community functions.`,
-  imageUrl: '/api/placeholder/600/400',
+  imageUrl: '/images/church-square.jpg',
   subPages: [{
     id: 'first-congregational',
     title: 'First Congregational Church',
@@ -138,8 +138,7 @@ const tourStops: TourStop[] = [{
   }, {
     id: 'baptist-chapel',
     title: 'Baptist Chapel',
-    content: `The last church in "Church Square" was the former Baptist Chapel, built and dedicated in 1871 on Common Street. The building is now the property of the American Legion Hall. In 1892, the new First Baptist Church was dedicated at the corner of Main and Hancock Streets.`,
-    imageUrl: '/api/placeholder/600/400'
+    content: `The last church in "Church Square" was the former Baptist Chapel, built and dedicated in 1871 on Common Street. The building is now the property of the American Legion Hall. In 1892, the new First Baptist Church was dedicated at the corner of Main and Hancock Streets.`
   }]
 }, {
   id: 'town-hall-fire-station',
