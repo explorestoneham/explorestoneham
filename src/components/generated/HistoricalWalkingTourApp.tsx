@@ -170,7 +170,7 @@ const tourStops: TourStop[] = [{
   id: 'along-main',
   title: 'Along Main Street',
   content: `To round out our tour of historic downtown Stoneham, we continue along Main Street. Our tour concludes along historic Main Street (Route 28), the former Medford-Andover Turnpike built in 1806 that transformed Stoneham's development. Here you can see examples of Federal, Victorian, and Colonial Revival architecture that tell the story of Stoneham's evolution from a farming community to a modern suburb connected to Boston.`,
-  imageUrl: '/api/placeholder/600/400',
+  imageUrl: '/images/along-main-street.jpg',
   subPages: [{
     id: 'underground-railroad',
     title: 'Underground Railroad Site',
