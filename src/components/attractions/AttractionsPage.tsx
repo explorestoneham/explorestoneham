@@ -10,6 +10,7 @@ interface Attraction {
   category: string;
   rating: number;
   image: string;
+  imageUrl?: string; // New field for actual image URLs
   description: string;
   address: string;
   url?: string;
@@ -22,6 +23,7 @@ const attractions: Attraction[] = [{
   category: 'Family',
   rating: 4.5,
   image: 'zoo',
+  imageUrl: '/images/stone-zoo.gif',
   description: 'Home to over 100 species of animals',
   address: '149 Pond St, Stoneham, MA',
   url: 'https://www.zoonewengland.org/stone-zoo/'
@@ -31,6 +33,7 @@ const attractions: Attraction[] = [{
   category: 'Nature',
   rating: 4.8,
   image: 'pond',
+  imageUrl: '/images/middlesex-fells.jpg',
   description: 'Beautiful reservoir perfect for walking and fishing',
   address: 'Woodland Rd, Stoneham, MA'
 }, {
@@ -39,6 +42,7 @@ const attractions: Attraction[] = [{
   category: 'Historic',
   rating: 4.3,
   image: 'common',
+  imageUrl: '/images/town-hall.jpg',
   description: 'Historic town center with beautiful landscaping',
   address: 'Main St, Stoneham, MA'
 }, {
@@ -47,6 +51,7 @@ const attractions: Attraction[] = [{
   category: 'Nature',
   rating: 4.7,
   image: 'fells',
+  imageUrl: '/images/middlesex-fells.jpg',
   description: 'Hike, bike, fish, or let your dog run free. Rent a canoe or kayak to explore Spot Pond',
   address: 'Stoneham, MA'
 }, {
@@ -55,6 +60,7 @@ const attractions: Attraction[] = [{
   category: 'Recreation',
   rating: 4.2,
   image: 'golf',
+  imageUrl: '/images/unicorn-golf-course.jpg',
   description: 'Public golf course offering a challenging and enjoyable experience',
   address: 'Stoneham, MA',
   url: 'https://www.unicorngc.com'
@@ -64,6 +70,7 @@ const attractions: Attraction[] = [{
   category: 'Recreation',
   rating: 4.4,
   image: 'golf',
+  imageUrl: '/images/stoneham-oaks.webp',
   description: 'Premier golf course with excellent facilities and beautiful scenery',
   address: 'Stoneham, MA',
   url: 'https://www.stonehamoaks.com'
@@ -73,6 +80,7 @@ const attractions: Attraction[] = [{
   category: 'Recreation',
   rating: 4.5,
   image: 'boating',
+  imageUrl: '/images/spot-pond-boathouse.jpg',
   description: 'Sailing, kayaking, and canoeing on scenic Spot Pond',
   address: 'Stoneham, MA',
   url: 'https://boatinginboston.com/boathouses/spot-pond/'
@@ -82,6 +90,7 @@ const attractions: Attraction[] = [{
   category: 'Recreation',
   rating: 4.3,
   image: 'pool',
+  imageUrl: '/images/hall-memorial-pool.jpeg',
   description: 'Cool off in the summer months at this community pool',
   address: 'Stoneham, MA',
   url: 'https://bgcstoneham.org/hall-memorial-pool/'
@@ -91,6 +100,7 @@ const attractions: Attraction[] = [{
   category: 'Arts',
   rating: 4.6,
   image: 'theater',
+  imageUrl: '/images/greater-boston-stage.jpg',
   description: 'Professional theater company presenting quality productions',
   address: 'Stoneham, MA',
   url: 'https://www.greaterbostonstage.org/'
@@ -108,8 +118,29 @@ const AttractionCard: React.FC<{ attraction: Attraction }> = ({ attraction }) =>
       className={`bg-white rounded-xl shadow-lg overflow-hidden border border-[#D2E5F1] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${attraction.url ? 'cursor-pointer' : ''}`}
       onClick={handleClick}
     >
-      <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center">
-        <MapPin className="w-12 h-12 text-white" />
+      <div className="h-48 overflow-hidden">
+        {attraction.imageUrl ? (
+          <>
+            <img 
+              src={attraction.imageUrl} 
+              alt={attraction.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to gradient background if image fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                target.nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+            <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center hidden">
+              <MapPin className="w-12 h-12 text-white" />
+            </div>
+          </>
+        ) : (
+          <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center">
+            <MapPin className="w-12 h-12 text-white" />
+          </div>
+        )}
       </div>
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">

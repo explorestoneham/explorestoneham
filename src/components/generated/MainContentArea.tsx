@@ -12,6 +12,7 @@ interface Attraction {
   category: string;
   rating: number;
   image: string;
+  imageUrl?: string; // New field for actual image URLs
   description: string;
   address: string;
   url?: string;
@@ -93,6 +94,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Family',
     rating: 4.5,
     image: 'zoo',
+    imageUrl: 'https://www.zoonewengland.org/images/g_ZNElogo.gif',
     description: 'Home to over 100 species of animals',
     address: '149 Pond St, Stoneham, MA',
     url: 'https://www.zoonewengland.org/stone-zoo/'
@@ -110,6 +112,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Historic',
     rating: 4.3,
     image: 'common',
+    imageUrl: '/images/town-hall.jpg',
     description: 'Historic town center with beautiful landscaping',
     address: 'Main St, Stoneham, MA'
   }, {
@@ -215,8 +218,29 @@ export const MainContentArea: React.FC = () => {
         className={`bg-white rounded-xl shadow-lg overflow-hidden border border-[#D2E5F1] hover:shadow-xl transition-all duration-300 ${attraction.url ? 'cursor-pointer' : ''}`}
         onClick={handleClick}
       >
-        <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center">
-          <MapPin className="w-12 h-12 text-white" />
+        <div className="h-48 overflow-hidden">
+          {attraction.imageUrl ? (
+            <>
+              <img 
+                src={attraction.imageUrl} 
+                alt={attraction.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to gradient background if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center hidden">
+                <MapPin className="w-12 h-12 text-white" />
+              </div>
+            </>
+          ) : (
+            <div className="h-48 bg-gradient-to-br from-[#007B9E] to-[#2A6F4D] flex items-center justify-center">
+              <MapPin className="w-12 h-12 text-white" />
+            </div>
+          )}
         </div>
         <div className="p-6">
           <div className="flex items-center justify-between mb-2">
