@@ -3,7 +3,7 @@ import { CalendarEvent, CalendarSource } from '../types/calendar';
 export class StonehamnCanService {
   
   async fetchEvents(source: CalendarSource): Promise<CalendarEvent[]> {
-    console.log(`StonehamnCanService: fetchEvents called for ${source.name}`);
+    // Fetch events for Stoneham CAN
     
     // Check if we're in development mode by looking for localhost or the DEV flag
     const isDevelopment = 
@@ -15,30 +15,27 @@ export class StonehamnCanService {
       ));
     
     if (isDevelopment) {
-      console.log(`StonehamnCanService: Development mode detected - Stoneham CAN calendar sync disabled`);
-      console.log(`StonehamnCanService: This feature works in production where API routes are available`);
-      console.log(`StonehamnCanService: Deploy to test the full functionality`);
+      // Development mode - API routes not available
       return [];
     }
     
-    console.log(`StonehamnCanService: Production mode - attempting to fetch events via proxy`);
+    // Production mode - use proxy to fetch events
     
     try {
       // Production - use the proxy
       const htmlContent = await this.fetchViaProxy(source.url);
       
-      console.log(`StonehamnCanService: Received ${htmlContent.length} characters of HTML`);
+      // Parse the HTML content
       
       // Parse the HTML content
       let events = this.parseEventsFromHtml(htmlContent, source);
       
       // If no events found in HTML, try to find JSON data embedded in the page
       if (events.length === 0) {
-        console.log(`StonehamnCanService: No events found in HTML, trying to extract JSON data`);
         events = this.parseEventsFromJsonData(htmlContent, source);
       }
       
-      console.log(`StonehamnCanService: Parsed ${events.length} events`);
+      // Return parsed events
       return events;
       
     } catch (error) {
@@ -56,28 +53,25 @@ export class StonehamnCanService {
   
   private async fetchViaProxy(url: string): Promise<string> {
     const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
-    console.log(`StonehamnCanService: Fetching from proxy: ${proxyUrl}`);
-    console.log(`StonehamnCanService: Target URL: ${url}`);
+    // Fetch via proxy
     
     const response = await fetch(proxyUrl);
-    console.log(`StonehamnCanService: Proxy response status: ${response.status}`);
-    console.log(`StonehamnCanService: Proxy response headers:`, Object.fromEntries(response.headers));
+    // Check response status
     
     if (!response.ok) {
       throw new Error(`Proxy HTTP ${response.status}: ${response.statusText}`);
     }
     
     const responseText = await response.text();
-    console.log(`StonehamnCanService: Raw response length: ${responseText.length}`);
-    console.log(`StonehamnCanService: Response preview: ${responseText.substring(0, 200)}...`);
+    // Parse response
     
     let data;
     try {
       data = JSON.parse(responseText);
-      console.log(`StonehamnCanService: Successfully parsed JSON response`);
+      // JSON response parsed
     } catch (parseError) {
       console.error(`StonehamnCanService: JSON parse error:`, parseError);
-      console.log(`StonehamnCanService: First 500 chars of response:`, responseText.substring(0, 500));
+      // Could not parse JSON response
       
       // In development mode, the proxy might not be working and returning the actual source code
       if (responseText.includes('import') && responseText.includes('export default')) {

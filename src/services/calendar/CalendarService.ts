@@ -1,11 +1,11 @@
 import { CalendarEvent, CalendarSource, CalendarConfig, CalendarServiceInterface } from '../types/calendar';
-import { GoogleCalendarService } from './GoogleCalendarService';
+// import { GoogleCalendarService } from './GoogleCalendarService';
 import { ICalendarService } from './ICalendarService';
 import { ManualEventsService } from './ManualEventsService';
 import { StonehamnCanService } from './StonehamnCanService';
 
 export class CalendarService implements CalendarServiceInterface {
-  private googleService: GoogleCalendarService;
+  // private googleService: GoogleCalendarService;
   private icalService: ICalendarService;
   private manualService: ManualEventsService;
   private stonehamnCanService: StonehamnCanService;
@@ -14,7 +14,7 @@ export class CalendarService implements CalendarServiceInterface {
 
   constructor(config: CalendarConfig, googleApiKey: string) {
     this.config = config;
-    this.googleService = new GoogleCalendarService(googleApiKey);
+    // this.googleService = new GoogleCalendarService(googleApiKey);
     this.icalService = new ICalendarService();
     this.manualService = new ManualEventsService();
     this.stonehamnCanService = new StonehamnCanService();
@@ -35,9 +35,9 @@ export class CalendarService implements CalendarServiceInterface {
       let events: CalendarEvent[];
 
       switch (source.type) {
-        case 'google':
-          events = await this.googleService.fetchEvents(source);
-          break;
+        // case 'google':
+        //   events = await this.googleService.fetchEvents(source);
+        //   break;
         case 'icalendar':
         case 'rss':
           events = await this.icalService.fetchEvents(source);

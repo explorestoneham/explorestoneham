@@ -14,7 +14,7 @@ export interface CalendarEvent {
 export interface CalendarSource {
   id: string;
   name: string;
-  type: 'google' | 'icalendar' | 'rss' | 'manual' | 'stonehamcan';
+  type: 'icalendar' | 'rss' | 'manual' | 'stonehamcan';
   url: string;
   tag: string;
   defaultImageUrl?: string;
@@ -28,28 +28,28 @@ export interface CalendarConfig {
   maxEventsPerSource: number;
 }
 
-export interface GoogleCalendarEvent {
-  id: string;
-  summary: string;
-  description?: string;
-  start: {
-    dateTime?: string;
-    date?: string;
-    timeZone?: string;
-  };
-  end: {
-    dateTime?: string;
-    date?: string;
-    timeZone?: string;
-  };
-  location?: string;
-  htmlLink?: string;
-  attachments?: Array<{
-    fileUrl: string;
-    title: string;
-    mimeType: string;
-  }>;
-}
+// export interface GoogleCalendarEvent {
+//   id: string;
+//   summary: string;
+//   description?: string;
+//   start: {
+//     dateTime?: string;
+//     date?: string;
+//     timeZone?: string;
+//   };
+//   end: {
+//     dateTime?: string;
+//     date?: string;
+//     timeZone?: string;
+//   };
+//   location?: string;
+//   htmlLink?: string;
+//   attachments?: Array<{
+//     fileUrl: string;
+//     title: string;
+//     mimeType: string;
+//   }>;
+// }
 
 export interface ICalendarEvent {
   uid: string;

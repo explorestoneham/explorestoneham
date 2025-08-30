@@ -47,14 +47,10 @@ export function EventCard({ event }: EventCardProps) {
                 minHeight: '100%',
                 backgroundColor: 'transparent'
               }}
-              onLoad={(e) => {
-                console.log(`EventCard: Image loaded successfully for "${event.title}": ${event.imageUrl}`);
-                const target = e.target as HTMLImageElement;
-                console.log(`EventCard: Image dimensions: ${target.naturalWidth}x${target.naturalHeight}`);
+              onLoad={() => {
+                // Image loaded successfully
               }}
               onError={(e) => {
-                console.error(`EventCard: Image failed to load for "${event.title}": ${event.imageUrl}`);
-                
                 const target = e.target as HTMLImageElement;
                 
                 // If this was a proxied image that failed, try the original URL as fallback
@@ -62,7 +58,6 @@ export function EventCard({ event }: EventCardProps) {
                   const urlParams = new URLSearchParams(event.imageUrl.split('?')[1]);
                   const originalUrl = urlParams.get('url');
                   if (originalUrl && target.src !== originalUrl) {
-                    console.log(`EventCard: Trying original image URL for "${event.title}": ${originalUrl}`);
                     target.src = originalUrl;
                     return; // Don't hide the image yet, give the original URL a chance
                   }

@@ -1,6 +1,6 @@
 // Main service exports
 export { CalendarService } from './CalendarService';
-export { GoogleCalendarService } from './GoogleCalendarService';
+// export { GoogleCalendarService } from './GoogleCalendarService';
 export { ICalendarService } from './ICalendarService';
 export { StonehamnCanService } from './StonehamnCanService';
 
@@ -18,7 +18,7 @@ export type {
   CalendarSource,
   CalendarConfig,
   CalendarServiceInterface,
-  GoogleCalendarEvent,
+  // GoogleCalendarEvent,
   ICalendarEvent,
   RSSEvent
 } from '../types/calendar';
