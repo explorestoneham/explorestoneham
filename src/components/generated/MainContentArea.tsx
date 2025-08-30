@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Users, Building, Search, Filter, Clock, Star, Phone, Mail, ExternalLink, ChevronRight } from 'lucide-react';
 import { CalendarEvent } from '../../services/types/calendar';
@@ -76,18 +76,36 @@ export const MainContentArea: React.FC = () => {
   const getEventsToDisplay = (): CalendarEvent[] => {
     if (eventsLoading) return [];
     
+    let eventsToFilter: CalendarEvent[] = [];
+    
     if (isSearchActive && searchQuery.trim()) {
       // Show search results, limited to first 6 for main page
-      return searchResults.slice(0, 6).map(result => result.event);
+      eventsToFilter = searchResults.slice(0, 6).map(result => result.event);
+    } else {
+      // Show upcoming events, limited to 6 for main page
+      eventsToFilter = realEvents
+        .filter(event => event.startDate >= new Date())
+        .slice(0, 6);
     }
     
-    // Show upcoming events, limited to 6 for main page
-    return realEvents
-      .filter(event => event.startDate >= new Date())
-      .slice(0, 6);
+    // Apply category filter if not 'all'
+    if (activeFilter !== 'all') {
+      eventsToFilter = eventsToFilter.filter(event => 
+        event.tags.some(tag => tag.toLowerCase().includes(activeFilter.toLowerCase()))
+      );
+    }
+    
+    return eventsToFilter;
   };
   
-  const eventsToDisplay = getEventsToDisplay();
+  const eventsToDisplay = useMemo(() => getEventsToDisplay(), [
+    eventsLoading, 
+    isSearchActive, 
+    searchQuery, 
+    searchResults, 
+    realEvents, 
+    activeFilter
+  ]);
   const attractions: Attraction[] = [{
     id: '1',
     name: 'Stone Zoo',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Search } from 'lucide-react';
 import { CalendarEvent } from '../../services/types/calendar';
 import { CalendarService } from '../../services/calendar/CalendarService';
@@ -45,25 +45,7 @@ export function EventsPage({ googleApiKey }: EventsPageProps) {
     }
   }, [setSearchQuery]);
 
-  useEffect(() => {
-    updateSearchOptions();
-  }, [selectedTags, dateRange, setSearchOptions]);
-
-  const loadEvents = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const consolidatedEvents = await calendarService.consolidateEvents();
-      setEvents(consolidatedEvents);
-    } catch (err) {
-      setError('Failed to load events. Please try again later.');
-      console.error('Error loading events:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateSearchOptions = () => {
+  const updateSearchOptions = useCallback(() => {
     // Create date range filter
     let dateRangeFilter;
     if (dateRange !== 'all') {
@@ -86,6 +68,24 @@ export function EventsPage({ googleApiKey }: EventsPageProps) {
       tags: selectedTags.length > 0 ? selectedTags : undefined,
       dateRange: dateRangeFilter
     });
+  }, [selectedTags, dateRange, setSearchOptions]);
+
+  useEffect(() => {
+    updateSearchOptions();
+  }, [updateSearchOptions]);
+
+  const loadEvents = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const consolidatedEvents = await calendarService.consolidateEvents();
+      setEvents(consolidatedEvents);
+    } catch (err) {
+      setError('Failed to load events. Please try again later.');
+      console.error('Error loading events:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Get the final filtered events (either search results or all events filtered)
