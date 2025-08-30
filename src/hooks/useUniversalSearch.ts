@@ -84,10 +84,10 @@ export function useUniversalSearch({
     query: searchQuery
   }), [searchOptions, searchQuery]);
 
-  const { searchResults, resultsByType } = useMemo(() => {
+  const { results: searchResults, resultsByType } = useMemo(() => {
     if (!searchQuery.trim()) {
       return {
-        searchResults: [],
+        results: [],
         resultsByType: {
           attractions: [],
           businesses: [],

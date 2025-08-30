@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Filter } from 'lucide-react';
+import { Search, MapPin, Filter } from 'lucide-react';
 import { Header } from '../generated/Header';
 import { Footer } from '../generated/Footer';
 import { AttractionFilters } from './AttractionFilters';
