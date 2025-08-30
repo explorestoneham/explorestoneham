@@ -46,11 +46,8 @@ export function useEventSearch(events: CalendarEvent[]): UseEventSearchResult {
   }, [searchService, events, effectiveOptions]);
 
   const isSearchActive = useMemo(() => {
-    return !!(searchQuery.trim().length > 0 || 
-             searchOptions.tags?.length || 
-             searchOptions.dateRange || 
-             searchOptions.location);
-  }, [searchQuery, searchOptions]);
+    return !!(searchQuery.trim().length > 0);
+  }, [searchQuery]);
 
   const suggestions = useMemo(() => {
     if (!searchQuery.trim() || searchQuery.length < 2) return [];
