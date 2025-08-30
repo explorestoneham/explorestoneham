@@ -94,7 +94,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Family',
     rating: 4.5,
     image: 'zoo',
-    imageUrl: 'https://www.zoonewengland.org/images/g_ZNElogo.gif',
+    imageUrl: '/images/stone-zoo.gif',
     description: 'Home to over 100 species of animals',
     address: '149 Pond St, Stoneham, MA',
     url: 'https://www.zoonewengland.org/stone-zoo/'
@@ -104,6 +104,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Nature',
     rating: 4.8,
     image: 'pond',
+    imageUrl: '/images/spot-pond.png',
     description: 'Beautiful reservoir perfect for walking and fishing',
     address: 'Woodland Rd, Stoneham, MA'
   }, {
@@ -121,6 +122,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Nature',
     rating: 4.7,
     image: 'fells',
+    imageUrl: '/images/middlesex-fells.jpg',
     description: 'Hike, bike, fish, or let your dog run free. Rent a canoe or kayak to explore Spot Pond',
     address: 'Stoneham, MA'
   }, {
@@ -129,6 +131,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Recreation',
     rating: 4.2,
     image: 'golf',
+    imageUrl: '/images/unicorn-golf-course.jpg',
     description: 'Public golf course offering a challenging and enjoyable experience',
     address: 'Stoneham, MA',
     url: 'https://www.unicorngc.com'
@@ -138,6 +141,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Recreation',
     rating: 4.4,
     image: 'golf',
+    imageUrl: '/images/stoneham-oaks.webp',
     description: 'Premier golf course with excellent facilities and beautiful scenery',
     address: 'Stoneham, MA',
     url: 'https://www.stonehamoaks.com'
@@ -147,6 +151,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Recreation',
     rating: 4.5,
     image: 'boating',
+    imageUrl: '/images/spot-pond-boathouse.jpg',
     description: 'Sailing, kayaking, and canoeing on scenic Spot Pond',
     address: 'Stoneham, MA',
     url: 'https://boatinginboston.com/boathouses/spot-pond/'
@@ -156,6 +161,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Recreation',
     rating: 4.3,
     image: 'pool',
+    imageUrl: '/images/hall-memorial-pool.jpeg',
     description: 'Cool off in the summer months at this community pool',
     address: 'Stoneham, MA',
     url: 'https://bgcstoneham.org/hall-memorial-pool/'
@@ -165,6 +171,7 @@ export const MainContentArea: React.FC = () => {
     category: 'Arts',
     rating: 4.6,
     image: 'theater',
+    imageUrl: '/images/greater-boston-stage.jpg',
     description: 'Professional theater company presenting quality productions',
     address: 'Stoneham, MA',
     url: 'https://www.greaterbostonstage.org/'

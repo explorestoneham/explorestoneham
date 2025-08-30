@@ -33,7 +33,7 @@ const attractions: Attraction[] = [{
   category: 'Nature',
   rating: 4.8,
   image: 'pond',
-  imageUrl: '/images/middlesex-fells.jpg',
+  imageUrl: '/images/spot-pond.png',
   description: 'Beautiful reservoir perfect for walking and fishing',
   address: 'Woodland Rd, Stoneham, MA'
 }, {
