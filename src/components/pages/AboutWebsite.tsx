@@ -33,16 +33,50 @@ export const AboutWebsite: React.FC = () => {
               </div>
               <div className="space-y-4 text-[#404040] leading-relaxed">
                 <p>
-                  Explore Stoneham is a community initiative created and maintained by <strong>Stoneham CAN</strong>, 
-                  an independent non-profit organization dedicated to connecting our community through shared 
-                  experiences, local discoveries, and neighborly spirit.
+                  Explore Stoneham is a community initiative created and maintained by <strong>Stoneham CAN</strong> 
+                  (Stoneham Community Action Network), an independent non-profit organization that serves as a 
+                  <strong> catalyst and resource for resident-driven, grassroots initiatives</strong> that support 
+                  social and environmental sustainability, strengthen community connection, and enhance the 
+                  livability of Stoneham, MA.
                 </p>
                 <p>
-                  We are <strong>not part of the town government</strong> - we're your neighbors who are passionate 
-                  about making it easier for everyone to discover what makes Stoneham special. Our mission is to 
-                  strengthen community bonds by helping residents and visitors find local events, attractions, 
-                  services, and opportunities to get involved.
+                  We are <strong>not part of the town government</strong>. We're your neighbors who 
+                  <strong> empower residents to lead creative, grassroots initiatives</strong> that strengthen 
+                  community connection, celebrate diversity, and build a more vibrant, sustainable Stoneham. 
+                  We provide essential support—such as funding, volunteers, partnership, visibility, and 
+                  administrative infrastructure—to help local projects grow in capacity and impact.
                 </p>
+                <p>
+                  <strong>Our vision:</strong> A vibrant Stoneham where residents feel connected and empowered 
+                  as active agents in building a community that is sustainable, resilient, and welcoming to all. 
+                  Our programming celebrates Stoneham's rich history and uplifts its growing diversity with a 
+                  forward-looking spirit, encouraging residents to dream big and bring creative, innovative ideas to life.
+                </p>
+                <div className="bg-[#93C47D]/20 rounded-lg p-4 mt-6">
+                  <h3 className="font-semibold text-[#2A6F4D] mb-2">Our Core Values</h3>
+                  <div className="grid md:grid-cols-2 gap-2 text-sm">
+                    <div className="flex items-center">
+                      <span className="w-2 h-2 bg-[#2A6F4D] rounded-full mr-2"></span>
+                      <span>Equity & Accessibility</span>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="w-2 h-2 bg-[#007B9E] rounded-full mr-2"></span>
+                      <span>Environmental & Social Sustainability</span>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="w-2 h-2 bg-[#D95D39] rounded-full mr-2"></span>
+                      <span>Inclusion & Belonging</span>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="w-2 h-2 bg-[#F4A300] rounded-full mr-2"></span>
+                      <span>Continuous Learning & Accountability</span>
+                    </div>
+                    <div className="flex items-center md:col-span-2">
+                      <span className="w-2 h-2 bg-[#93C47D] rounded-full mr-2"></span>
+                      <span>Creativity & Empowerment</span>
+                    </div>
+                  </div>
+                </div>
                 <div className="bg-[#D2E5F1]/30 rounded-lg p-4 mt-6">
                   <p className="text-sm">
                     Learn more about Stoneham CAN at{' '}
@@ -68,20 +102,29 @@ export const AboutWebsite: React.FC = () => {
               </div>
               <div className="space-y-4 text-[#404040] leading-relaxed">
                 <p>
-                  This website serves as a central hub for discovering everything Stoneham has to offer. We bring 
-                  together information about:
+                  This website serves as a central hub that <strong>empowers residents to discover, connect, and 
+                  get involved</strong> in the grassroots initiatives and creative projects that are making 
+                  Stoneham more vibrant, sustainable, and welcoming to all. We bring together information about:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Community events and activities</li>
-                  <li>Local attractions and recreational opportunities</li>
-                  <li>Community services and resources</li>
-                  <li>Local businesses and dining options</li>
-                  <li>Ways to get involved in our community</li>
+                  <li><strong>Community-driven events and grassroots initiatives</strong> that strengthen connections</li>
+                  <li><strong>Local attractions and sustainable recreational opportunities</strong> that celebrate our natural beauty</li>
+                  <li><strong>Community services and resources</strong> with a focus on equity and accessibility</li>
+                  <li><strong>Local businesses and dining options</strong> that support our thriving local economy</li>
+                  <li><strong>Ways to lead and participate</strong> in resident-driven projects that build community resilience</li>
                 </ul>
                 <p>
-                  Our goal is to make it easier for residents to stay connected and for visitors to discover 
-                  the charm and character that make Stoneham a wonderful place to live and visit.
+                  Our goal is to make it easier for residents to become <strong>active agents</strong> in building 
+                  the community they want to see, while helping visitors discover the innovative spirit and 
+                  growing diversity that make Stoneham a wonderful place to live, work, and play.
                 </p>
+                <div className="bg-[#F4A300]/20 rounded-lg p-4 mt-6">
+                  <p className="text-sm">
+                    <strong>Ready to get involved?</strong> Explore our events calendar to find grassroots 
+                    initiatives you can join, or submit your own creative ideas through our community forms. 
+                    When neighbors come together, Stoneham CAN!
+                  </p>
+                </div>
               </div>
             </section>
 
@@ -199,10 +242,14 @@ export const AboutWebsite: React.FC = () => {
             {/* Community Message */}
             <section className="bg-gradient-to-r from-[#2A6F4D] to-[#007B9E] rounded-xl shadow-md p-8 text-white text-center">
               <Heart className="w-12 h-12 mx-auto mb-4 text-[#F4A300]" />
-              <h2 className="text-2xl font-bold mb-4">Built with Love for Our Community</h2>
-              <p className="text-lg leading-relaxed max-w-2xl mx-auto">
-                This website exists because we believe in the power of community connection. Thank you for being 
-                part of what makes Stoneham special, and thank you for exploring all our town has to offer!
+              <h2 className="text-2xl font-bold mb-4">Where Neighbors Lead and Community Grows</h2>
+              <p className="text-lg leading-relaxed max-w-2xl mx-auto mb-4">
+                This website exists because we believe in the power of <strong>creativity to spark change</strong> and 
+                the strength that comes when residents are empowered as active agents in building our community. 
+                Thank you for being part of what makes Stoneham vibrant, sustainable, and welcoming to all!
+              </p>
+              <p className="text-[#F4A300] font-semibold text-xl">
+                Together, Stoneham CAN.
               </p>
             </section>
           </div>

@@ -54,7 +54,7 @@ export const Footer: React.FC = () => {
             
             <p className="text-[#D2E5F1] leading-relaxed">
               A community initiative by <a href="https://www.stonehamcan.org/" target="_blank" rel="noopener noreferrer" className="text-[#F4A300] hover:text-[#D95D39] transition-colors duration-200">Stoneham CAN</a>. 
-              Connecting our community through shared experiences, local discoveries, and neighborly spirit.
+              Empowering residents to lead creative, grassroots initiatives that strengthen community connection, celebrate diversity, and build a more vibrant, sustainable Stoneham.
             </p>
 
             {/* Social Links */}
@@ -90,25 +90,7 @@ export const Footer: React.FC = () => {
             {/* Newsletter Signup */}
             <div className="pt-4 border-t border-white/20">
               <h5 className="text-lg font-semibold text-white mb-3">Stay Updated</h5>
-              <p className="text-[#D2E5F1] text-sm mb-4">Subscribe to our community newsletters:</p>
-              
-              <div className="space-y-3 mb-4">
-                <label className="flex items-start space-x-3 text-[#D2E5F1] text-sm cursor-pointer">
-                  <input type="checkbox" className="mt-1 w-4 h-4 text-[#F4A300] bg-white/10 border-white/20 rounded focus:ring-[#F4A300] focus:ring-2" />
-                  <div>
-                    <span className="font-medium text-white">Stoneham CAN Newsletter</span>
-                    <p className="text-xs text-[#D2E5F1]/80">Community updates and events</p>
-                  </div>
-                </label>
-                
-                <label className="flex items-start space-x-3 text-[#D2E5F1] text-sm cursor-pointer">
-                  <input type="checkbox" className="mt-1 w-4 h-4 text-[#F4A300] bg-white/10 border-white/20 rounded focus:ring-[#F4A300] focus:ring-2" />
-                  <div>
-                    <span className="font-medium text-white">Stoneham Reads Newsletter</span>
-                    <p className="text-xs text-[#D2E5F1]/80">Library news and reading recommendations</p>
-                  </div>
-                </label>
-              </div>
+              <p className="text-[#D2E5F1] text-sm mb-4">Subscribe to our community newsletters</p>
               
               <button 
                 onClick={() => window.open('https://www.stonehamcan.org/be-connected', '_blank')}
