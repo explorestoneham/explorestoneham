@@ -10,6 +10,7 @@ export class ManualEventsService {
       endDate: new Date('2025-09-06T19:00:00-04:00'),
       location: 'Various porches throughout Stoneham',
       url: 'https://www.stonehamporchfest.com/',
+      imageUrl: '/images/stoneham-porchfest-logo.webp',
       source: {
         id: 'manual-events',
         name: 'Stoneham CAN',

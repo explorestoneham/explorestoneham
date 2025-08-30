@@ -100,7 +100,10 @@ export const HeroSection: React.FC = () => {
                 <div className="text-xs text-[#D2E5F1]">Attractions & Parks</div>
               </button>
               
-              <button className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center">
+              <button 
+                onClick={() => (window as any).handleNavigation?.('/dining')}
+                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 text-center"
+              >
                 <div className="flex items-center justify-center w-12 h-12 bg-[#D95D39] rounded-full mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
                   <Utensils className="w-6 h-6 text-white" />
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MapPin, Star, Filter } from 'lucide-react';
+import { MapPin, Filter } from 'lucide-react';
 import { Header } from '../generated/Header';
 import { Footer } from '../generated/Footer';
 import { AttractionFilters } from './AttractionFilters';
@@ -147,10 +147,6 @@ const AttractionCard: React.FC<{ attraction: Attraction }> = ({ attraction }) =>
           <span className="px-3 py-1 bg-[#2A6F4D] text-white text-xs font-semibold rounded-full">
             {attraction.category}
           </span>
-          <div className="flex items-center">
-            <Star className="w-4 h-4 text-[#F4A300] fill-current" />
-            <span className="ml-1 text-sm font-semibold text-[#404040]">{attraction.rating}</span>
-          </div>
         </div>
         <h3 className="text-xl font-bold text-[#404040] mb-2">{attraction.name}</h3>
         <p className="text-[#404040]/70 mb-4 line-clamp-2">{attraction.description}</p>

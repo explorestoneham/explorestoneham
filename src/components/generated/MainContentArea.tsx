@@ -256,10 +256,6 @@ export const MainContentArea: React.FC = () => {
             <span className="px-3 py-1 bg-[#2A6F4D] text-white text-xs font-semibold rounded-full">
               {attraction.category}
             </span>
-            <div className="flex items-center">
-              <Star className="w-4 h-4 text-[#F4A300] fill-current" />
-              <span className="ml-1 text-sm font-semibold text-[#404040]">{attraction.rating}</span>
-            </div>
           </div>
           <h3 className="text-xl font-bold text-[#404040] mb-2">{attraction.name}</h3>
           <p className="text-[#404040]/70 mb-4 line-clamp-2">{attraction.description}</p>

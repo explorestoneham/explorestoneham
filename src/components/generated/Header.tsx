@@ -31,8 +31,8 @@ export const Header: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to events page with search query
-      const url = `/events?search=${encodeURIComponent(searchQuery.trim())}`;
+      // Navigate to universal search page with search query
+      const url = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
       (window as any).handleNavigation?.(url);
       setSearchQuery(''); // Clear the search after navigating
     }
@@ -100,7 +100,7 @@ export const Header: React.FC = () => {
           {/* Search Bar - Desktop */}
           <form onSubmit={handleSearch} className="hidden lg:flex items-center">
             <div className="relative">
-              <input type="text" placeholder="Search events, attractions..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-64 pl-10 pr-4 py-2 border border-[#D2E5F1] rounded-full focus:outline-none focus:ring-2 focus:ring-[#007B9E] focus:border-transparent" />
+              <input type="text" placeholder="Search events, attractions, dining, services..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-64 pl-10 pr-4 py-2 border border-[#D2E5F1] rounded-full focus:outline-none focus:ring-2 focus:ring-[#007B9E] focus:border-transparent" />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#404040]" />
             </div>
           </form>
@@ -114,7 +114,7 @@ export const Header: React.FC = () => {
         {/* Mobile Search Bar */}
         <div className="lg:hidden pb-4">
           <form onSubmit={handleSearch} className="relative">
-            <input type="text" placeholder="Search events, attractions..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-[#D2E5F1] rounded-full focus:outline-none focus:ring-2 focus:ring-[#007B9E] focus:border-transparent" />
+            <input type="text" placeholder="Search events, attractions, dining, services..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-[#D2E5F1] rounded-full focus:outline-none focus:ring-2 focus:ring-[#007B9E] focus:border-transparent" />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#404040]" />
           </form>
         </div>
