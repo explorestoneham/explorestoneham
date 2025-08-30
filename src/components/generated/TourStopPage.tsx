@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Home, ExternalLink, ChevronDown, Expand } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, ExternalLink, ChevronDown } from 'lucide-react';
 import { TourStop } from './HistoricalWalkingTourApp';
 import { TourNavigation } from './TourNavigation';
 import { ImageModal } from '../ui/ImageModal';
@@ -94,25 +94,13 @@ export function TourStopPage({
             </h1>
 
             {stop.imageUrl && (
-              <figure className="mb-8 relative group">
-                <div 
-                  className="relative cursor-pointer overflow-hidden rounded-2xl"
+              <figure className="mb-8">
+                <img 
+                  src={stop.imageUrl} 
+                  alt={`Historic view of ${stop.title}`} 
+                  className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg border border-[#D2E5F1] cursor-pointer hover:shadow-xl transition-shadow duration-300" 
                   onClick={() => setIsModalOpen(true)}
-                >
-                  <img 
-                    src={stop.imageUrl} 
-                    alt={`Historic view of ${stop.title}`} 
-                    className="w-full h-64 md:h-96 object-cover shadow-lg border border-[#D2E5F1] transition-transform duration-300 group-hover:scale-105" 
-                  />
-                  
-                  {/* Overlay with expand icon */}
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white bg-opacity-90 rounded-full p-3 shadow-lg">
-                      <Expand className="w-6 h-6 text-[#2A6F4D]" />
-                    </div>
-                  </div>
-                </div>
-                
+                />
                 <figcaption className="text-sm text-[#404040]/70 mt-2 text-center">
                   Click to view full size
                 </figcaption>

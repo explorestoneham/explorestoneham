@@ -36,17 +36,17 @@ export function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalPr
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4"
           onClick={onClose}
         >
-          <div className="relative max-w-[95vw] max-h-[95vh] p-4">
+          <div className="relative flex items-center justify-center w-full h-full">
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute -top-2 -right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-black shadow-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white"
+              className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black shadow-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white"
               aria-label="Close image modal"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -58,7 +58,7 @@ export function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalPr
               exit={{ scale: 0.8 }}
               src={imageSrc}
               alt={imageAlt}
-              className="max-h-full max-w-full rounded-lg shadow-2xl"
+              className="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl object-contain"
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on image
             />
           </div>
