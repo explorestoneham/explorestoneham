@@ -185,7 +185,7 @@ export class StonehamnLibraryService {
         endDate,
         location,
         url: data.url as string,
-        imageUrl: (data.image as string) || source.defaultImageUrl,
+        imageUrl: this.normalizeImageUrl((data.image as string)) || source.defaultImageUrl,
         source,
         tags: [source.tag, 'library', 'events']
       };
@@ -325,6 +325,29 @@ export class StonehamnLibraryService {
     const locationKey = (event.location || '').toLowerCase().trim();
     
     return `${titleKey}|${dateKey}|${timeKey}|${locationKey}`;
+  }
+  
+  private normalizeImageUrl(imageUrl: string): string | undefined {
+    if (!imageUrl) return undefined;
+    
+    // Check if it's an S3 image that needs proxying
+    if (imageUrl.includes('s3.amazonaws.com') || imageUrl.includes('ai-assets')) {
+      const isDevelopment = 
+        import.meta.env?.DEV || 
+        (typeof window !== 'undefined' && (
+          window.location.hostname === 'localhost' ||
+          window.location.hostname === '127.0.0.1' ||
+          window.location.port === '5173'
+        ));
+      
+      if (!isDevelopment) {
+        // Use image proxy in production to handle CORS
+        console.log(`StonehamnLibraryService: Using image proxy for S3 image: ${imageUrl}`);
+        return `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
+      }
+    }
+    
+    return imageUrl;
   }
   
   private generateEventId(title: string, date: Date): string {

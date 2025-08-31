@@ -36,7 +36,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const allowedDomains = [
       'images.squarespace-cdn.com',
       'static1.squarespace.com',
-      'stonehamcan.org'
+      'stonehamcan.org',
+      's3.amazonaws.com',
+      'ai-assets.s3.amazonaws.com'
     ];
 
     const urlObj = new URL(url);
