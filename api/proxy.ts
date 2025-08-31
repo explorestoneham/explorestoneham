@@ -2,6 +2,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import https from 'https';
 import http from 'http';
 import { URL } from 'url';
+import zlib from 'zlib';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS for all origins
@@ -37,7 +38,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'stoneham-ma.gov',
       'calendar.google.com',
       'googleapis.com',
-      'stonehamcan.org'
+      'stonehamcan.org',
+      'stonehamlibrary.assabetinteractive.com',
+      'assabetinteractive.com'
     ];
 
     const urlObj = new URL(url);
@@ -60,21 +63,45 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         path: urlObj.pathname + urlObj.search,
         method: 'GET',
         headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; ExploreStoneham-CalendarProxy/1.0)',
-          'Accept': 'text/html, application/rss+xml, text/calendar, text/xml, */*'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Referer': urlObj.origin + '/'
         }
       };
 
       const request = client.request(options, (response) => {
-        let data = '';
+        let rawData = Buffer.alloc(0);
         
         response.on('data', (chunk) => {
-          data += chunk;
+          rawData = Buffer.concat([rawData, chunk]);
         });
         
         response.on('end', () => {
           if (response.statusCode >= 200 && response.statusCode < 300) {
-            resolve(data);
+            try {
+              let data: string;
+              const encoding = response.headers['content-encoding'];
+              
+              if (encoding === 'gzip') {
+                data = zlib.gunzipSync(rawData).toString('utf-8');
+              } else if (encoding === 'deflate') {
+                data = zlib.inflateSync(rawData).toString('utf-8');
+              } else if (encoding === 'br') {
+                data = zlib.brotliDecompressSync(rawData).toString('utf-8');
+              } else {
+                data = rawData.toString('utf-8');
+              }
+              
+              resolve(data);
+            } catch (decompressError) {
+              console.error('Decompression error:', decompressError);
+              // Fallback to raw data as string
+              resolve(rawData.toString('utf-8'));
+            }
           } else {
             reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
           }
