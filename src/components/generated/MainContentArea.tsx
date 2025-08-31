@@ -155,14 +155,14 @@ export const MainContentArea: React.FC = () => {
     url: 'https://www.unicorngc.com'
   }, {
     id: '6',
-    name: 'Stoneham Oaks Golf Course',
-    category: 'Recreation',
+    name: 'Tri-Community Greenway',
+    category: 'Nature',
     rating: 4.4,
-    image: 'golf',
-    imageUrl: '/images/stoneham-oaks.webp',
-    description: 'Premier golf course with excellent facilities and beautiful scenery',
+    image: 'greenway',
+    imageUrl: '/images/TriCommunityGreenway.jpg',
+    description: '6.63-mile bike and walking route connecting Stoneham, Winchester, and Woburn with a spur to Horn Pond',
     address: 'Stoneham, MA',
-    url: 'https://www.stonehamoaks.com'
+    url: 'https://mysticlinktrail.org/stoneham/'
   }, {
     id: '7',
     name: 'Spot Pond Boathouse',
