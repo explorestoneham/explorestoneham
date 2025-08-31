@@ -154,37 +154,80 @@ export class StonehamnLibraryService {
       const description = data.description as string;
       
       // Parse start date (JSON-LD typically only has date, not time)
-      let startDate = new Date(data.startDate as string);
+      const startDateString = data.startDate as string;
+      if (!startDateString) {
+        console.warn(`StonehamnLibraryService: Missing start date for event: ${title}`);
+        return null;
+      }
+      
+      // First check if JSON-LD has doorTime (time in 24-hour format)
+      let startDate: Date;
+      const doorTime = data.doorTime as string;
+      
+      if (doorTime && doorTime.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        // Parse doorTime format "19:00:00"
+        const [hours, minutes, seconds] = doorTime.split(':').map(Number);
+        // Create date in local timezone to avoid UTC conversion issues
+        const dateParts = startDateString.split('-').map(Number); // [2025, 9, 3]
+        startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], hours, minutes, seconds || 0);
+        console.log(`StonehamnLibraryService: Using doorTime ${doorTime} for event: ${title}`);
+      } else {
+        // Fallback: parse just the date and try to extract time from HTML
+        const dateParts = startDateString.split('-').map(Number); // [2025, 9, 3]  
+        startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], 0, 0, 0); // Start at midnight local time
+        
+        // Try to extract time information from the HTML if available
+        if (htmlDoc) {
+          const timeInfo = this.extractTimeFromHtml(htmlDoc);
+          if (timeInfo.startTime) {
+            // Combine the date with time from HTML
+            const [hours, minutes] = timeInfo.startTime;
+            startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], hours, minutes);
+            console.log(`StonehamnLibraryService: Using HTML time ${hours}:${minutes} for event: ${title}`);
+          }
+        }
+      }
+      
       if (isNaN(startDate.getTime())) {
         console.warn(`StonehamnLibraryService: Invalid start date for event: ${title}`);
         return null;
       }
       
-      // Try to extract time information from the HTML if available
-      if (htmlDoc) {
-        const timeInfo = this.extractTimeFromHtml(htmlDoc);
-        if (timeInfo.startTime) {
-          // Combine the date from JSON-LD with time from HTML
-          const [hours, minutes] = timeInfo.startTime;
-          startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), hours, minutes);
-        }
-      }
-      
       // Parse end date
-      let endDate = data.endDate ? new Date(data.endDate as string) : null;
-      if (!endDate || isNaN(endDate.getTime())) {
-        // Default to 2 hours if no end date
-        endDate = new Date(startDate.getTime() + (2 * 60 * 60 * 1000));
-      } else if (htmlDoc) {
+      let endDate: Date;
+      const endDateString = data.endDate as string;
+      const duration = data.duration as string; // Format: "PT3600S" (3600 seconds = 1 hour)
+      
+      if (duration && duration.match(/^PT(\d+)S$/)) {
+        // Use duration from JSON-LD
+        const durationMatch = duration.match(/^PT(\d+)S$/);
+        const durationSeconds = durationMatch ? parseInt(durationMatch[1]) : 3600;
+        endDate = new Date(startDate.getTime() + (durationSeconds * 1000));
+        console.log(`StonehamnLibraryService: Using duration ${duration} (${durationSeconds}s) for event: ${title}`);
+      } else if (endDateString) {
+        // Try to parse end date with same logic as start date
+        const dateParts = endDateString.split('-').map(Number);
+        endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], 0, 0, 0);
+        
         // Try to get end time from HTML
-        const timeInfo = this.extractTimeFromHtml(htmlDoc);
-        if (timeInfo.endTime) {
-          const [hours, minutes] = timeInfo.endTime;
-          endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), hours, minutes);
-        } else if (timeInfo.startTime) {
-          // If we have start time but no end time, assume 1-2 hour duration
+        if (htmlDoc) {
+          const timeInfo = this.extractTimeFromHtml(htmlDoc);
+          if (timeInfo.endTime) {
+            const [hours, minutes] = timeInfo.endTime;
+            endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], hours, minutes);
+            console.log(`StonehamnLibraryService: Using HTML end time ${hours}:${minutes} for event: ${title}`);
+          } else if (timeInfo.startTime) {
+            // If we have start time but no end time, assume 1 hour duration
+            endDate = new Date(startDate.getTime() + (60 * 60 * 1000));
+          }
+        }
+        
+        if (isNaN(endDate.getTime())) {
           endDate = new Date(startDate.getTime() + (60 * 60 * 1000)); // 1 hour default
         }
+      } else {
+        // Default to 1 hour if no end date or duration
+        endDate = new Date(startDate.getTime() + (60 * 60 * 1000));
       }
       
       // Extract location
