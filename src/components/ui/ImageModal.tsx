@@ -37,7 +37,7 @@ export function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalPr
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-90 p-4"
-          style={{ paddingTop: '80px' }} // Account for header height (lg:h-20)
+          style={{ marginTop: '-80px' }} // Account for header height (lg:h-20)
           onClick={onClose}
         >
           <div className="relative flex items-center justify-center w-full h-full">
