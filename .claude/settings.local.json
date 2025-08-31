@@ -6,7 +6,10 @@
       "WebSearch",
       "WebFetch(domain:www.mass.gov)",
       "WebFetch(domain:www.unicorngc.com)",
-      "WebFetch(domain:www.stonehamoaks.com)"
+      "WebFetch(domain:www.stonehamoaks.com)",
+      "WebFetch(domain:stonehamlibrary.org)",
+      "WebFetch(domain:stonehamlibrary.assabetinteractive.com)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

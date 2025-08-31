@@ -3,6 +3,7 @@ export { CalendarService } from './CalendarService';
 // export { GoogleCalendarService } from './GoogleCalendarService';
 export { ICalendarService } from './ICalendarService';
 export { StonehamnCanService } from './StonehamnCanService';
+export { StonehamnLibraryService } from './StonehamnLibraryService';
 
 // Configuration exports
 export {

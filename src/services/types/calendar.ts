@@ -14,7 +14,7 @@ export interface CalendarEvent {
 export interface CalendarSource {
   id: string;
   name: string;
-  type: 'icalendar' | 'rss' | 'manual' | 'stonehamcan';
+  type: 'icalendar' | 'rss' | 'manual' | 'stonehamcan' | 'stonehamlibrary';
   url: string;
   tag: string;
   defaultImageUrl?: string;

@@ -3,12 +3,14 @@ import { CalendarEvent, CalendarSource, CalendarConfig, CalendarServiceInterface
 import { ICalendarService } from './ICalendarService';
 import { ManualEventsService } from './ManualEventsService';
 import { StonehamnCanService } from './StonehamnCanService';
+import { StonehamnLibraryService } from './StonehamnLibraryService';
 
 export class CalendarService implements CalendarServiceInterface {
   // private googleService: GoogleCalendarService;
   private icalService: ICalendarService;
   private manualService: ManualEventsService;
   private stonehamnCanService: StonehamnCanService;
+  private stonehamnLibraryService: StonehamnLibraryService;
   private config: CalendarConfig;
   private cache: Map<string, { events: CalendarEvent[], timestamp: number }> = new Map();
 
@@ -18,6 +20,7 @@ export class CalendarService implements CalendarServiceInterface {
     this.icalService = new ICalendarService();
     this.manualService = new ManualEventsService();
     this.stonehamnCanService = new StonehamnCanService();
+    this.stonehamnLibraryService = new StonehamnLibraryService();
   }
 
   async fetchEvents(source: CalendarSource): Promise<CalendarEvent[]> {
@@ -47,6 +50,9 @@ export class CalendarService implements CalendarServiceInterface {
           break;
         case 'stonehamcan':
           events = await this.stonehamnCanService.fetchEvents(source);
+          break;
+        case 'stonehamlibrary':
+          events = await this.stonehamnLibraryService.fetchEvents(source);
           break;
         default:
           throw new Error(`Unsupported calendar type: ${source.type}`);

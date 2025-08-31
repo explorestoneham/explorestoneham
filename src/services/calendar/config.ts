@@ -52,6 +52,16 @@ export const STONEHAM_CALENDAR_SOURCES: CalendarSource[] = [
     defaultImageUrl: '/images/community.jpg',
     color: '#10B981', // Green
     enabled: true // Always enabled - the service handles dev/prod logic internally
+  },
+  {
+    id: 'stoneham-library-calendar',
+    name: 'Stoneham Library Events',
+    type: 'stonehamlibrary',
+    url: 'https://stonehamlibrary.assabetinteractive.com/calendar/',
+    tag: 'library',
+    defaultImageUrl: '/images/library.jpg',
+    color: '#7C3AED', // Purple
+    enabled: true // Always enabled - the service handles dev/prod logic internally
   }
 ];
 
