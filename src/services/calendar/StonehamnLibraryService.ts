@@ -108,14 +108,14 @@ export class StonehamnLibraryService {
           const jsonData = JSON.parse(script.textContent || '');
           
           if (jsonData['@type'] === 'Event') {
-            const event = this.parseJsonLdEvent(jsonData, source);
+            const event = this.parseJsonLdEvent(jsonData, source, doc);
             if (event) {
               events.push(event);
             }
           } else if (Array.isArray(jsonData)) {
             for (const item of jsonData) {
               if (item['@type'] === 'Event') {
-                const event = this.parseJsonLdEvent(item, source);
+                const event = this.parseJsonLdEvent(item, source, doc);
                 if (event) {
                   events.push(event);
                 }
@@ -142,7 +142,7 @@ export class StonehamnLibraryService {
     return events;
   }
   
-  private parseJsonLdEvent(jsonData: unknown, source: CalendarSource): CalendarEvent | null {
+  private parseJsonLdEvent(jsonData: unknown, source: CalendarSource, htmlDoc?: Document): CalendarEvent | null {
     try {
       // Type guard for object with string properties
       if (!jsonData || typeof jsonData !== 'object') {
@@ -153,11 +153,21 @@ export class StonehamnLibraryService {
       const title = (data.name as string) || (data.summary as string) || 'Untitled Event';
       const description = data.description as string;
       
-      // Parse start date
-      const startDate = new Date(data.startDate as string);
+      // Parse start date (JSON-LD typically only has date, not time)
+      let startDate = new Date(data.startDate as string);
       if (isNaN(startDate.getTime())) {
         console.warn(`StonehamnLibraryService: Invalid start date for event: ${title}`);
         return null;
+      }
+      
+      // Try to extract time information from the HTML if available
+      if (htmlDoc) {
+        const timeInfo = this.extractTimeFromHtml(htmlDoc);
+        if (timeInfo.startTime) {
+          // Combine the date from JSON-LD with time from HTML
+          const [hours, minutes] = timeInfo.startTime;
+          startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), hours, minutes);
+        }
       }
       
       // Parse end date
@@ -165,6 +175,16 @@ export class StonehamnLibraryService {
       if (!endDate || isNaN(endDate.getTime())) {
         // Default to 2 hours if no end date
         endDate = new Date(startDate.getTime() + (2 * 60 * 60 * 1000));
+      } else if (htmlDoc) {
+        // Try to get end time from HTML
+        const timeInfo = this.extractTimeFromHtml(htmlDoc);
+        if (timeInfo.endTime) {
+          const [hours, minutes] = timeInfo.endTime;
+          endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), hours, minutes);
+        } else if (timeInfo.startTime) {
+          // If we have start time but no end time, assume 1-2 hour duration
+          endDate = new Date(startDate.getTime() + (60 * 60 * 1000)); // 1 hour default
+        }
       }
       
       // Extract location
@@ -354,5 +374,106 @@ export class StonehamnLibraryService {
     const normalizedTitle = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
     const dateStr = date.toISOString().split('T')[0];
     return `stoneham-library-${dateStr}-${normalizedTitle}`;
+  }
+  
+  private extractTimeFromHtml(doc: Document): { startTime?: [number, number], endTime?: [number, number] } {
+    // Look for time patterns in the HTML content
+    const timePatterns = [
+      // Pattern like "7:00—8:00 PM" or "7:00-8:00 PM"
+      /(\d{1,2}):(\d{2})\s*[—-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i,
+      // Pattern like "7:00 PM - 8:00 PM"
+      /(\d{1,2}):(\d{2})\s*(AM|PM)\s*-\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i,
+      // Pattern like "7:00 PM to 8:00 PM"
+      /(\d{1,2}):(\d{2})\s*(AM|PM)\s+to\s+(\d{1,2}):(\d{2})\s*(AM|PM)/i,
+    ];
+    
+    // Get all text content from the document
+    const textContent = doc.body?.textContent || '';
+    
+    for (const pattern of timePatterns) {
+      const match = textContent.match(pattern);
+      if (match) {
+        try {
+          let startHour: number, startMinute: number, endHour: number, endMinute: number;
+          
+          if (pattern.source.includes('AM|PM.*AM|PM')) {
+            // Format: "7:00 PM - 8:00 PM"
+            startHour = parseInt(match[1]);
+            startMinute = parseInt(match[2]);
+            const startAmPm = match[3];
+            endHour = parseInt(match[4]);
+            endMinute = parseInt(match[5]);
+            const endAmPm = match[6];
+            
+            // Convert to 24-hour format
+            if (startAmPm.toUpperCase() === 'PM' && startHour !== 12) {
+              startHour += 12;
+            } else if (startAmPm.toUpperCase() === 'AM' && startHour === 12) {
+              startHour = 0;
+            }
+            
+            if (endAmPm.toUpperCase() === 'PM' && endHour !== 12) {
+              endHour += 12;
+            } else if (endAmPm.toUpperCase() === 'AM' && endHour === 12) {
+              endHour = 0;
+            }
+          } else {
+            // Format: "7:00—8:00 PM" (shared AM/PM)
+            startHour = parseInt(match[1]);
+            startMinute = parseInt(match[2]);
+            endHour = parseInt(match[3]);
+            endMinute = parseInt(match[4]);
+            const amPm = match[5];
+            
+            // Convert to 24-hour format
+            if (amPm.toUpperCase() === 'PM') {
+              if (startHour !== 12) startHour += 12;
+              if (endHour !== 12) endHour += 12;
+            } else if (amPm.toUpperCase() === 'AM') {
+              if (startHour === 12) startHour = 0;
+              if (endHour === 12) endHour = 0;
+            }
+          }
+          
+          console.log(`StonehamnLibraryService: Extracted time ${startHour}:${startMinute.toString().padStart(2, '0')} - ${endHour}:${endMinute.toString().padStart(2, '0')} from HTML`);
+          
+          return {
+            startTime: [startHour, startMinute],
+            endTime: [endHour, endMinute]
+          };
+        } catch (error) {
+          console.warn('StonehamnLibraryService: Error parsing time from HTML:', error);
+          continue;
+        }
+      }
+    }
+    
+    // If no time range found, look for single time
+    const singleTimePattern = /(\d{1,2}):(\d{2})\s*(AM|PM)/i;
+    const singleMatch = textContent.match(singleTimePattern);
+    if (singleMatch) {
+      try {
+        let hour = parseInt(singleMatch[1]);
+        const minute = parseInt(singleMatch[2]);
+        const amPm = singleMatch[3];
+        
+        // Convert to 24-hour format
+        if (amPm.toUpperCase() === 'PM' && hour !== 12) {
+          hour += 12;
+        } else if (amPm.toUpperCase() === 'AM' && hour === 12) {
+          hour = 0;
+        }
+        
+        console.log(`StonehamnLibraryService: Extracted single time ${hour}:${minute.toString().padStart(2, '0')} from HTML`);
+        
+        return {
+          startTime: [hour, minute]
+        };
+      } catch (error) {
+        console.warn('StonehamnLibraryService: Error parsing single time from HTML:', error);
+      }
+    }
+    
+    return {};
   }
 }
