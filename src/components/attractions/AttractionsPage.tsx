@@ -104,6 +104,16 @@ const attractions: Attraction[] = [{
   description: 'Professional theater company presenting quality productions',
   address: 'Stoneham, MA',
   url: 'https://www.greaterbostonstage.org/'
+}, {
+  id: '10',
+  name: 'Tri-Community Greenway',
+  category: 'Nature',
+  rating: 4.4,
+  image: 'greenway',
+  imageUrl: '/images/TriCommunityGreenway.jpg',
+  description: '6.63-mile bike and walking route connecting Stoneham, Winchester, and Woburn with a spur to Horn Pond',
+  address: 'Stoneham, MA',
+  url: 'https://mysticlinktrail.org/stoneham/'
 }];
 
 const AttractionCard: React.FC<{ attraction: Attraction }> = ({ attraction }) => {
