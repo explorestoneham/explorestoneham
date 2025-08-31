@@ -36,7 +36,7 @@ export function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalPr
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-90 p-4"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-90 p-10"
           style={{ marginTop: '-80px' }} // Account for header height (lg:h-20)
           onClick={onClose}
         >
@@ -59,7 +59,7 @@ export function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalPr
               exit={{ scale: 0.8 }}
               src={imageSrc}
               alt={imageAlt}
-              className="max-h-[calc(100vh-160px)] max-w-[90vw] rounded-lg shadow-2xl object-contain"
+              className="w-full h-full rounded-lg shadow-2xl object-contain"
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on image
             />
           </div>
