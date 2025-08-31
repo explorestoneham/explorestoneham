@@ -37,7 +37,6 @@ export function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalPr
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-90 p-10"
-          style={{ marginTop: '-80px' }} // Account for header height (lg:h-20)
           onClick={onClose}
         >
           <div className="relative flex items-center justify-center w-full h-full">
@@ -59,14 +58,14 @@ export function ImageModal({ isOpen, imageSrc, imageAlt, onClose }: ImageModalPr
               exit={{ scale: 0.8 }}
               src={imageSrc}
               alt={imageAlt}
-              className="w-full h-full rounded-lg shadow-2xl object-contain"
-              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on image
+              className="w-full h-full rounded-lg shadow-2xl object-contain cursor-pointer"
+              onClick={onClose} // Close modal when clicking on image
             />
           </div>
 
           {/* Instructions text */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm opacity-75">
-            Click outside image or press ESC to close
+            Click image or press ESC to close
           </div>
         </motion.div>
       )}
