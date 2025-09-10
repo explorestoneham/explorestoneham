@@ -41,6 +41,26 @@ export class ManualEventsService {
         enabled: true
       },
       tags: ['community', 'family', 'business', 'entertainment']
+    },
+    {
+      id: 'stoneham-300th-anniversary-parade-2025',
+      title: 'Stoneham 300th Anniversary Parade',
+      description: 'Join us for the historic Stoneham 300th Anniversary Parade! Rain or shine, this special celebration will feature community groups, decorated bikes, floats, bands, dancers, and street performers. The parade starts at Stoneham High School and travels through town to Stoneham Middle School. After the parade, gather on Town Common for a spectacular drone light show at 7 PM. Check-in begins at 11:30 AM.',
+      startDate: new Date('2025-10-04T15:30:00-04:00'), // EDT timezone
+      endDate: new Date('2025-10-04T17:00:00-04:00'),
+      location: 'Franklin St to Central Square to Main St to Elm St to Central St',
+      url: 'https://www.stoneham300.org/300th-parade.html',
+      imageUrl: '/uploads/6/3/3/7/63378583/parade-300th-anniversary.png',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham 300th Anniversary Committee',
+        type: 'manual',
+        url: '',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'family', 'historical', 'celebration', 'parade']
     }
   ];
 
