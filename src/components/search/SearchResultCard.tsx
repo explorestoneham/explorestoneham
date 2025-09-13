@@ -154,21 +154,6 @@ export const SearchResultCard: React.FC<SearchResultCardProps> = ({ result }) =>
                 <span>{item.phone}</span>
               </div>
             )}
-            {'priceLevel' in item && (
-              <div className="flex items-center text-sm text-[#404040]/70">
-                <span className="mr-2">💰</span>
-                <span>
-                  {item.priceLevel > 0 ? (
-                    <>
-                      {'$'.repeat(item.priceLevel)}
-                      <span className="text-[#404040]/30">{'$'.repeat(4 - item.priceLevel)}</span>
-                    </>
-                  ) : (
-                    'Price N/A'
-                  )}
-                </span>
-              </div>
-            )}
           </>
         )}
 

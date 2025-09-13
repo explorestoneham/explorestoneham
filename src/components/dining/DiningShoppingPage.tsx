@@ -158,18 +158,6 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
               }`}>
                 {business.category}
               </span>
-              <div className="flex items-center text-xs text-granite-gray/70">
-                {business.priceLevel > 0 ? (
-                  <>
-                    {'$'.repeat(business.priceLevel)}
-                    {'$'.repeat(4 - business.priceLevel).split('').map((_, i) => (
-                      <span key={i} className="text-granite-gray/30">$</span>
-                    ))}
-                  </>
-                ) : (
-                  <span className="text-granite-gray/50">Price N/A</span>
-                )}
-              </div>
             </div>
           </div>
         </div>
@@ -273,13 +261,6 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
                   <span className="text-white/80 text-sm">({business.reviewCount} reviews)</span>
                 )}
               </div>
-              <div className="text-white/80">
-                {business.priceLevel > 0 ? (
-                  '$'.repeat(business.priceLevel)
-                ) : (
-                  'Price not available'
-                )}
-              </div>
             </div>
           </div>
         </div>
@@ -350,12 +331,18 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
           )}
           
           <div className="flex space-x-3 pt-4">
-            <button className="flex-1 btn-secondary flex items-center justify-center space-x-2">
+            <button
+              onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(business.address)}`, '_blank')}
+              className="flex-1 btn-secondary flex items-center justify-center space-x-2"
+            >
               <Navigation className="w-4 h-4" />
               <span>Get Directions</span>
             </button>
             {business.phone && (
-              <button className="flex-1 btn-primary flex items-center justify-center space-x-2">
+              <button
+                onClick={() => window.open(`tel:${business.phone}`, '_self')}
+                className="flex-1 btn-primary flex items-center justify-center space-x-2"
+              >
                 <Phone className="w-4 h-4" />
                 <span>Call Now</span>
               </button>
