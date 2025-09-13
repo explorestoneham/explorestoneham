@@ -186,7 +186,7 @@ const generateDescription = (place: any, businessType: string): string => {
   }
 
   // Add descriptive features
-  const descriptors = [];
+  const descriptors: string[] = [];
   if (rating >= 4.5 && reviewCount >= 20) {
     descriptors.push('highly rated');
   } else if (rating >= 4.0 && reviewCount >= 10) {
