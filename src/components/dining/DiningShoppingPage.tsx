@@ -107,15 +107,42 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
       className="bg-white rounded-xl shadow-lg overflow-hidden border border-sky-tint hover:shadow-xl transition-all duration-300 cursor-pointer"
       onClick={() => setSelectedBusiness(business)}
     >
-      <div className="h-48 bg-gradient-to-br from-stoneham-green to-lakeside-blue flex items-center justify-center relative">
-        {business.type === 'restaurant' ? (
-          <Utensils className="w-12 h-12 text-white" />
+      <div className="h-48 bg-gradient-to-br from-stoneham-green to-lakeside-blue flex items-center justify-center relative overflow-hidden">
+        {business.image ? (
+          <>
+            <img
+              src={business.image}
+              alt={business.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to gradient background if image fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                target.nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+            <div className="h-48 bg-gradient-to-br from-stoneham-green to-lakeside-blue flex items-center justify-center hidden absolute inset-0">
+              {business.type === 'restaurant' ? (
+                <Utensils className="w-12 h-12 text-white" />
+              ) : (
+                <ShoppingBag className="w-12 h-12 text-white" />
+              )}
+            </div>
+          </>
         ) : (
-          <ShoppingBag className="w-12 h-12 text-white" />
+          <>
+            {business.type === 'restaurant' ? (
+              <Utensils className="w-12 h-12 text-white" />
+            ) : (
+              <ShoppingBag className="w-12 h-12 text-white" />
+            )}
+          </>
         )}
         <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center space-x-1">
           <Star className="w-3 h-3 text-beacon-gold fill-current" />
-          <span className="text-xs font-semibold text-granite-gray">{business.rating}</span>
+          <span className="text-xs font-semibold text-granite-gray">
+            {business.rating > 0 ? business.rating.toFixed(1) : 'N/A'}
+          </span>
         </div>
       </div>
       
@@ -132,10 +159,16 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
                 {business.category}
               </span>
               <div className="flex items-center text-xs text-granite-gray/70">
-                {'$'.repeat(business.priceLevel)}
-                {'$'.repeat(4 - business.priceLevel).split('').map((_, i) => (
-                  <span key={i} className="text-granite-gray/30">$</span>
-                ))}
+                {business.priceLevel > 0 ? (
+                  <>
+                    {'$'.repeat(business.priceLevel)}
+                    {'$'.repeat(4 - business.priceLevel).split('').map((_, i) => (
+                      <span key={i} className="text-granite-gray/30">$</span>
+                    ))}
+                  </>
+                ) : (
+                  <span className="text-granite-gray/50">Price N/A</span>
+                )}
               </div>
             </div>
           </div>
@@ -191,11 +224,36 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
         className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative h-64 bg-gradient-to-br from-stoneham-green to-lakeside-blue flex items-center justify-center">
-          {business.type === 'restaurant' ? (
-            <Utensils className="w-16 h-16 text-white" />
+        <div className="relative h-64 bg-gradient-to-br from-stoneham-green to-lakeside-blue flex items-center justify-center overflow-hidden">
+          {business.image ? (
+            <>
+              <img
+                src={business.image}
+                alt={business.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to gradient background if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <div className="h-64 bg-gradient-to-br from-stoneham-green to-lakeside-blue flex items-center justify-center hidden absolute inset-0">
+                {business.type === 'restaurant' ? (
+                  <Utensils className="w-16 h-16 text-white" />
+                ) : (
+                  <ShoppingBag className="w-16 h-16 text-white" />
+                )}
+              </div>
+            </>
           ) : (
-            <ShoppingBag className="w-16 h-16 text-white" />
+            <>
+              {business.type === 'restaurant' ? (
+                <Utensils className="w-16 h-16 text-white" />
+              ) : (
+                <ShoppingBag className="w-16 h-16 text-white" />
+              )}
+            </>
           )}
           <button
             onClick={onClose}
@@ -208,11 +266,19 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <Star className="w-4 h-4 text-beacon-gold fill-current" />
-                <span className="text-white font-semibold">{business.rating}</span>
-                <span className="text-white/80 text-sm">({business.reviewCount} reviews)</span>
+                <span className="text-white font-semibold">
+                  {business.rating > 0 ? business.rating.toFixed(1) : 'No rating'}
+                </span>
+                {business.reviewCount > 0 && (
+                  <span className="text-white/80 text-sm">({business.reviewCount} reviews)</span>
+                )}
               </div>
               <div className="text-white/80">
-                {'$'.repeat(business.priceLevel)}
+                {business.priceLevel > 0 ? (
+                  '$'.repeat(business.priceLevel)
+                ) : (
+                  'Price not available'
+                )}
               </div>
             </div>
           </div>

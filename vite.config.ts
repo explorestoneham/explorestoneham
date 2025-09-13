@@ -11,4 +11,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  // Exclude API directory from Vite processing (Vercel serverless functions)
+  server: {
+    fs: {
+      deny: ['**/api/**']
+    }
+  },
+  optimizeDeps: {
+    exclude: ['api']
+  }
 });

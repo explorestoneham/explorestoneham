@@ -38,7 +38,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'static1.squarespace.com',
       'stonehamcan.org',
       's3.amazonaws.com',
-      'ai-assets.s3.amazonaws.com'
+      'ai-assets.s3.amazonaws.com',
+      // Google Places photo domains
+      'maps.googleapis.com',
+      'lh3.googleusercontent.com',
+      'lh4.googleusercontent.com',
+      'lh5.googleusercontent.com',
+      'lh6.googleusercontent.com',
+      'geo0.ggpht.com',
+      'geo1.ggpht.com',
+      'geo2.ggpht.com',
+      'geo3.ggpht.com'
     ];
 
     const urlObj = new URL(url);

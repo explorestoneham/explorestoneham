@@ -118,17 +118,38 @@ const extractFeatures = (place: any): string[] => {
 
 const formatHours = (openingHours: any): { [key: string]: string } => {
   if (!openingHours?.weekday_text) return {};
-  
+
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const hours: { [key: string]: string } = {};
-  
+
   openingHours.weekday_text.forEach((dayText: string, index: number) => {
     const dayName = days[(index + 1) % 7]; // Google starts with Monday, we want Sunday first
     const timeMatch = dayText.match(/: (.+)/);
     hours[dayName] = timeMatch ? timeMatch[1] : 'Closed';
   });
-  
+
   return hours;
+};
+
+const getGooglePhotoUrl = (place: any, config: GooglePlacesConfig): string | undefined => {
+  if (!place.photos || place.photos.length === 0) return undefined;
+
+  try {
+    // Get the first photo
+    const photo = place.photos[0];
+
+    // Generate the photo URL with appropriate size
+    const photoUrl = photo.getUrl({
+      maxWidth: 800,
+      maxHeight: 600
+    });
+
+    // Return the photo URL to be used with our image proxy
+    return photoUrl;
+  } catch (error) {
+    console.warn('Failed to get Google photo URL:', error);
+    return undefined;
+  }
 };
 
 export const useGooglePlaces = (config: GooglePlacesConfig): UseGooglePlacesReturn => {
@@ -265,19 +286,21 @@ export const useGooglePlaces = (config: GooglePlacesConfig): UseGooglePlacesRetu
         if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
           const mappedBusinesses: Business[] = results.map((place, index) => {
             const businessType = mapPlaceToType(place);
-            
+            const googlePhotoUrl = getGooglePhotoUrl(place, config);
+
             return {
               id: place.place_id || `place-${index}`,
               name: place.name || 'Unknown Business',
               category: mapPlaceToCategory(place),
               type: businessType,
-              rating: place.rating || 0,
+              rating: place.rating && place.rating > 0 ? Math.min(Math.max(place.rating, 0), 5) : 0, // Validate rating range 0-5
               reviewCount: place.user_ratings_total || 0,
-              priceLevel: place.price_level || 2,
+              priceLevel: place.price_level ?? 0, // 0 indicates "price not available"
               address: place.formatted_address || '',
               phone: place.formatted_phone_number,
               website: place.website,
               hours: formatHours(place.opening_hours),
+              image: googlePhotoUrl ? `/api/image-proxy?url=${encodeURIComponent(googlePhotoUrl)}` : undefined,
               description: `${businessType === 'restaurant' ? 'Restaurant' : 'Business'} in Stoneham`,
               features: extractFeatures(place),
               coordinates: {
