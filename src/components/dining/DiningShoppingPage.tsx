@@ -39,7 +39,6 @@ interface Business {
 interface FilterState {
   type: 'all' | 'restaurant' | 'shop';
   category: string;
-  priceLevel: number[];
   rating: number;
   openNow: boolean;
 }
@@ -56,7 +55,6 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
   const [filters, setFilters] = useState<FilterState>({
     type: 'all',
     category: 'all',
-    priceLevel: [1, 2, 3, 4],
     rating: 0,
     openNow: false
   });
@@ -94,11 +92,10 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
                          business.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filters.type === 'all' || business.type === filters.type;
     const matchesCategory = filters.category === 'all' || business.category === filters.category;
-    const matchesPriceLevel = filters.priceLevel.includes(business.priceLevel);
     const matchesRating = business.rating >= filters.rating;
     const matchesOpenNow = !filters.openNow || business.openNow;
-    
-    return matchesSearch && matchesType && matchesCategory && matchesPriceLevel && matchesRating && matchesOpenNow;
+
+    return matchesSearch && matchesType && matchesCategory && matchesRating && matchesOpenNow;
   });
 
   const BusinessCard: React.FC<{ business: Business }> = ({ business }) => (
@@ -502,7 +499,7 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
                 exit={{ height: 0, opacity: 0 }}
                 className="mt-4 p-4 bg-birch-white rounded-lg border border-sky-tint"
               >
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-granite-gray mb-2">Category</label>
                     <select
@@ -518,30 +515,6 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
                         <option key={category} value={category}>{category}</option>
                       ))}
                     </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-granite-gray mb-2">Price Range</label>
-                    <div className="flex items-center space-x-2">
-                      {[1, 2, 3, 4].map(level => (
-                        <button
-                          key={level}
-                          onClick={() => {
-                            const newPriceLevel = filters.priceLevel.includes(level)
-                              ? filters.priceLevel.filter(p => p !== level)
-                              : [...filters.priceLevel, level];
-                            setFilters(prev => ({ ...prev, priceLevel: newPriceLevel }));
-                          }}
-                          className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
-                            filters.priceLevel.includes(level)
-                              ? 'bg-lakeside-blue text-white'
-                              : 'bg-white text-granite-gray border border-sky-tint'
-                          }`}
-                        >
-                          {'$'.repeat(level)}
-                        </button>
-                      ))}
-                    </div>
                   </div>
                   
                   <div>
@@ -639,7 +612,6 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
                 setFilters({
                   type: 'all',
                   category: 'all',
-                  priceLevel: [1, 2, 3, 4],
                   rating: 0,
                   openNow: false
                 });

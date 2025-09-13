@@ -103,7 +103,7 @@ const mapPlaceToCategory = (place: any): string => {
 const extractFeatures = (place: any): string[] => {
   const features: string[] = [];
   const types = place.types || [];
-  
+
   // Note: open_now is deprecated, so we'll use opening_hours presence instead
   if (place.opening_hours) features.push('Has Hours Listed');
   if (types.includes('meal_delivery')) features.push('Delivery');
@@ -112,8 +112,106 @@ const extractFeatures = (place: any): string[] => {
   if (place.price_level >= 3) features.push('Upscale');
   if (place.user_ratings_total > 100) features.push('Popular');
   if (types.includes('wheelchair_accessible_entrance')) features.push('Accessible');
-  
+
   return features;
+};
+
+const generateDescription = (place: any, businessType: string): string => {
+  const types = place.types || [];
+  const features = extractFeatures(place);
+  const rating = place.rating || 0;
+  const reviewCount = place.user_ratings_total || 0;
+
+  // Base description from business type
+  let description = '';
+
+  if (businessType === 'restaurant') {
+    // More specific restaurant descriptions based on types
+    if (types.includes('pizza_restaurant')) {
+      description = 'Pizza restaurant';
+    } else if (types.includes('italian_restaurant')) {
+      description = 'Italian restaurant';
+    } else if (types.includes('chinese_restaurant')) {
+      description = 'Chinese restaurant';
+    } else if (types.includes('mexican_restaurant')) {
+      description = 'Mexican restaurant';
+    } else if (types.includes('american_restaurant')) {
+      description = 'American restaurant';
+    } else if (types.includes('breakfast_restaurant')) {
+      description = 'Breakfast & brunch spot';
+    } else if (types.includes('cafe')) {
+      description = 'Cafe';
+    } else if (types.includes('bakery')) {
+      description = 'Bakery & cafe';
+    } else if (types.includes('bar')) {
+      description = 'Bar & grill';
+    } else if (types.includes('fast_food_restaurant')) {
+      description = 'Fast food restaurant';
+    } else {
+      description = 'Restaurant';
+    }
+  } else {
+    // Business types
+    if (types.includes('hair_care')) {
+      description = 'Hair salon';
+    } else if (types.includes('beauty_salon')) {
+      description = 'Beauty salon';
+    } else if (types.includes('spa')) {
+      description = 'Spa & wellness center';
+    } else if (types.includes('gym')) {
+      description = 'Fitness center';
+    } else if (types.includes('clothing_store')) {
+      description = 'Clothing store';
+    } else if (types.includes('grocery_or_supermarket')) {
+      description = 'Grocery store';
+    } else if (types.includes('pharmacy')) {
+      description = 'Pharmacy';
+    } else if (types.includes('gas_station')) {
+      description = 'Gas station';
+    } else if (types.includes('car_repair')) {
+      description = 'Auto service center';
+    } else if (types.includes('bank')) {
+      description = 'Bank';
+    } else if (types.includes('real_estate_agency')) {
+      description = 'Real estate office';
+    } else if (types.includes('dentist')) {
+      description = 'Dental practice';
+    } else if (types.includes('doctor')) {
+      description = 'Medical practice';
+    } else if (types.includes('veterinary_care')) {
+      description = 'Veterinary clinic';
+    } else {
+      description = 'Local business';
+    }
+  }
+
+  // Add descriptive features
+  const descriptors = [];
+  if (rating >= 4.5 && reviewCount >= 20) {
+    descriptors.push('highly rated');
+  } else if (rating >= 4.0 && reviewCount >= 10) {
+    descriptors.push('well-reviewed');
+  }
+
+  if (features.includes('Popular')) {
+    descriptors.push('popular');
+  }
+
+  if (features.includes('Delivery') && features.includes('Takeout')) {
+    descriptors.push('offering delivery & takeout');
+  } else if (features.includes('Delivery')) {
+    descriptors.push('with delivery');
+  } else if (features.includes('Takeout')) {
+    descriptors.push('with takeout');
+  }
+
+  // Combine description
+  let fullDescription = description;
+  if (descriptors.length > 0) {
+    fullDescription += ` - ${descriptors.join(', ')}`;
+  }
+
+  return fullDescription;
 };
 
 const formatHours = (openingHours: any): { [key: string]: string } => {
@@ -301,7 +399,7 @@ export const useGooglePlaces = (config: GooglePlacesConfig): UseGooglePlacesRetu
               website: place.website,
               hours: formatHours(place.opening_hours),
               image: googlePhotoUrl ? `/api/image-proxy?url=${encodeURIComponent(googlePhotoUrl)}` : undefined,
-              description: `${businessType === 'restaurant' ? 'Restaurant' : 'Business'} in Stoneham`,
+              description: generateDescription(place, businessType),
               features: extractFeatures(place),
               coordinates: {
                 lat: place.geometry?.location?.lat() || config.location.lat,
