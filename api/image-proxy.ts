@@ -52,7 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ];
 
     const urlObj = new URL(url);
-    const isAllowed = allowedDomains.some(domain => 
+    const isAllowed = allowedDomains.some(domain =>
       urlObj.hostname.endsWith(domain)
     );
 
@@ -88,6 +88,68 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           if (response.statusCode && response.statusCode >= 200 && response.statusCode < 300) {
             const buffer = Buffer.concat(chunks);
             resolve({ imageData: buffer, responseHeaders: response.headers });
+          } else if (response.statusCode && (response.statusCode === 301 || response.statusCode === 302 || response.statusCode === 307 || response.statusCode === 308)) {
+            // Handle redirects
+            const location = response.headers.location;
+            if (location) {
+              console.log(`Following redirect to: ${location}`);
+              // Recursively make request to redirect location
+              const redirectUrlObj = new URL(location, url); // Handle relative URLs
+
+              // Validate redirect URL is to an allowed domain
+              const isRedirectAllowed = allowedDomains.some(domain =>
+                redirectUrlObj.hostname.endsWith(domain)
+              );
+
+              if (!isRedirectAllowed) {
+                reject(new Error(`Redirect to disallowed domain: ${redirectUrlObj.hostname}`));
+                return;
+              }
+
+              const redirectClient = redirectUrlObj.protocol === 'https:' ? https : http;
+
+              const redirectOptions = {
+                hostname: redirectUrlObj.hostname,
+                port: redirectUrlObj.port || (redirectUrlObj.protocol === 'https:' ? 443 : 80),
+                path: redirectUrlObj.pathname + redirectUrlObj.search,
+                method: 'GET',
+                headers: {
+                  'User-Agent': 'Mozilla/5.0 (compatible; ExploreStoneham-ImageProxy/1.0)',
+                  'Accept': 'image/*,*/*;q=0.8',
+                  'Referer': 'https://www.stonehamcan.org/'
+                }
+              };
+
+              const redirectRequest = redirectClient.request(redirectOptions, (redirectResponse) => {
+                const redirectChunks: Buffer[] = [];
+
+                redirectResponse.on('data', (chunk: Buffer) => {
+                  redirectChunks.push(chunk);
+                });
+
+                redirectResponse.on('end', () => {
+                  if (redirectResponse.statusCode && redirectResponse.statusCode >= 200 && redirectResponse.statusCode < 300) {
+                    const buffer = Buffer.concat(redirectChunks);
+                    resolve({ imageData: buffer, responseHeaders: redirectResponse.headers });
+                  } else {
+                    reject(new Error(`HTTP ${redirectResponse.statusCode}: ${redirectResponse.statusMessage}`));
+                  }
+                });
+              });
+
+              redirectRequest.on('error', (error) => {
+                reject(error);
+              });
+
+              redirectRequest.setTimeout(15000, () => {
+                redirectRequest.destroy();
+                reject(new Error('Redirect request timeout'));
+              });
+
+              redirectRequest.end();
+            } else {
+              reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage} - No redirect location`));
+            }
           } else {
             reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
           }
