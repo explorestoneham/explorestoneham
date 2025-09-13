@@ -83,7 +83,7 @@ const attractions: Attraction[] = [{
   imageUrl: '/images/spot-pond-boathouse.jpg',
   description: 'Sailing, kayaking, and canoeing on scenic Spot Pond',
   address: 'Stoneham, MA',
-  url: 'https://boatinginboston.com/boathouses/spot-pond/'
+  url: 'https://paddleboston.com/rentals/our-locations/stoneham-spot-pond/'
 }, {
   id: '8',
   name: 'Hall Memorial Pool',

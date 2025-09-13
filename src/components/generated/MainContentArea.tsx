@@ -29,7 +29,6 @@ interface Service {
   website?: string;
 }
 export const MainContentArea: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState('all');
   const [realEvents, setRealEvents] = useState<CalendarEvent[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
   const [calendarService] = useState(() => new CalendarService(DEFAULT_CALENDAR_CONFIG, ''));
@@ -88,23 +87,15 @@ export const MainContentArea: React.FC = () => {
         .slice(0, 6);
     }
     
-    // Apply category filter if not 'all'
-    if (activeFilter !== 'all') {
-      eventsToFilter = eventsToFilter.filter(event => 
-        event.tags.some(tag => tag.toLowerCase().includes(activeFilter.toLowerCase()))
-      );
-    }
-    
     return eventsToFilter;
   };
   
   const eventsToDisplay = useMemo(() => getEventsToDisplay(), [
-    eventsLoading, 
-    isSearchActive, 
-    searchQuery, 
-    searchResults, 
-    realEvents, 
-    activeFilter
+    eventsLoading,
+    isSearchActive,
+    searchQuery,
+    searchResults,
+    realEvents
   ]);
   const attractions: Attraction[] = [{
     id: '1',
@@ -172,7 +163,7 @@ export const MainContentArea: React.FC = () => {
     imageUrl: '/images/spot-pond-boathouse.jpg',
     description: 'Sailing, kayaking, and canoeing on scenic Spot Pond',
     address: 'Stoneham, MA',
-    url: 'https://boatinginboston.com/boathouses/spot-pond/'
+    url: 'https://paddleboston.com/rentals/our-locations/stoneham-spot-pond/'
   }, {
     id: '8',
     name: 'Hall Memorial Pool',
@@ -388,9 +379,16 @@ export const MainContentArea: React.FC = () => {
               />
             </div>
             <div className="flex gap-2">
-              {['all', 'Music', 'Community', 'Arts'].map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-4 py-3 rounded-lg font-medium transition-colors ${activeFilter === filter ? 'bg-[#007B9E] text-white' : 'bg-white text-[#404040] border border-[#D2E5F1] hover:bg-[#D2E5F1]'}`}>
-                  {filter === 'all' ? 'All Events' : filter}
-                </button>)}
+              <button
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).handleNavigation) {
+                    (window as any).handleNavigation('/events');
+                  }
+                }}
+                className="px-4 py-3 rounded-lg font-medium transition-colors bg-[#007B9E] text-white hover:bg-[#2A6F4D]"
+              >
+                View All Events
+              </button>
             </div>
           </div>
 
