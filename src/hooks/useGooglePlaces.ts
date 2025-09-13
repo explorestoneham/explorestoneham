@@ -413,12 +413,16 @@ export const useGooglePlaces = (config: GooglePlacesConfig): UseGooglePlacesRetu
             // Only include businesses in Stoneham, MA using comprehensive validation
             const addressValid = isInStoneham(business.address);
             const coordsValid = isInStonehamBounds(business.coordinates.lat, business.coordinates.lng);
-            
-            // Must pass both address and coordinate validation
-            if (!addressValid || !coordsValid) {
+
+            // Debug logging for excluded businesses
+            if (!addressValid && !coordsValid) {
+              console.log(`Excluding business: ${business.name} - Address: ${business.address} - Coords: ${business.coordinates.lat}, ${business.coordinates.lng}`);
               return false;
             }
             
+            // Log included businesses
+            console.log(`Including business: ${business.name} - Address: ${business.address} - Type: ${business.type}`);
+
             // Filter by type if specified
             if (filterType && filterType !== 'all') {
               return business.type === filterType;

@@ -44,12 +44,12 @@ export const isInStoneham = (address: string): boolean => {
 
 // Validate coordinates are within Stoneham bounds
 export const isInStonehamBounds = (lat: number, lng: number): boolean => {
-  // Approximate bounds for Stoneham, MA
+  // Approximate bounds for Stoneham, MA (expanded to be more inclusive)
   const stonehamBounds = {
-    north: 42.500,
-    south: 42.460,
-    east: -71.085,
-    west: -71.110
+    north: 42.505,
+    south: 42.455,
+    east: -71.080,
+    west: -71.115
   };
   
   return lat >= stonehamBounds.south && 

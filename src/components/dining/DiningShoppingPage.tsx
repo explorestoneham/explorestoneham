@@ -70,11 +70,11 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
     // Create more specific search queries based on filter type
     let searchQuery = '';
     if (filters.type === 'restaurant') {
-      searchQuery = 'restaurant OR cafe OR pizza OR food';
+      searchQuery = 'restaurant OR cafe OR pizza OR food OR "fast food" OR burger OR takeout OR dining';
     } else if (filters.type === 'shop') {
-      searchQuery = 'store OR shop OR pharmacy OR bank OR service';
+      searchQuery = 'store OR shop OR pharmacy OR bank OR service OR retail';
     } else {
-      searchQuery = 'restaurant OR store OR shop OR cafe OR pharmacy OR bank';
+      searchQuery = 'restaurant OR store OR shop OR cafe OR pharmacy OR bank OR "fast food" OR burger OR dining OR retail';
     }
     
     // Always trigger search (will use mock data if no API key)
