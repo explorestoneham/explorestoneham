@@ -145,6 +145,7 @@ const extractFeatures = (place: any): string[] => {
 
 const generateDescription = (place: any, businessType: string): string => {
   const types = place.types || [];
+  const name = (place.name || '').toLowerCase();
   const features = extractFeatures(place);
   const rating = place.rating || 0;
   const reviewCount = place.user_ratings_total || 0;
