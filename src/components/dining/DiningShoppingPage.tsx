@@ -67,23 +67,13 @@ export default function DiningShoppingPage({ googleApiKey }: DiningShoppingPageP
   });
 
   useEffect(() => {
-    // Create more specific search queries based on filter type
-    let searchQuery = '';
-    if (filters.type === 'restaurant') {
-      searchQuery = 'restaurant OR cafe OR pizza OR food OR "fast food" OR burger OR takeout OR dining';
-    } else if (filters.type === 'shop') {
-      searchQuery = 'store OR shop OR pharmacy OR bank OR service OR retail';
-    } else {
-      searchQuery = 'restaurant OR store OR shop OR cafe OR pharmacy OR bank OR "fast food" OR burger OR dining OR retail';
-    }
-    
-    // Always trigger search (will use mock data if no API key)
-    searchPlaces(searchQuery, filters.type);
+    // Simple search - let Google Places API find all businesses and we'll filter by type
+    searchPlaces('', filters.type);
   }, [filters.type]); // Only depend on filter type, not API key to avoid re-triggering unnecessarily
 
   const categories = {
-    restaurant: ['All', 'American', 'Italian', 'Pizza', 'Coffee', 'Asian', 'Mexican', 'Fast Food', 'Fine Dining'],
-    shop: ['All', 'Pharmacy', 'Automotive', 'Banking', 'Retail', 'Services', 'Grocery', 'Electronics']
+    restaurant: ['All', 'American', 'Italian', 'Pizza', 'Coffee', 'Asian', 'Mexican', 'Fast Food', 'Bakery', 'Ice Cream'],
+    shop: ['All', 'Pharmacy', 'Automotive', 'Banking', 'Retail', 'Services', 'Grocery', 'Electronics', 'Hair & Beauty', 'Beauty & Spa', 'Insurance', 'Real Estate', 'Legal', 'Financial Services', 'Florist', 'Pet Services', 'Hardware', 'Health & Fitness', 'Healthcare']
   };
 
   const filteredBusinesses = businesses.filter(business => {
