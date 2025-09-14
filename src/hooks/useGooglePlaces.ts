@@ -48,12 +48,19 @@ interface UseGooglePlacesReturn {
 // Define business categories and their mapping to Google Places types
 const categoryMappings = {
   restaurant: {
-    types: ['restaurant', 'food', 'meal_takeaway', 'cafe', 'bakery'],
-    keywords: ['restaurant', 'cafe', 'pizza', 'food', 'dining', 'bar', 'grill']
+    types: ['restaurant', 'food', 'meal_takeaway', 'cafe', 'bakery', 'bar', 'night_club'],
+    keywords: ['restaurant', 'cafe', 'pizza', 'food', 'dining', 'bar', 'grill', 'eatery', 'bistro']
   },
   shop: {
-    types: ['store', 'shopping_mall', 'pharmacy', 'bank', 'gas_station', 'car_repair'],
-    keywords: ['shop', 'store', 'pharmacy', 'bank', 'automotive', 'retail', 'market']
+    types: [
+      'store', 'shopping_mall', 'pharmacy', 'bank', 'gas_station', 'car_repair',
+      'grocery_or_supermarket', 'convenience_store', 'drugstore', 'clothing_store',
+      'electronics_store', 'hardware_store', 'home_goods_store', 'department_store',
+      'florist', 'pet_store', 'beauty_salon', 'hair_care', 'spa', 'gym',
+      'insurance_agency', 'real_estate_agency', 'lawyer', 'dentist', 'doctor',
+      'veterinary_care', 'accounting'
+    ],
+    keywords: ['shop', 'store', 'pharmacy', 'bank', 'automotive', 'retail', 'market', 'walgreens', 'cvs']
   }
 };
 
@@ -172,34 +179,52 @@ const generateDescription = (place: any, businessType: string): string => {
     }
   } else {
     // Business types
-    if (types.includes('hair_care')) {
+    if (types.includes('convenience_store') || name.includes('convenience')) {
+      description = 'Convenience store';
+    } else if (types.includes('grocery_or_supermarket') || name.includes('stop') || name.includes('shop')) {
+      description = 'Grocery store';
+    } else if (types.includes('pharmacy') || types.includes('drugstore') || name.includes('walgreens') || name.includes('cvs')) {
+      description = 'Pharmacy';
+    } else if (types.includes('hair_care') || name.includes('barber') || name.includes('salon')) {
       description = 'Hair salon';
-    } else if (types.includes('beauty_salon')) {
+    } else if (types.includes('beauty_salon') || name.includes('nail') || name.includes('spa')) {
       description = 'Beauty salon';
     } else if (types.includes('spa')) {
       description = 'Spa & wellness center';
-    } else if (types.includes('gym')) {
+    } else if (types.includes('gym') || name.includes('fitness')) {
       description = 'Fitness center';
     } else if (types.includes('clothing_store')) {
       description = 'Clothing store';
-    } else if (types.includes('grocery_or_supermarket')) {
-      description = 'Grocery store';
-    } else if (types.includes('pharmacy')) {
-      description = 'Pharmacy';
     } else if (types.includes('gas_station')) {
       description = 'Gas station';
     } else if (types.includes('car_repair')) {
       description = 'Auto service center';
-    } else if (types.includes('bank')) {
+    } else if (types.includes('bank') || types.includes('atm')) {
       description = 'Bank';
-    } else if (types.includes('real_estate_agency')) {
+    } else if (types.includes('real_estate_agency') || name.includes('realtor')) {
       description = 'Real estate office';
     } else if (types.includes('dentist')) {
       description = 'Dental practice';
-    } else if (types.includes('doctor')) {
+    } else if (types.includes('doctor') || types.includes('hospital')) {
       description = 'Medical practice';
-    } else if (types.includes('veterinary_care')) {
+    } else if (types.includes('veterinary_care') || name.includes('vet')) {
       description = 'Veterinary clinic';
+    } else if (types.includes('insurance_agency') || name.includes('insurance')) {
+      description = 'Insurance agency';
+    } else if (types.includes('florist') || name.includes('flower')) {
+      description = 'Florist';
+    } else if (types.includes('hardware_store') || name.includes('hardware')) {
+      description = 'Hardware store';
+    } else if (types.includes('electronics_store')) {
+      description = 'Electronics store';
+    } else if (types.includes('department_store')) {
+      description = 'Department store';
+    } else if (types.includes('pet_store') || name.includes('pet')) {
+      description = 'Pet store';
+    } else if (types.includes('lawyer') || name.includes('attorney')) {
+      description = 'Law office';
+    } else if (types.includes('accounting') || name.includes('tax')) {
+      description = 'Accounting service';
     } else {
       description = 'Local business';
     }
