@@ -61,6 +61,26 @@ export class ManualEventsService {
         enabled: true
       },
       tags: ['community', 'family', 'historical', 'celebration', 'parade']
+    },
+    {
+      id: 'stoneham-winter-farmers-market-2025-11-22',
+      title: 'Stoneham Winter Farmers Market',
+      description: 'Join us for the finale of the 2025 season at the Stoneham Winter Farmers Market! Vendors on site will be selling a variety of goods ranging from farm-fresh items to gifts, pizza and other food. The event will include children\'s activities and live music. Support local farmers and artisans while enjoying the community atmosphere at Town Hall.',
+      startDate: new Date('2025-11-22T10:00:00-05:00'), // EST timezone
+      endDate: new Date('2025-11-22T14:00:00-05:00'),
+      location: 'Stoneham Town Hall, 35 Center Street',
+      url: 'https://stonehamfarmersmarket.org/',
+      imageUrl: '/api/image-proxy?url=https://stonehamfarmersmarket.org/wp-content/uploads/2024/02/cropped-Stoneham-FM-logo-1.png',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Farmers Market',
+        type: 'manual',
+        url: 'https://stonehamfarmersmarket.org/',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'local-business', 'family', 'food']
     }
   ];
 

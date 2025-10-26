@@ -48,7 +48,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'geo0.ggpht.com',
       'geo1.ggpht.com',
       'geo2.ggpht.com',
-      'geo3.ggpht.com'
+      'geo3.ggpht.com',
+      // Stoneham Farmers Market
+      'stonehamfarmersmarket.org'
     ];
 
     const urlObj = new URL(url);
