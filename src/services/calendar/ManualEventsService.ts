@@ -70,7 +70,7 @@ export class ManualEventsService {
       endDate: new Date('2025-11-22T14:00:00-05:00'),
       location: 'Stoneham Town Hall, 35 Center Street',
       url: 'https://stonehamfarmersmarket.org/',
-      imageUrl: '/api/image-proxy?url=https://stonehamfarmersmarket.org/wp-content/uploads/2024/02/cropped-Stoneham-FM-logo-1.png',
+      imageUrl: '/api/image-proxy?url=https://stonehamfarmersmarket.org/wp-content/uploads/2024/04/cropped-Logo-White-Background_JPEG-scaled-1-1206x1536.jpeg',
       source: {
         id: 'manual-events',
         name: 'Stoneham Farmers Market',
