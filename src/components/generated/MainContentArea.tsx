@@ -218,6 +218,14 @@ export const MainContentArea: React.FC = () => {
     description: 'Yard waste disposal and recycling services for Stoneham residents',
     href: '/recycling-center',
     clickable: true
+  }, {
+    id: '5',
+    name: 'Stoneham Historical Society & Museum',
+    category: 'History',
+    contact: '(781) 572-3126',
+    email: 'info@stonehamhistoricalsociety.org',
+    description: 'Museum featuring local artifacts, photographs, and exhibits. Programs include lectures, open houses, and research services',
+    website: 'https://stonehamhistoricalsociety.org/'
   }];
   const AttractionCard: React.FC<{
     attraction: Attraction;
