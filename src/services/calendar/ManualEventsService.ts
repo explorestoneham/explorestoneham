@@ -81,6 +81,26 @@ export class ManualEventsService {
         enabled: true
       },
       tags: ['community', 'local-business', 'family', 'food']
+    },
+    {
+      id: 'womens-rest-circle-winter-2026-01-04',
+      title: 'Women\'s Rest Circle - Winter 2026',
+      description: 'Join us for a Women\'s Rest Circle - an invitation to gather in community for rest and reflection. This nurturing session includes guided yoga nidra practice, personal reflection time, and group sharing in a supportive circle. Experience deep relaxation, reconnect with your body and deeper self, and share in a safe space with other women. Perfect for those seeking structured community rest and emotional grounding during busy times.',
+      startDate: new Date('2026-01-04T14:30:00-05:00'), // EST timezone
+      endDate: new Date('2026-01-04T16:45:00-05:00'),
+      location: 'Movement House Dance Collaborative, 214 Main Street, Stoneham, MA 02180',
+      url: 'https://www.restwithali.com/about-rest-circles',
+      imageUrl: '/api/image-proxy?url=https://images.squarespace-cdn.com/content/v1/671ec4ec4acff55ddcfd7a2f/39aa80e0-5c1e-4e28-b11d-0fa657d58d2b/rest+with+ali+for+website.png?format=1500w',
+      source: {
+        id: 'manual-events',
+        name: 'Rest with Ali',
+        type: 'manual',
+        url: 'https://www.restwithali.com',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'wellness', 'women']
     }
   ];
 
