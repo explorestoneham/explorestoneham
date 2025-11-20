@@ -120,7 +120,7 @@ const attractions: Attraction[] = [{
   category: 'Historic',
   rating: 4.5,
   image: 'museum',
-  imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+  imageUrl: 'https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
   description: 'Keeping history alive through extensive collections of artifacts, documents, photographs, and engaging programs. Features the historic Stoneham Mural and educational exhibits',
   address: '36 William Street, Stoneham, MA 02180',
   url: 'https://stonehamhistoricalsociety.org/'
