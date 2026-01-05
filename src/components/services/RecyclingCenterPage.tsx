@@ -192,62 +192,98 @@ export function RecyclingCenterPage() {
         >
           {/* Hours Tab */}
           {activeTab === 'hours' && (
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-1 gap-8">
               <div className="bg-white rounded-xl shadow-lg p-8 border border-[#D2E5F1]">
                 <div className="flex items-center space-x-3 mb-6">
                   <Clock className="w-6 h-6 text-[#007B9E]" />
                   <div>
-                    <h3 className="text-2xl font-bold text-[#2A6F4D]">Operating Hours 2025</h3>
-                    <p className="text-sm text-[#404040]/70">(Valid until November 29, 2025)</p>
+                    <h3 className="text-2xl font-bold text-[#2A6F4D]">Upcoming Schedule - Winter/Spring 2026</h3>
+                    <p className="text-sm text-[#404040]/70">(January - March 2026)</p>
                   </div>
                 </div>
-                <div className="space-y-4">
-                  <div className="bg-[#93C47D]/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-[#2A6F4D] mb-2">Saturday</h4>
-                    <p className="text-[#404040]">8:00 AM - 1:00 PM</p>
-                    <p className="text-sm text-[#404040]/70">Yard Waste & White Goods/Metal</p>
-                  </div>
-                  <div className="bg-[#007B9E]/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-[#2A6F4D] mb-2">Monday</h4>
-                    <p className="text-[#404040]">8:00 AM - 12:00 Noon</p>
-                    <p className="text-sm text-[#404040]/70">Yard Waste & White Goods/Metal</p>
-                  </div>
-                  <div className="bg-[#F4A300]/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-[#2A6F4D] mb-2">Wednesday</h4>
-                    <p className="text-[#404040]">3:30 PM - 6:00 PM</p>
-                    <p className="text-sm text-[#404040]/70">Yard Waste Only</p>
-                    <p className="text-xs text-[#D95D39] mt-1">November hours: 3:30 PM - 5:00 PM</p>
-                  </div>
-                </div>
-              </div>
 
-              <div className="space-y-6">
-                <div className="bg-white rounded-xl shadow-lg p-6 border border-[#D2E5F1]">
-                  <div className="flex items-center space-x-3 mb-4">
+                <div className="space-y-6">
+                  {/* January */}
+                  <div className="bg-[#007B9E]/10 rounded-lg p-6">
+                    <h4 className="font-bold text-[#2A6F4D] mb-4 text-lg">January 2026</h4>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Saturday, January 3</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Wednesday, January 7</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Saturday, January 17</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Wednesday, January 21</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* February */}
+                  <div className="bg-[#93C47D]/10 rounded-lg p-6">
+                    <h4 className="font-bold text-[#2A6F4D] mb-4 text-lg">February 2026</h4>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Wednesday, February 4</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Saturday, February 7</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Wednesday, February 18</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Saturday, February 21</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* March */}
+                  <div className="bg-[#F4A300]/10 rounded-lg p-6">
+                    <h4 className="font-bold text-[#2A6F4D] mb-4 text-lg">March 2026</h4>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Wednesday, March 4</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Saturday, March 7</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Wednesday, March 18</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 border border-[#D2E5F1]">
+                        <p className="font-semibold text-[#404040]">Saturday, March 21</p>
+                        <p className="text-sm text-[#404040]/70">8:00 AM - 12:00 Noon</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 bg-[#D95D39]/10 rounded-lg p-4">
+                  <div className="flex items-center space-x-3 mb-2">
                     <AlertTriangle className="w-5 h-5 text-[#D95D39]" />
                     <h4 className="text-lg font-semibold text-[#2A6F4D]">Important Notes</h4>
                   </div>
                   <ul className="space-y-2 text-sm text-[#404040]/80">
-                    <li>• Season runs April 2 - November 29, 2025</li>
                     <li>• All operations weather permitting</li>
-                    <li>• Center closes promptly at posted times</li>
+                    <li>• Center closes promptly at 12:00 Noon</li>
                     <li>• Hours subject to change without notice</li>
+                    <li>• Valid recycling sticker required</li>
                   </ul>
-                </div>
-
-                <div className="bg-white rounded-xl shadow-lg p-6 border border-[#D2E5F1]">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <Calendar className="w-5 h-5 text-[#F4A300]" />
-                    <h4 className="text-lg font-semibold text-[#2A6F4D]">Holiday Closures</h4>
-                  </div>
-                  <div className="space-y-2 text-sm text-[#404040]/80">
-                    {holidays.map((holiday, index) => (
-                      <div key={index} className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-[#D95D39] rounded-full"></div>
-                        <span>{holiday}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </div>
             </div>
