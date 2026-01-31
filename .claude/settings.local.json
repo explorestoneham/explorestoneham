@@ -9,7 +9,9 @@
       "WebFetch(domain:www.stonehamoaks.com)",
       "WebFetch(domain:stonehamlibrary.org)",
       "WebFetch(domain:stonehamlibrary.assabetinteractive.com)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "WebFetch(domain:stonehamhistoricalsociety.org)",
+      "WebFetch(domain:www.restwithali.com)"
     ],
     "deny": [],
     "ask": []

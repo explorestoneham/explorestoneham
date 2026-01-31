@@ -109,13 +109,14 @@ export const MainContentArea: React.FC = () => {
     url: 'https://www.zoonewengland.org/stone-zoo/'
   }, {
     id: '2',
-    name: 'Spot Pond',
-    category: 'Nature',
-    rating: 4.8,
-    image: 'pond',
-    imageUrl: '/images/spot-pond.png',
-    description: 'Beautiful reservoir perfect for walking and fishing',
-    address: 'Woodland Rd, Stoneham, MA'
+    name: 'Stoneham Historical Society & Museum',
+    category: 'Historic',
+    rating: 4.5,
+    image: 'museum',
+    imageUrl: 'https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+    description: 'Keeping history alive with the 45\' Stoneham Mural, Shoe Town artifacts, and vintage photos',
+    address: '36 William Street, Stoneham, MA 02180',
+    url: 'https://stonehamhistoricalsociety.org/'
   }, {
     id: '3',
     name: 'Town Common',

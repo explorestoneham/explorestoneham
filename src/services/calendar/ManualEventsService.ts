@@ -101,6 +101,408 @@ export class ManualEventsService {
         enabled: true
       },
       tags: ['community', 'wellness', 'women']
+    },
+    // Stoneham Historical Society & Museum - Monthly Sunday Open House (3rd Sunday of each month, 2-4 PM)
+    {
+      id: 'shs-open-house-2026-02-15',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-02-15T14:00:00-05:00'),
+      endDate: new Date('2026-02-15T16:00:00-05:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-03-15',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-03-15T14:00:00-04:00'),
+      endDate: new Date('2026-03-15T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-04-19',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-04-19T14:00:00-04:00'),
+      endDate: new Date('2026-04-19T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-05-17',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-05-17T14:00:00-04:00'),
+      endDate: new Date('2026-05-17T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-06-21',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-06-21T14:00:00-04:00'),
+      endDate: new Date('2026-06-21T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-07-19',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-07-19T14:00:00-04:00'),
+      endDate: new Date('2026-07-19T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-08-16',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-08-16T14:00:00-04:00'),
+      endDate: new Date('2026-08-16T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-09-20',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-09-20T14:00:00-04:00'),
+      endDate: new Date('2026-09-20T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-10-18',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-10-18T14:00:00-04:00'),
+      endDate: new Date('2026-10-18T16:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-11-15',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-11-15T14:00:00-05:00'),
+      endDate: new Date('2026-11-15T16:00:00-05:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    {
+      id: 'shs-open-house-2026-12-20',
+      title: 'Stoneham Historical Society Monthly Open House',
+      description: 'Free admission to all ages at the Stoneham Historical Society & Museum! Enjoy exhibits including the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and much more pertaining to our "shared history." Located at 36 William Street (across from 100 year old brick school - built as a High School). All volunteer 501(c) nonprofit organization dedicated with "Pride in our Past; Faith in our Future" since 1922. Individual, Family or Life Memberships available.',
+      startDate: new Date('2026-12-20T14:00:00-05:00'),
+      endDate: new Date('2026-12-20T16:00:00-05:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'family', 'free']
+    },
+    // Stoneham Historical Society & Museum - Speaker/Program Series (2nd Thursday, March-November, 6:45-9 PM)
+    {
+      id: 'shs-speaker-2026-03-12',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-03-12T18:45:00-04:00'),
+      endDate: new Date('2026-03-12T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-04-09',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-04-09T18:45:00-04:00'),
+      endDate: new Date('2026-04-09T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-05-14',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-05-14T18:45:00-04:00'),
+      endDate: new Date('2026-05-14T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-06-11',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-06-11T18:45:00-04:00'),
+      endDate: new Date('2026-06-11T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-07-09',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-07-09T18:45:00-04:00'),
+      endDate: new Date('2026-07-09T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-08-13',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-08-13T18:45:00-04:00'),
+      endDate: new Date('2026-08-13T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-09-10',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-09-10T18:45:00-04:00'),
+      endDate: new Date('2026-09-10T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-10-08',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-10-08T18:45:00-04:00'),
+      endDate: new Date('2026-10-08T21:00:00-04:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
+    },
+    {
+      id: 'shs-speaker-2026-11-12',
+      title: 'Stoneham Historical Society Speaker Program',
+      description: 'Free speaker/program at the Stoneham Historical Society & Museum. Join us for an engaging evening exploring local history and heritage. The museum features the 45\' 1968 History of Stoneham Mural, Shoe Town and military artifacts, sports memorabilia, vintage photos and more. Contact: historystoneham@gmail.com or 781-572-3126. Calendar of events available on website, flyers on front door and around town, Facebook or Instagram.',
+      startDate: new Date('2026-11-12T18:45:00-05:00'),
+      endDate: new Date('2026-11-12T21:00:00-05:00'),
+      location: '36 William Street, Stoneham, MA 02180',
+      url: 'https://stonehamhistoricalsociety.org',
+      imageUrl: '/api/image-proxy?url=https://stonehamhistoricalsociety.org/wp-content/uploads/2023/05/stoneham_historical_society-300x85-1-jpg.webp',
+      source: {
+        id: 'manual-events',
+        name: 'Stoneham Historical Society & Museum',
+        type: 'manual',
+        url: 'https://stonehamhistoricalsociety.org',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'historical', 'education', 'free']
     }
   ];
 
