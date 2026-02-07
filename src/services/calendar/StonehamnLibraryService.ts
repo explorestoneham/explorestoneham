@@ -105,7 +105,9 @@ export class StonehamnLibraryService {
       
       for (const script of jsonLdScripts) {
         try {
-          const jsonData = JSON.parse(script.textContent || '');
+          // Sanitize control characters that break JSON.parse
+          const rawText = (script.textContent || '').replace(/[\x00-\x1F\x7F]/g, ' ');
+          const jsonData = JSON.parse(rawText);
           
           if (jsonData['@type'] === 'Event') {
             const event = this.parseJsonLdEvent(jsonData, source, doc);

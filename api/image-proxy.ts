@@ -50,7 +50,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'geo2.ggpht.com',
       'geo3.ggpht.com',
       // Stoneham Farmers Market
-      'stonehamfarmersmarket.org'
+      'stonehamfarmersmarket.org',
+      // Stoneham Historical Society
+      'stonehamhistoricalsociety.org'
     ];
 
     const urlObj = new URL(url);

@@ -59,7 +59,7 @@ export const STONEHAM_CALENDAR_SOURCES: CalendarSource[] = [
     type: 'stonehamlibrary',
     url: 'https://stonehamlibrary.assabetinteractive.com/calendar/',
     tag: 'library',
-    defaultImageUrl: '/images/library.jpg',
+    defaultImageUrl: '/images/stoneham-library.jpg',
     color: '#7C3AED', // Purple
     enabled: true // Always enabled - the service handles dev/prod logic internally
   }
