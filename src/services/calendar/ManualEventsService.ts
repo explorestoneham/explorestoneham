@@ -102,6 +102,46 @@ export class ManualEventsService {
       },
       tags: ['community', 'wellness', 'women']
     },
+    {
+      id: 'rested-love-2026-02-12',
+      title: 'Rested Love 2026 - Live Yoga Nidra Session',
+      description: 'A care package of rest practices honoring self-love. This bonus live yoga nidra session is part of the Rested Love 2026 self-paced rest series. The full series is delivered via email on February 14th. Join Rest with Ali for this nurturing practice of deep relaxation and self-care.',
+      startDate: new Date('2026-02-12T20:00:00-05:00'), // EST timezone
+      endDate: new Date('2026-02-12T20:30:00-05:00'),
+      location: 'Online',
+      url: 'https://www.restwithali.com/yoganidraofferings',
+      imageUrl: '/api/image-proxy?url=https://images.squarespace-cdn.com/content/v1/671ec4ec4acff55ddcfd7a2f/39aa80e0-5c1e-4e28-b11d-0fa657d58d2b/rest+with+ali+for+website.png?format=1500w',
+      source: {
+        id: 'manual-events',
+        name: 'Rest with Ali',
+        type: 'manual',
+        url: 'https://www.restwithali.com',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'wellness']
+    },
+    {
+      id: 'womens-rest-circle-spring-2026-03-22',
+      title: 'Women\'s Rest Circle - Spring 2026',
+      description: 'Join us for a Women\'s Rest Circle - an invitation to gather in community for rest and reflection. This nurturing session includes guided yoga nidra practice, personal reflection time, and group sharing in a supportive circle. Experience deep relaxation, reconnect with your body and deeper self, and share in a safe space with other women. Perfect for those seeking structured community rest and emotional grounding.',
+      startDate: new Date('2026-03-22T14:30:00-04:00'), // EDT timezone
+      endDate: new Date('2026-03-22T16:45:00-04:00'),
+      location: 'Movement House Dance Collaborative, 214 Main Street, Stoneham, MA 02180',
+      url: 'https://www.restwithali.com/yoganidraofferings',
+      imageUrl: '/api/image-proxy?url=https://images.squarespace-cdn.com/content/v1/671ec4ec4acff55ddcfd7a2f/39aa80e0-5c1e-4e28-b11d-0fa657d58d2b/rest+with+ali+for+website.png?format=1500w',
+      source: {
+        id: 'manual-events',
+        name: 'Rest with Ali',
+        type: 'manual',
+        url: 'https://www.restwithali.com',
+        tag: 'community',
+        color: '#2A6F4D',
+        enabled: true
+      },
+      tags: ['community', 'wellness', 'women']
+    },
     // Stoneham Historical Society & Museum - Monthly Sunday Open House (3rd Sunday of each month, 2-4 PM)
     {
       id: 'shs-open-house-2026-02-15',
