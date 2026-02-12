@@ -227,6 +227,22 @@ export const MainContentArea: React.FC = () => {
     email: 'info@stonehamhistoricalsociety.org',
     description: 'Museum featuring local artifacts, photographs, and exhibits. Programs include lectures, open houses, and research services',
     website: 'https://stonehamhistoricalsociety.org/'
+  }, {
+    id: '6',
+    name: 'Stoneham CAN',
+    category: 'Community',
+    contact: '',
+    email: '',
+    description: 'Community action network working to improve the quality of life in Stoneham',
+    website: 'https://www.stonehamcan.org/'
+  }, {
+    id: '7',
+    name: 'Stoneham Chamber of Commerce',
+    category: 'Business',
+    contact: '',
+    email: '',
+    description: 'Supporting and promoting local businesses in the Stoneham community',
+    website: 'https://stonehamchamber.org/'
   }];
   const AttractionCard: React.FC<{
     attraction: Attraction;
